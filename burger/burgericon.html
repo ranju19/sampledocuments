@@ -1,18 +1,28 @@
 Full HTML Code (to go inside index.html)
 Paste this inside <body> just after the <nav> or wherever you want the sidebar and burger icon:
   <!-- 🍔 Burger Icon -->
-<div id="sidebar">
-  <div class="sidebar-header">
-    <i class="fa fa-home"></i>
-    <span>Dashboard</span>
-  </div>
-
-  <a href="feedback.html">Feedback</a>
-  <a href="blogs.html">Blogs</a>
-  <a href="news.html">Industry News</a>
-  <a href="podcast.html">Podcast</a>
-  <a href="calendar.html">Calendar</a>
+<div class="navbar">
+  <span class="burger-icon" onclick="toggleSidebar()">☰</span>
 </div>
+
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <span class="burger-icon inside" onclick="toggleSidebar()">☰</span>
+    <h2>Dashboard</h2>
+  </div>
+  <ul>
+    <li>Feedback</li>
+    <li>Blogs</li>
+    <li>Industry News</li>
+    <li>Podcast</li>
+    <li>Calendar</li>
+  </ul>
+</div>
+
+<div class="main-content" id="mainContent">
+  <!-- Your page content here -->
+</div>
+
 
 
   Then at the bottom of your HTML, just before </body>, add the script:
@@ -21,18 +31,16 @@ html
 Copy
 Edit
 <!-- 🔁 Sidebar Script -->
-function toggleSidebar() {
-  const sidebar = document.getElementById("sidebar");
-  const main = document.getElementById("main-content");
+<script>
+  function toggleSidebar() {
+    const sidebar = document.getElementById("sidebar");
+    const main = document.getElementById("mainContent");
 
-  if (sidebar.style.width === "250px") {
-    sidebar.style.width = "0";
-    main.classList.remove("push-right");
-  } else {
-    sidebar.style.width = "250px";
-    main.classList.add("push-right");
+    sidebar.classList.toggle("open");
+    main.classList.toggle("shifted");
   }
-}
+</script>
+
 
 
 
@@ -40,45 +48,75 @@ Full CSS Code (add to your existing style.css)
 Paste this anywhere in your current style.css:
 
 css
-#sidebar {
-  width: 250px;
-  height: 100vh;
-  background-color: #1c1c1c; /* Dark grey */
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  overflow-x: hidden;
+}
+
+.navbar {
+  background-color: black;
+  color: white;
+  padding: 10px 20px;
   position: fixed;
+  width: 100%;
   top: 0;
-  left: 0;
-  overflow: auto;              /* Adds both vertical + horizontal scroll if needed */
-  white-space: nowrap;
-  transition: 0.4s ease;
+  z-index: 1000;
+}
+
+.burger-icon {
+  font-size: 24px;
+  cursor: pointer;
+}
+
+.sidebar {
+  position: fixed;
+  left: -250px;
+  top: 0;
+  height: 100%;
+  width: 250px;
+  background-color: #1e1e1e;
+  color: white;
+  transition: left 0.3s ease;
+  z-index: 999;
   padding-top: 60px;
-  z-index: 9998;
 }
 
-/* Optional: Style scrollbars */
-#sidebar::-webkit-scrollbar {
-  width: 8px;
-  height: 8px;
-}
-#sidebar::-webkit-scrollbar-thumb {
-  background-color: #888;
-  border-radius: 5px;
-}
-#sidebar::-webkit-scrollbar-track {
-  background-color: #1c1c1c;
-}
-
-/* Sidebar Header Styling */
 .sidebar-header {
   display: flex;
   align-items: center;
   gap: 10px;
-  color: white;
-  font-weight: bold;
-  font-size: 1.2rem;
-  padding: 10px 20px;
-  border-bottom: 1px solid #333;
+  padding: 0 20px;
 }
-.sidebar-header i {
-  font-size: 1.3rem;
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 0 20px;
 }
+
+.sidebar ul li {
+  margin: 20px 0;
+  cursor: pointer;
+}
+
+.main-content {
+  margin-top: 60px;
+  transition: margin-left 0.3s ease;
+  padding: 20px;
+}
+
+.sidebar.open {
+  left: 0;
+}
+
+.main-content.shifted {
+  margin-left: 250px;
+}
+
+.burger-icon.inside {
+  color: #fff;
+  font-size: 22px;
+}
+
 
