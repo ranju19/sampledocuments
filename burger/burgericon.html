@@ -19,30 +19,19 @@ html
 Copy
 Edit
 <!-- 🔁 Sidebar Script -->
-<script>
 function toggleSidebar() {
   const sidebar = document.getElementById("sidebar");
-  sidebar.style.width = sidebar.style.width === "250px" ? "0" : "250px";
+  const main = document.getElementById("main-content");
+
+  if (sidebar.style.width === "250px") {
+    sidebar.style.width = "0";
+    main.classList.remove("push-right");
+  } else {
+    sidebar.style.width = "250px";
+    main.classList.add("push-right");
+  }
 }
 
-document.addEventListener('DOMContentLoaded', function () {
-  const sidebarLinks = document.querySelectorAll('#sidebar a');
-  const current = location.pathname.split("/").pop();
-
-  sidebarLinks.forEach(link => {
-    // Click highlight
-    link.addEventListener('click', function () {
-      sidebarLinks.forEach(l => l.classList.remove('active'));
-      this.classList.add('active');
-    });
-
-    // Auto-highlight based on URL
-    if (link.getAttribute("href") === current) {
-      link.classList.add('active');
-    }
-  });
-});
-</script>
 
 
 Full CSS Code (add to your existing style.css)
