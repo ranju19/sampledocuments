@@ -1,10 +1,12 @@
 Full HTML Code (to go inside index.html)
 Paste this inside <body> just after the <nav> or wherever you want the sidebar and burger icon:
   <!-- 🍔 Burger Icon -->
-<div id="burger-icon" onclick="toggleSidebar()">☰</div>
-
-<!-- 📚 Sidebar Menu -->
 <div id="sidebar">
+  <div class="sidebar-header">
+    <i class="fa fa-home"></i>
+    <span>Dashboard</span>
+  </div>
+
   <a href="feedback.html">Feedback</a>
   <a href="blogs.html">Blogs</a>
   <a href="news.html">Industry News</a>
@@ -38,53 +40,45 @@ Full CSS Code (add to your existing style.css)
 Paste this anywhere in your current style.css:
 
 css
-Copy
-Edit
-/* 🍔 Burger Icon Style */
-#burger-icon {
-  position: fixed;
-  top: 20px;
-  left: 20px;
-  font-size: 30px;
-  cursor: pointer;
-  color: white;
-  z-index: 9999;
-}
-
-/* 📚 Sidebar Container */
 #sidebar {
-  height: 100%;
-  width: 0;
+  width: 250px;
+  height: 100vh;
+  background-color: #1c1c1c; /* Dark grey */
   position: fixed;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.95);
-  overflow-x: hidden;
+  overflow: auto;              /* Adds both vertical + horizontal scroll if needed */
+  white-space: nowrap;
   transition: 0.4s ease;
   padding-top: 60px;
   z-index: 9998;
 }
 
-/* 📄 Sidebar Links */
-#sidebar a {
-  padding: 12px 24px;
-  text-decoration: none;
-  font-size: 20px;
+/* Optional: Style scrollbars */
+#sidebar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+#sidebar::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+#sidebar::-webkit-scrollbar-track {
+  background-color: #1c1c1c;
+}
+
+/* Sidebar Header Styling */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   color: white;
-  display: block;
-  transition: 0.3s;
-}
-
-/* ✨ Hover Effect */
-#sidebar a:hover {
-  background-color: #d75dff;
-  color: black;
-}
-
-/* 🔥 Active/Clicked Link */
-#sidebar a.active {
-  background-color: #ff6b00;
-  color: black;
   font-weight: bold;
-  box-shadow: 0 0 10px #ff6b00;
+  font-size: 1.2rem;
+  padding: 10px 20px;
+  border-bottom: 1px solid #333;
 }
+.sidebar-header i {
+  font-size: 1.3rem;
+}
+
