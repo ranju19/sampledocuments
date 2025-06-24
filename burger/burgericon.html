@@ -1,0 +1,101 @@
+Full HTML Code (to go inside index.html)
+Paste this inside <body> just after the <nav> or wherever you want the sidebar and burger icon:
+  <!-- 🍔 Burger Icon -->
+<div id="burger-icon" onclick="toggleSidebar()">☰</div>
+
+<!-- 📚 Sidebar Menu -->
+<div id="sidebar">
+  <a href="feedback.html">Feedback</a>
+  <a href="blogs.html">Blogs</a>
+  <a href="news.html">Industry News</a>
+  <a href="podcast.html">Podcast</a>
+  <a href="calendar.html">Calendar</a>
+</div>
+
+
+  Then at the bottom of your HTML, just before </body>, add the script:
+
+html
+Copy
+Edit
+<!-- 🔁 Sidebar Script -->
+<script>
+function toggleSidebar() {
+  const sidebar = document.getElementById("sidebar");
+  sidebar.style.width = sidebar.style.width === "250px" ? "0" : "250px";
+}
+
+document.addEventListener('DOMContentLoaded', function () {
+  const sidebarLinks = document.querySelectorAll('#sidebar a');
+  const current = location.pathname.split("/").pop();
+
+  sidebarLinks.forEach(link => {
+    // Click highlight
+    link.addEventListener('click', function () {
+      sidebarLinks.forEach(l => l.classList.remove('active'));
+      this.classList.add('active');
+    });
+
+    // Auto-highlight based on URL
+    if (link.getAttribute("href") === current) {
+      link.classList.add('active');
+    }
+  });
+});
+</script>
+
+
+Full CSS Code (add to your existing style.css)
+Paste this anywhere in your current style.css:
+
+css
+Copy
+Edit
+/* 🍔 Burger Icon Style */
+#burger-icon {
+  position: fixed;
+  top: 20px;
+  left: 20px;
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
+  z-index: 9999;
+}
+
+/* 📚 Sidebar Container */
+#sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: rgba(0, 0, 0, 0.95);
+  overflow-x: hidden;
+  transition: 0.4s ease;
+  padding-top: 60px;
+  z-index: 9998;
+}
+
+/* 📄 Sidebar Links */
+#sidebar a {
+  padding: 12px 24px;
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  display: block;
+  transition: 0.3s;
+}
+
+/* ✨ Hover Effect */
+#sidebar a:hover {
+  background-color: #d75dff;
+  color: black;
+}
+
+/* 🔥 Active/Clicked Link */
+#sidebar a.active {
+  background-color: #ff6b00;
+  color: black;
+  font-weight: bold;
+  box-shadow: 0 0 10px #ff6b00;
+}
