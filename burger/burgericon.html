@@ -122,3 +122,62 @@ function toggleSidebar() {
 
 </body>
 </html>
+
+
+
+
+
+
+<!--CSS-->
+
+.sidebar {
+  width: 60px;
+  background: #222;
+  position: fixed;
+  height: 100vh;
+  transition: width 0.3s;
+  overflow: hidden;
+  z-index: 999;
+}
+
+.sidebar.expanded {
+  width: 250px;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+.sidebar a {
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+.sidebar a i {
+  margin-right: 10px;
+  min-width: 20px;
+}
+
+.link-text {
+  display: none;
+}
+
+.sidebar.expanded .link-text {
+  display: inline;
+}
+
+/* Main content should shift */
+#main-content {
+  margin-left: 60px;
+  transition: margin-left 0.3s ease;
+}
+
+.sidebar.expanded ~ #main-content {
+  margin-left: 250px;
+}
+
