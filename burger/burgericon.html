@@ -130,35 +130,109 @@ function toggleSidebar() {
 
 <!--CSS-->
 
-.sidebar {
-  width: 60px;
-  background: #222;
+/* Burger Icon Style */
+#burger-icon {
+  font-size: 30px;
+  cursor: pointer;
+  color: white;
+  z-index: 10000;
   position: fixed;
-  height: 100vh;
+  top: 20px;
+  left: 20px;
+}
+
+.burger-icon.inside {
+  color: #fff;
+  font-size: 22px;
+}
+
+/* Main Content Shifting */
+.main-content {
+  margin-top: 60px;
+  transition: margin-left 0.3s ease;
+  padding: 20px;
+}
+
+.main-content.shifted {
+  margin-left: 250px;
+}
+
+/* Sidebar Base */
+#sidebar {
+  width: 60px;
+  height: 100%;
+  background-color: #1e1e1e;
+  color: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  overflow-x: hidden;
   transition: width 0.3s;
-  overflow: hidden;
+  padding-top: 60px;
   z-index: 999;
 }
 
-.sidebar.expanded {
+/* Expanded Sidebar */
+#sidebar.expanded {
   width: 250px;
 }
 
+/* Sidebar Scrollbars */
+#sidebar::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+#sidebar::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 5px;
+}
+
+#sidebar::-webkit-scrollbar-track {
+  background-color: #1c1c1c;
+}
+
+/* Sidebar Header */
 .sidebar-header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 10px;
+  gap: 10px;
+  color: white;
+  font-weight: bold;
+  font-size: 1.2rem;
+  padding: 0px 20px;
+  border-bottom: 1px solid #333;
 }
 
-.sidebar a {
+.sidebar-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+/* Sidebar List */
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 20px;
+}
+
+.sidebar ul li {
+  margin: 20px 0;
+  cursor: pointer;
+}
+
+/* Sidebar Links */
+#sidebar a {
+  padding: 12px 24px;
+  text-decoration: none;
+  font-size: 20px;
   color: white;
-  padding: 10px;
   display: flex;
   align-items: center;
+  transition: 0.3s;
 }
 
-.sidebar a i {
+#sidebar a i {
   margin-right: 10px;
   min-width: 20px;
 }
@@ -167,17 +241,20 @@ function toggleSidebar() {
   display: none;
 }
 
-.sidebar.expanded .link-text {
+#sidebar.expanded .link-text {
   display: inline;
 }
 
-/* Main content should shift */
-#main-content {
-  margin-left: 60px;
-  transition: margin-left 0.3s ease;
+/* Hover Effect */
+#sidebar a:hover {
+  background-color: #ff6b00;
+  color: black;
 }
 
-.sidebar.expanded ~ #main-content {
-  margin-left: 250px;
+/* Active Link */
+#sidebar a.active {
+  background-color: #ff6b00;
+  color: black;
+  font-weight: bold;
+  box-shadow: 0 0 10px #ff6b00;
 }
-
