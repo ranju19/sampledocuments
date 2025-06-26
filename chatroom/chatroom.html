@@ -135,9 +135,18 @@ CHATROOM (JS)
 3. JavaScript (Put at end of body, or in a separate .js file)
 
 <script>
+let isChatOpen = false;
+
 function toggleChat() {
   const chatBox = document.getElementById("chat-box");
-  chatBox.classList.toggle("hidden");
+  isChatOpen = !isChatOpen;
+  chatBox.classList.toggle("hidden", !isChatOpen);
+}
+
+function closeChat() {
+  const chatBox = document.getElementById("chat-box");
+  chatBox.classList.add("hidden");
+  isChatOpen = false;
 }
 
 function postMessage() {
@@ -147,9 +156,10 @@ function postMessage() {
 
   const newThread = document.createElement("div");
   newThread.className = "chat-thread";
-  newThread.innerHTML = `<p class="main-post"><strong>You:</strong> ${content}</p><div class="replies"></div>`;
+  newThread.innerHTML = `<p class="main-post"><strong>You:</strong> ${content}</p>`;
 
   document.getElementById("chat-content").appendChild(newThread);
   input.value = "";
 }
 </script>
+
