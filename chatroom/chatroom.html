@@ -1,0 +1,155 @@
+1. HTML (Place at the end of body tag in learn.html)
+html
+
+FLOATING CHATBOT (HTML)
+<!-- Floating Chat Button -->
+<div id="chat-button" onclick="toggleChat()">
+  💬
+</div>
+
+<!-- Chat Popup -->
+<div id="chat-box" class="hidden">
+  <div class="chat-header">
+    <span>Community Chatroom</span>
+    <span class="close-btn" onclick="toggleChat()">×</span>
+  </div>
+  <div class="chat-content" id="chat-content">
+    <!-- Sample static post -->
+    <div class="chat-thread">
+      <p class="main-post"><strong>User123:</strong> How to fine-tune BERT?</p>
+      <div class="replies">
+        <p><strong>AI_Expert:</strong> Try learning rate 2e-5 with Adam optimizer!</p>
+        <p><strong>StudentX:</strong> Same issue, following this thread!</p>
+      </div>
+    </div>
+  </div>
+  <div class="chat-input">
+    <textarea placeholder="Type your message..." rows="2"></textarea>
+    <button onclick="postMessage()">Post</button>
+  </div>
+</div>
+
+CHATROOM (CSS)
+
+CSS (Add to your style.css)
+
+/* Floating Chat Button */
+#chat-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #ff5e00;
+  color: white;
+  font-size: 24px;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  text-align: center;
+  line-height: 50px;
+  cursor: pointer;
+  z-index: 9999;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+}
+
+/* Chat Box */
+#chat-box {
+  position: fixed;
+  bottom: 80px;
+  right: 20px;
+  width: 300px;
+  max-height: 400px;
+  background-color: #111;
+  color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  z-index: 9999;
+}
+
+.hidden {
+  display: none;
+}
+
+.chat-header {
+  background-color: #222;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+}
+
+.chat-content {
+  padding: 10px;
+  flex: 1;
+  overflow-y: auto;
+}
+
+.chat-thread {
+  margin-bottom: 15px;
+  padding: 10px;
+  background-color: #1c1c1c;
+  border-radius: 5px;
+}
+
+.replies {
+  margin-top: 5px;
+  margin-left: 10px;
+  font-size: 0.9rem;
+  color: #ccc;
+}
+
+.chat-input {
+  padding: 10px;
+  background-color: #222;
+  display: flex;
+  flex-direction: column;
+}
+
+.chat-input textarea {
+  resize: none;
+  border: none;
+  padding: 8px;
+  border-radius: 5px;
+  font-size: 0.9rem;
+  margin-bottom: 5px;
+}
+
+.chat-input button {
+  padding: 5px 10px;
+  background-color: #ff5e00;
+  border: none;
+  border-radius: 5px;
+  color: white;
+  cursor: pointer;
+}
+
+.close-btn {
+  cursor: pointer;
+  color: #ccc;
+}
+
+CHATROOM (JS)
+
+3. JavaScript (Put at end of body, or in a separate .js file)
+
+<script>
+function toggleChat() {
+  const chatBox = document.getElementById("chat-box");
+  chatBox.classList.toggle("hidden");
+}
+
+function postMessage() {
+  const input = document.querySelector('.chat-input textarea');
+  const content = input.value.trim();
+  if (!content) return;
+
+  const newThread = document.createElement("div");
+  newThread.className = "chat-thread";
+  newThread.innerHTML = `<p class="main-post"><strong>You:</strong> ${content}</p><div class="replies"></div>`;
+
+  document.getElementById("chat-content").appendChild(newThread);
+  input.value = "";
+}
+</script>
