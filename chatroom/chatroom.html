@@ -279,6 +279,27 @@ GUARENTEED:
       message.innerHTML = `<p><strong>You:</strong> ${content}</p>`;
       document.getElementById("chat-content").appendChild(message);
       input.value = "";
+
+
+
+
+
+
+
+      document.addEventListener("keydown", function (event) {
+  const textarea = document.querySelector(".chat-input textarea");
+  if (event.key === "Enter" && document.activeElement === textarea && !event.shiftKey) {
+    event.preventDefault(); // prevent newline
+    postMessage();
+  }
+});
+
+
+
+
+
+
+      
     }
   </script>
 </body>
