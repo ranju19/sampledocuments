@@ -1,54 +1,79 @@
-1. HTML (Place at the end of body tag in learn.html)
-html
+HTML (Full code)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI RESOURCE HUB</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+</head>
+<body>
 
-FLOATING CHATBOT (HTML)
-<!-- Floating Chat Button -->
-<div id="chat-button" onclick="toggleChat()">
-  💬
-</div>
+  <!-- Floating Chat Button -->
+  <div id="chat-button" onclick="toggleChat()">💬</div>
 
-<!-- Chat Popup -->
-<div id="chat-box" class="hidden">
-  <div class="chat-header">
-    <span>Community Chatroom</span>
-    <span class="close-btn" onclick="toggleChat()">×</span>
-  </div>
-  <div class="chat-content" id="chat-content">
-    <!-- Sample static post -->
-    <div class="chat-thread">
-      <p class="main-post"><strong>User123:</strong> How to fine-tune BERT?</p>
-      <div class="replies">
-        <p><strong>AI_Expert:</strong> Try learning rate 2e-5 with Adam optimizer!</p>
-        <p><strong>StudentX:</strong> Same issue, following this thread!</p>
-      </div>
+  <!-- Chat Box -->
+  <div id="chat-box" class="hidden">
+    <div class="chat-header">
+      <span>Community Chatroom</span>
+      <span class="close-btn" onclick="closeChat()">❌</span>
+    </div>
+    <div id="chat-content" class="chat-content"></div>
+    <div class="chat-input">
+      <textarea placeholder="Type your message..." rows="2"></textarea>
+      <button onclick="postMessage()">Post</button>
     </div>
   </div>
-  <div class="chat-input">
-    <textarea placeholder="Type your message..." rows="2"></textarea>
-    <button onclick="postMessage()">Post</button>
-  </div>
-</div>
+
+  <!-- JavaScript -->
+  <script>
+    let isChatOpen = false;
+
+    function toggleChat() {
+      const chatBox = document.getElementById("chat-box");
+      isChatOpen = !isChatOpen;
+      chatBox.classList.toggle("hidden", !isChatOpen);
+    }
+
+    function closeChat() {
+      const chatBox = document.getElementById("chat-box");
+      chatBox.classList.add("hidden");
+      isChatOpen = false;
+    }
+
+    function postMessage() {
+      const input = document.querySelector('.chat-input textarea');
+      const content = input.value.trim();
+      if (!content) return;
+
+      const newThread = document.createElement("div");
+      newThread.className = "chat-thread";
+      newThread.innerHTML = `<p class="main-post"><strong>You:</strong> ${content}</p>`;
+      document.getElementById("chat-content").appendChild(newThread);
+      input.value = "";
+    }
+  </script>
+
+</body>
+</html>
+
 
 CHATROOM (CSS)
 
-CSS (Add to your style.css)
-
-/* Floating Chat Button */
+/* Chat Button */
 #chat-button {
   position: fixed;
   bottom: 20px;
   right: 20px;
   background-color: #ff5e00;
   color: white;
-  font-size: 24px;
+  font-size: 20px;
+  padding: 10px 15px;
   border-radius: 50%;
-  width: 50px;
-  height: 50px;
-  text-align: center;
-  line-height: 50px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   cursor: pointer;
   z-index: 9999;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
 }
 
 /* Chat Box */
@@ -58,13 +83,13 @@ CSS (Add to your style.css)
   right: 20px;
   width: 300px;
   max-height: 400px;
-  background-color: #111;
+  background: #111;
   color: white;
   border-radius: 10px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  box-shadow: 0 0 20px rgba(0,0,0,0.5);
+  box-shadow: 0 0 10px #000;
   z-index: 9999;
 }
 
@@ -72,6 +97,7 @@ CSS (Add to your style.css)
   display: none;
 }
 
+/* Chat Header */
 .chat-header {
   background-color: #222;
   padding: 10px;
@@ -80,29 +106,25 @@ CSS (Add to your style.css)
   font-weight: bold;
 }
 
+/* Close Button */
+.close-btn {
+  cursor: pointer;
+  color: #ccc;
+  font-size: 18px;
+  padding: 0 10px;
+}
+
+/* Chat Content */
 .chat-content {
   padding: 10px;
   flex: 1;
   overflow-y: auto;
 }
 
-.chat-thread {
-  margin-bottom: 15px;
-  padding: 10px;
-  background-color: #1c1c1c;
-  border-radius: 5px;
-}
-
-.replies {
-  margin-top: 5px;
-  margin-left: 10px;
-  font-size: 0.9rem;
-  color: #ccc;
-}
-
+/* Chat Input */
 .chat-input {
   padding: 10px;
-  background-color: #222;
+  background-color: #1a1a1a;
   display: flex;
   flex-direction: column;
 }
@@ -125,41 +147,4 @@ CSS (Add to your style.css)
   cursor: pointer;
 }
 
-.close-btn {
-  cursor: pointer;
-  color: #ccc;
-}
-
-CHATROOM (JS)
-
-3. JavaScript (Put at end of body, or in a separate .js file)
-
-<script>
-let isChatOpen = false;
-
-function toggleChat() {
-  const chatBox = document.getElementById("chat-box");
-  isChatOpen = !isChatOpen;
-  chatBox.classList.toggle("hidden", !isChatOpen);
-}
-
-function closeChat() {
-  const chatBox = document.getElementById("chat-box");
-  chatBox.classList.add("hidden");
-  isChatOpen = false;
-}
-
-function postMessage() {
-  const input = document.querySelector('.chat-input textarea');
-  const content = input.value.trim();
-  if (!content) return;
-
-  const newThread = document.createElement("div");
-  newThread.className = "chat-thread";
-  newThread.innerHTML = `<p class="main-post"><strong>You:</strong> ${content}</p>`;
-
-  document.getElementById("chat-content").appendChild(newThread);
-  input.value = "";
-}
-</script>
 
