@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Feedback</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: #0a0a0a;
+      font-family: Arial, sans-serif;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .feedback-container {
+      background-color: #1a1a1a;
+      padding: 30px;
+      border-radius: 15px;
+      width: 420px;
+      box-shadow: 0 0 20px #ff6b00;
+    }
+
+    .feedback-container h2 {
+      text-align: center;
+    }
+
+    .section {
+      margin: 20px 0;
+    }
+
+    .emojis {
+      display: flex;
+      justify-content: space-around;
+      margin: 15px 0;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    .emojis span {
+      transition: transform 0.2s, border 0.2s;
+    }
+
+    .emojis span.selected {
+      border: 2px solid #ff6b00;
+      border-radius: 50%;
+      padding: 5px;
+      transform: scale(1.2);
+    }
+
+    textarea, input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 8px;
+      background-color: #2a2a2a;
+      color: white;
+      resize: none;
+    }
+
+    .submit-btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #ff6b00;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .submit-btn:hover {
+      background-color: #ff8123;
+    }
+
+    .helpful-box {
+      margin-top: 30px;
+      text-align: center;
+      padding: 20px;
+      border-radius: 12px;
+      background-color: #121212;
+      box-shadow: 0 0 10px #ff6b00;
+    }
+
+    .helpful-box button {
+      background-color: #ff6b00;
+      color: white;
+      padding: 10px 20px;
+      margin: 10px;
+      border: none;
+      border-radius: 50px;
+      font-weight: bold;
+      font-size: 18px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+
+    .helpful-box button:hover {
+      background-color: #ff8123;
+    }
+
+    .helpful-box button.selected {
+      background-color: #7c3aed;
+      transform: scale(1.1);
+    }
+  </style>
+</head>
+<body>
+
+<div class="feedback-container">
+  <h2>How are you feeling?</h2>
+  <p style="text-align:center;">Your input helps us improve your learning journey.</p>
+
+  <div class="emojis" id="emojiGroup">
+    <span>😢</span>
+    <span>🙁</span>
+    <span>😐</span>
+    <span>🙂</span>
+    <span>😄</span>
+  </div>
+
+  <div class="section">
+    <textarea rows="3" placeholder="Add a comment..."></textarea>
+    <input type="text" placeholder="Any topics you'd like us to include?" />
+    <button class="submit-btn">Submit Now</button>
+  </div>
+
+  <div class="helpful-box">
+    <p style="margin-bottom: 10px;">Is this page helpful?</p>
+    <button id="yesBtn">👍 Yes</button>
+    <button id="noBtn">👎 No</button>
+  </div>
+</div>
+
+<script>
+  // Emoji selection
+  const emojis = document.querySelectorAll('#emojiGroup span');
+  emojis.forEach(emoji => {
+    emoji.addEventListener('click', () => {
+      emojis.forEach(e => e.classList.remove('selected'));
+      emoji.classList.add('selected');
+    });
+  });
+
+  // Helpful buttons
+  const yesBtn = document.getElementById('yesBtn');
+  const noBtn = document.getElementById('noBtn');
+
+  yesBtn.addEventListener('click', () => {
+    yesBtn.classList.add('selected');
+    noBtn.classList.remove('selected');
+  });
+
+  noBtn.addEventListener('click', () => {
+    noBtn.classList.add('selected');
+    yesBtn.classList.remove('selected');
+  });
+</script>
+
+</body>
+</html>
