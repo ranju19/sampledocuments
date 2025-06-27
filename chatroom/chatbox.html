@@ -1,0 +1,203 @@
+HTML, CSS, JS (for ChatBox)
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Live Chatbox</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: #121212;
+    }
+
+    /* Chat Button */
+    #chat-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      width: 60px;
+      height: 60px;
+      background-color: #ff5e00;
+      color: white;
+      font-size: 24px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      cursor: pointer;
+      z-index: 9999;
+    }
+
+    /* Chat Box */
+    #chat-box {
+      position: fixed;
+      bottom: 90px;
+      right: 20px;
+      width: 340px;
+      max-height: 450px;
+      background-color: #000;
+      color: white;
+      border-radius: 16px;
+      display: none;
+      flex-direction: column;
+      box-shadow: 0 0 20px rgba(255, 110, 0, 0.3);
+      overflow: hidden;
+      z-index: 9999;
+    }
+
+    .chat-header {
+      background: linear-gradient(90deg, #ff8000, #ff5e00);
+      padding: 12px;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .chat-header span:last-child {
+      cursor: pointer;
+      font-size: 18px;
+    }
+
+    .chat-content {
+      flex: 1;
+      padding: 10px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* User message bubble (glowing) */
+    .chat-bubble.user {
+      background-color: #000;
+      color: white;
+      border: 1px solid #ff6b00;
+      box-shadow: 0 0 10px #ff6b00;
+      padding: 10px 14px;
+      border-radius: 20px;
+      margin: 6px 0;
+      align-self: flex-end;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    /* Bot/replier message bubble (filled) */
+    .chat-bubble.bot {
+      background-color: #ff5e00;
+      color: white;
+      padding: 10px 14px;
+      border-radius: 20px;
+      margin: 6px 0;
+      align-self: flex-start;
+      max-width: 80%;
+      word-wrap: break-word;
+    }
+
+    .chat-input {
+      padding: 10px;
+      background-color: #111;
+      display: flex;
+      flex-direction: row;
+      gap: 8px;
+    }
+
+    .chat-input textarea {
+      flex: 1;
+      resize: none;
+      border: none;
+      border-radius: 20px;
+      padding: 10px;
+      font-size: 14px;
+      background: #222;
+      color: white;
+      outline: none;
+      height: 40px;
+    }
+
+    .chat-input button {
+      background-color: #ff5e00;
+      border: none;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      font-size: 18px;
+      color: white;
+      cursor: pointer;
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- Chat Button -->
+  <div id="chat-button" onclick="toggleChat()">
+    💬
+  </div>
+
+  <!-- Chat Box -->
+  <div id="chat-box">
+    <div class="chat-header">
+      <span>Welcome to Live Chat!</span>
+      <span onclick="closeChat()">✖</span>
+    </div>
+    <div id="chat-content" class="chat-content"></div>
+    <div class="chat-input">
+      <textarea placeholder="Type here..."></textarea>
+      <button onclick="postMessage()">➤</button>
+    </div>
+  </div>
+
+  <!-- Chat Script -->
+  <script>
+    let isChatOpen = false;
+
+    function toggleChat() {
+      const chatBox = document.getElementById("chat-box");
+      isChatOpen = !isChatOpen;
+      chatBox.style.display = isChatOpen ? "flex" : "none";
+    }
+
+    function closeChat() {
+      document.getElementById("chat-box").style.display = "none";
+      isChatOpen = false;
+    }
+
+    function postMessage() {
+      const input = document.querySelector(".chat-input textarea");
+      const content = input.value.trim();
+      if (!content) return;
+
+      const chatContent = document.getElementById("chat-content");
+
+      const userMsg = document.createElement("div");
+      userMsg.className = "chat-bubble user";
+      userMsg.textContent = content;
+      chatContent.appendChild(userMsg);
+
+      setTimeout(() => {
+        const botMsg = document.createElement("div");
+        botMsg.className = "chat-bubble bot";
+        botMsg.textContent = "Thanks for your message!";
+        chatContent.appendChild(botMsg);
+        chatContent.scrollTop = chatContent.scrollHeight;
+      }, 700);
+
+      input.value = "";
+      chatContent.scrollTop = chatContent.scrollHeight;
+    }
+
+    // Enter key triggers post
+    document.addEventListener("keydown", function (event) {
+      const textarea = document.querySelector(".chat-input textarea");
+      if (event.key === "Enter" && document.activeElement === textarea && !event.shiftKey) {
+        event.preventDefault();
+        postMessage();
+      }
+    });
+  </script>
+</body>
+</html>
