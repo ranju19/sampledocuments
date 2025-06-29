@@ -1,3 +1,208 @@
+full code working
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog | TechnicalAcumen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #000;
+      color: white;
+    }
+
+    /* Navbar */
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 20px 40px;
+      background-color: #0a0a0a;
+      color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .navbar a {
+      color: white;
+      text-decoration: none;
+      margin: 0 15px;
+      font-weight: bold;
+    }
+
+    /* Slider */
+    .blog-slider {
+      display: flex;
+      overflow: hidden;
+      width: 100%;
+      height: 300px;
+      margin-top: 0;
+    }
+
+    .slide {
+      min-width: 100%;
+      transition: transform 1s ease;
+    }
+
+    .slide img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Blog Section */
+    .section-title {
+      text-align: center;
+      font-size: 2.5rem;
+      color: #ff6b00;
+      margin: 40px 0 20px;
+    }
+
+    .blog-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #121212;
+      border: 2px solid #ff6b00;
+      box-shadow: 0 0 20px #ff6b00;
+      border-radius: 15px;
+      margin: 30px auto;
+      width: 90%;
+      padding: 20px;
+    }
+
+    .blog-box.reverse {
+      flex-direction: row-reverse;
+    }
+
+    .blog-image {
+      width: 40%;
+      height: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 10px #ff6b00;
+    }
+
+    .blog-content {
+      width: 55%;
+      padding: 0 20px;
+    }
+
+    .blog-content h2 {
+      color: #ff6b00;
+      margin-bottom: 10px;
+    }
+
+    .blog-content p {
+      color: #ccc;
+      margin-bottom: 15px;
+    }
+
+    .blog-content a {
+      color: #ff6b00;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .blog-box, .blog-box.reverse {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .blog-image, .blog-content {
+        width: 100%;
+        padding: 10px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="navbar">
+    <div class="logo"><strong>TECHNICALACUMEN</strong></div>
+    <div>
+      <a href="#">HOME</a>
+      <a href="#">DOWNLOADS</a>
+      <a href="#">CONTACT</a>
+      <a href="#">LOGIN</a>
+    </div>
+  </div>
+
+  <!-- Slider -->
+  <div class="blog-slider" id="slider">
+    <div class="slide"><img src="assets/blog-slides/slide1.jpg" alt="Blog Slide 1" /></div>
+    <div class="slide"><img src="assets/blog-slides/slide2.jpg" alt="Blog Slide 2" /></div>
+    <div class="slide"><img src="assets/blog-slides/slide3.jpg" alt="Blog Slide 3" /></div>
+    <!-- Add more slides as needed -->
+  </div>
+
+  <!-- Blog Title -->
+  <h1 class="section-title">BLOGS</h1>
+
+  <!-- Write-Up Blog Box -->
+  <div class="blog-box">
+    <img src="assets/blog-slides/writeup-thumbnail.jpg" class="blog-image" alt="Write-Up Blog" />
+    <div class="blog-content">
+      <h2>Write-Up Blogs</h2>
+      <p>Explore in-depth written blogs about AI, Data Science, and MLOps strategies by professionals and learners.</p>
+      <a href="#">Read More →</a>
+    </div>
+  </div>
+
+  <!-- Video Blog Box -->
+  <div class="blog-box reverse">
+    <img src="assets/blog-slides/video-thumbnail.jpg" class="blog-image" alt="Video Blog" />
+    <div class="blog-content">
+      <h2>Video Blogs</h2>
+      <p>Watch visually engaging walkthroughs on trending AI concepts, coding tips, and real-world demos.</p>
+      <a href="#">Read More →</a>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div style="text-align:center; padding: 20px; font-size: 0.9rem; color: #aaa;">
+    © 2025 AI Resources Hub. Built by INH
+  </div>
+
+  <!-- Slider Script -->
+  <script>
+    let slideIndex = 0;
+    const slides = document.querySelectorAll(".slide");
+
+    function showNextSlide() {
+      slideIndex = (slideIndex + 1) % slides.length;
+      document.getElementById("slider").style.transform = `translateX(-${slideIndex * 100}%)`;
+    }
+
+    setInterval(showNextSlide, 3000);
+  </script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 HTML and JS:
 
 <!DOCTYPE html>
