@@ -1,0 +1,272 @@
+HTML and JS:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechnicalAcumen | Blog</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+</head>
+<body>
+  <!-- Navbar & Sidebar reused (include your existing code here) -->
+  <header class="navbar"> <!-- Your existing navbar code --> </header>
+  <aside class="sidebar"> <!-- Your existing sidebar code --> </aside>
+
+  <!-- Main Blog Content -->
+  <main class="blog-page">
+    <!-- Swiper Slider -->
+    <section class="blog-slider swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <img src="blog-assets/slide1.jpg" alt="Blog Slide 1" />
+          <p class="slide-caption">"Unlocking MLOps: From Dev to Prod"</p>
+        </div>
+        <div class="swiper-slide">
+          <img src="blog-assets/slide2.jpg" alt="Blog Slide 2" />
+          <p class="slide-caption">"Prompt Engineering that Works!"</p>
+        </div>
+        <!-- Add 6–8 more slides similarly -->
+      </div>
+    </section>
+
+    <!-- Blog Boxes -->
+    <section class="blog-boxes">
+      <!-- Video Blog Box -->
+      <div class="blog-box video-box">
+        <div class="blog-desc">
+          <h2>Video Blogs</h2>
+          <p>Watch visually engaging walkthroughs on trending AI concepts, coding tips, and real-world demos.<br/>
+            <a href="video-blog.html" class="read-more">Read More →</a>
+          </p>
+        </div>
+        <div class="blog-thumbnail">
+          <img src="blog-assets/video-thumb.jpg" alt="Video Blog Thumbnail" />
+        </div>
+      </div>
+
+      <!-- Write-Up Blog Box -->
+      <div class="blog-box writeup-box">
+        <div class="blog-desc">
+          <h2>Write-Up Blogs</h2>
+          <p>Explore in-depth written blogs about AI, Data Science, and MLOps strategies by professionals and learners.<br/>
+            <a href="writeup-blog.html" class="read-more">Read More →</a>
+          </p>
+        </div>
+        <div class="blog-thumbnail">
+          <img src="blog-assets/writeup-thumb.jpg" alt="Write-Up Blog Thumbnail" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const swiper = new Swiper('.swiper', {
+      loop: true,
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+      },
+      effect: 'fade',
+    });
+  </script>
+</body>
+</html>
+
+
+CSS:
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TechnicalAcumen | Blog</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+  <style>
+    /* Blog Page Styles */
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+
+    .blog-page {
+      padding: 100px 20px 40px 250px; /* considering sidebar */
+    }
+
+    .blog-slider {
+      width: 100%;
+      max-height: 400px;
+      overflow: hidden;
+      position: relative;
+      margin-bottom: 60px;
+    }
+
+    .swiper-slide {
+      position: relative;
+      text-align: center;
+    }
+
+    .swiper-slide img {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .slide-caption {
+      position: absolute;
+      bottom: 20px;
+      left: 30px;
+      font-size: 1.5rem;
+      color: #ff5e00;
+      text-shadow: 1px 1px 10px #000;
+    }
+
+    .blog-boxes {
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+
+    .blog-box {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #111;
+      border: 1px solid #222;
+      border-radius: 12px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(255, 94, 0, 0.3);
+    }
+
+    .blog-desc {
+      flex: 1;
+      padding-right: 20px;
+    }
+
+    .blog-desc h2 {
+      font-size: 1.8rem;
+      color: #ff6b00;
+      margin-bottom: 10px;
+    }
+
+    .blog-desc p {
+      font-size: 1rem;
+      line-height: 1.6;
+      color: #ccc;
+    }
+
+    .read-more {
+      color: #ff6b00;
+      text-decoration: none;
+      font-weight: bold;
+      margin-top: 10px;
+      display: inline-block;
+      transition: color 0.3s;
+    }
+
+    .read-more:hover {
+      color: #aaa;
+    }
+
+    .blog-thumbnail {
+      flex: 1;
+      max-width: 50%;
+    }
+
+    .blog-thumbnail img {
+      width: 100%;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 94, 0, 0.4);
+    }
+
+    @media (max-width: 768px) {
+      .blog-page {
+        padding: 80px 20px;
+      }
+
+      .blog-box {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .blog-desc, .blog-thumbnail {
+        max-width: 100%;
+        padding: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Navbar & Sidebar reused (include your existing code here) -->
+  <header class="navbar"> <!-- Your existing navbar code --> </header>
+  <aside class="sidebar"> <!-- Your existing sidebar code --> </aside>
+
+  <!-- Main Blog Content -->
+  <main class="blog-page">
+    <!-- Swiper Slider -->
+    <section class="blog-slider swiper">
+      <div class="swiper-wrapper">
+        <div class="swiper-slide">
+          <img src="blog-assets/slide1.jpg" alt="Blog Slide 1" />
+          <p class="slide-caption">"Unlocking MLOps: From Dev to Prod"</p>
+        </div>
+        <div class="swiper-slide">
+          <img src="blog-assets/slide2.jpg" alt="Blog Slide 2" />
+          <p class="slide-caption">"Prompt Engineering that Works!"</p>
+        </div>
+        <!-- Add 6–8 more slides similarly -->
+      </div>
+    </section>
+
+    <!-- Blog Boxes -->
+    <section class="blog-boxes">
+      <!-- Video Blog Box -->
+      <div class="blog-box video-box">
+        <div class="blog-desc">
+          <h2>Video Blogs</h2>
+          <p>Watch visually engaging walkthroughs on trending AI concepts, coding tips, and real-world demos.<br/>
+            <a href="video-blog.html" class="read-more">Read More →</a>
+          </p>
+        </div>
+        <div class="blog-thumbnail">
+          <img src="blog-assets/video-thumb.jpg" alt="Video Blog Thumbnail" />
+        </div>
+      </div>
+
+      <!-- Write-Up Blog Box -->
+      <div class="blog-box writeup-box">
+        <div class="blog-desc">
+          <h2>Write-Up Blogs</h2>
+          <p>Explore in-depth written blogs about AI, Data Science, and MLOps strategies by professionals and learners.<br/>
+            <a href="writeup-blog.html" class="read-more">Read More →</a>
+          </p>
+        </div>
+        <div class="blog-thumbnail">
+          <img src="blog-assets/writeup-thumb.jpg" alt="Write-Up Blog Thumbnail" />
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const swiper = new Swiper('.swiper', {
+      loop: true,
+      autoplay: {
+        delay: 4000,
+        disableOnInteraction: false,
+      },
+      effect: 'fade',
+    });
+  </script>
+</body>
+</html>
