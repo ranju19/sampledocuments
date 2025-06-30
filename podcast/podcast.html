@@ -1,3 +1,49 @@
+<script>
+  const slider = document.getElementById("slider");
+  const leftBtn = document.querySelector(".arrow-btn.left");
+  const rightBtn = document.querySelector(".arrow-btn.right");
+
+  // Scroll Left
+  leftBtn.addEventListener("click", () => {
+    slider.scrollLeft -= 300;
+    updateArrowVisibility();
+  });
+
+  // Scroll Right
+  rightBtn.addEventListener("click", () => {
+    slider.scrollLeft += 300;
+    updateArrowVisibility();
+  });
+
+  // Check arrow visibility
+  function updateArrowVisibility() {
+    const scrollLeft = slider.scrollLeft;
+    const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+
+    // Hide/show left button
+    if (scrollLeft <= 0) {
+      leftBtn.style.visibility = "hidden";
+    } else {
+      leftBtn.style.visibility = "visible";
+    }
+
+    // Hide/show right button
+    if (scrollLeft >= maxScrollLeft - 1) {
+      rightBtn.style.visibility = "hidden";
+    } else {
+      rightBtn.style.visibility = "visible";
+    }
+  }
+
+  // On scroll (in case of touch/drag scroll)
+  slider.addEventListener("scroll", updateArrowVisibility);
+
+  // On load
+  window.addEventListener("load", updateArrowVisibility);
+</script>
+
+
+
 spotify card style
 .podcast-card {
   background-color: #1f1f2f;
