@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechCast: Latest in AI & Innovation</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #0a0a0a;
+      color: white;
+    }
+
+    .section {
+      padding: 60px 20px;
+      text-align: center;
+    }
+
+    .top-section {
+      background: linear-gradient(120deg, #7f00ff, #e100ff);
+    }
+
+    .top-section h1 {
+      font-size: 48px;
+      font-weight: bold;
+      margin-bottom: 10px;
+    }
+
+    .top-section p {
+      font-size: 18px;
+      color: #f0f0f0;
+    }
+
+    .middle-section {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background-color: #1e1e2f;
+    }
+
+    .podcast-box {
+      display: flex;
+      background-color: #2a2a40;
+      border-radius: 15px;
+      overflow: hidden;
+      width: 80%;
+      max-width: 900px;
+      box-shadow: 0 0 20px #ff00cc44;
+    }
+
+    .podcast-box img {
+      width: 250px;
+      height: auto;
+    }
+
+    .podcast-info {
+      padding: 20px;
+      text-align: left;
+    }
+
+    .podcast-info h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .podcast-info p {
+      font-size: 16px;
+      color: #ccc;
+    }
+
+    .podcast-info a {
+      display: inline-block;
+      margin-top: 15px;
+      background-color: #ff00cc;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 30px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+
+    .podcast-info a:hover {
+      background-color: #d100aa;
+    }
+
+    .bottom-section {
+      background-color: #121212;
+    }
+
+    .bottom-section h2 {
+      font-size: 32px;
+      margin-bottom: 30px;
+    }
+
+    .podcast-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .podcast-card {
+      background-color: #1f1f2f;
+      border-radius: 15px;
+      overflow: hidden;
+      width: 250px;
+      box-shadow: 0 0 10px #ff00cc33;
+      transition: transform 0.3s ease;
+    }
+
+    .podcast-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .podcast-card img {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+    }
+
+    .podcast-card-title {
+      padding: 15px;
+      font-size: 16px;
+      color: #eee;
+    }
+  </style>
+</head>
+<body>
+  <!-- Top Section -->
+  <section class="section top-section">
+    <h1>TechCast: Latest in AI & Innovation</h1>
+    <p>Stay ahead with the sharpest minds in technology, AI, and learning. Weekly episodes. Always insightful.</p>
+  </section>
+
+  <!-- Middle Section: Featured Podcast -->
+  <section class="section middle-section">
+    <div class="podcast-box">
+      <img src="https://i.scdn.co/image/ab6765630000ba8a4a3f5ec7d0fceaf5b1deef79" alt="Podcast Cover">
+      <div class="podcast-info">
+        <h2>Learning Machines 101</h2>
+        <p>Explore the fascinating world of AI and Machine Learning in this accessible and engaging podcast. Hosted by experts and designed for learners of all levels.</p>
+        <a href="https://open.spotify.com/show/3y1c6mUVqezhgjY9Vp1f2y" target="_blank">Listen Now</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom Section: Popular Episodes -->
+  <section class="section bottom-section">
+    <h2>Popular Podcasts</h2>
+    <div class="podcast-grid">
+      <div class="podcast-card">
+        <img src="https://i.scdn.co/image/ab6765630000ba8a70f9f7c78f5dd5cdccf40c67" alt="Podcast 1">
+        <div class="podcast-card-title">The EdTech Podcast</div>
+      </div>
+      <div class="podcast-card">
+        <img src="https://i.scdn.co/image/ab6765630000ba8a6f0a7c15863b2c79d010f3b5" alt="Podcast 2">
+        <div class="podcast-card-title">AI in Education</div>
+      </div>
+      <div class="podcast-card">
+        <img src="https://i.scdn.co/image/ab6765630000ba8abecfb2e0d217c7f8f10bfa29" alt="Podcast 3">
+        <div class="podcast-card-title">Tech for Learning</div>
+      </div>
+      <div class="podcast-card">
+        <img src="https://i.scdn.co/image/ab6765630000ba8a3783b57b5e18acde6f2c9c55" alt="Podcast 4">
+        <div class="podcast-card-title">Deep Learning Weekly</div>
+      </div>
+    </div>
+  </section>
+</body>
+</html>
