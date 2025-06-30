@@ -544,3 +544,40 @@ UPDATED STYLE
   background-color: #ff4cd4;
   box-shadow: 0 0 15px #ff4cd4;
 }
+
+
+.listen-btn {
+  background: transparent;
+  color: #ff7ce5;
+  padding: 10px 22px;
+  border: 2px solid #ff7ce5;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.4s ease;
+  font-size: 1rem;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.listen-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, #ff7ce5, #c770ff);
+  transition: 0.4s ease;
+  z-index: -1;
+}
+
+.listen-btn:hover::before {
+  left: 0;
+}
+
+.listen-btn:hover {
+  color: #fff;
+  box-shadow: 0 0 15px #ff7ce5;
+}
