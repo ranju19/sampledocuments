@@ -4,15 +4,15 @@
   const rightBtn = document.querySelector(".scroll-btn.right");
 
   // Scroll functions
-  function scrollLeft() {
-    slider.scrollLeft -= 300;
-    updateArrowVisibility();
-  }
+function scrollLeft() {
+  slider.scrollBy({ left: -300, behavior: 'smooth' });
+  updateArrowVisibility();
+}
 
-  function scrollRight() {
-    slider.scrollLeft += 300;
-    updateArrowVisibility();
-  }
+function scrollRight() {
+  slider.scrollBy({ left: 300, behavior: 'smooth' });
+  updateArrowVisibility();
+}
 
   // Update arrow visibility
   function updateArrowVisibility() {
