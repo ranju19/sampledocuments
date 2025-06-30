@@ -185,140 +185,136 @@ carousal indise body
 
 
 UPDATED STYLE
+
 .section {
-  padding: 60px 20px;
+  padding: 3rem 2rem;
 }
 
-.top-section h1 {
-  font-size: 2.8rem;
+.text-center {
   text-align: center;
-  color: #ffa500;
-  margin-bottom: 10px;
+}
+
+/* Top Section */
+.top-section h1 {
+  font-size: 2.5rem;
+  color: #ff7ce5;
+  text-shadow: 0 0 10px #ff7ce5;
 }
 
 .top-section p {
-  text-align: center;
   font-size: 1.2rem;
   color: #ccc;
-  max-width: 700px;
-  margin: 0 auto;
+  margin-top: 1rem;
 }
 
-/* Carousel Styles */
-.podcast-carousel .carousel-item {
-  transition: transform 1s ease, opacity 1s ease;
+/* Carousel Section */
+.podcast-carousel h2 {
+  font-size: 2rem;
+  color: #ff7ce5;
+  text-shadow: 0 0 5px #ff7ce5;
+}
+
+.carousel-item img {
+  margin: 0 auto 1rem auto;
+  border: 3px solid #ff7ce5;
+  box-shadow: 0 0 15px #ff7ce5;
 }
 
 .podcast-title {
   font-size: 1.5rem;
-  color: #ffa500;
-  margin-top: 20px;
+  color: #ffb3ff;
+  margin-top: 0.5rem;
 }
 
 .podcast-desc {
-  color: #ccc;
   font-size: 1rem;
+  color: #ccc;
+  margin: 0.5rem 0 1rem;
   max-width: 500px;
-  margin: 10px auto;
 }
 
 .listen-btn {
-  background-color: #ffa500;
-  color: black;
+  background-color: #ff7ce5;
+  color: #fff;
+  padding: 0.6rem 1.2rem;
   border: none;
-  margin-top: 15px;
-  padding: 10px 25px;
-  border-radius: 25px;
-  font-weight: 600;
-  transition: 0.3s ease;
+  border-radius: 20px;
   text-decoration: none;
+  font-weight: bold;
+  transition: 0.3s ease;
 }
 
 .listen-btn:hover {
-  background-color: #fff;
-  color: #000;
-  box-shadow: 0 0 10px #ffa500;
+  background-color: #ff4cd4;
+  box-shadow: 0 0 10px #ff4cd4;
 }
 
-/* Glowing Heading */
-.glow-text {
+/* Bottom Section */
+.bottom-section h2.glow-text {
   text-align: center;
-  color: #ffa500;
-  text-shadow: 0 0 5px #ffa500, 0 0 10px #ffa500, 0 0 20px #ffa500;
-  margin-bottom: 40px;
+  font-size: 2rem;
+  color: #ff7ce5;
+  text-shadow: 0 0 8px #ff7ce5;
+  margin-bottom: 2rem;
 }
 
-/* Podcast Grid */
 .podcast-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 30px;
-  max-width: 1100px;
-  margin: 0 auto;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
 }
 
 .podcast-card {
-  text-align: center;
   background-color: #111;
-  border-radius: 20px;
-  padding: 20px;
+  border-radius: 12px;
+  overflow: hidden;
+  text-align: center;
   text-decoration: none;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.podcast-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 0 15px #ff7ce5;
 }
 
 .podcast-card img {
   width: 100%;
-  border-radius: 15px;
-  transition: transform 0.3s ease;
+  height: auto;
+  display: block;
 }
 
 .podcast-card-title {
-  margin-top: 15px;
-  font-size: 1.1rem;
-  color: #ffa500;
-  text-shadow: 0 0 3px #ffa500;
+  padding: 1rem;
+  font-size: 1rem;
+  color: #ffb3ff;
   font-weight: bold;
 }
 
-.podcast-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 0 15px #ffa500;
+/* Carousel Controls */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-size: 100% 100%;
+  filter: brightness(0) saturate(100%) invert(79%) sepia(36%) saturate(442%) hue-rotate(279deg) brightness(103%) contrast(102%);
+  width: 2rem;
+  height: 2rem;
 }
 
-.podcast-card:hover img {
-  transform: scale(1.03);
-}
-
-/* Responsive Carousel Images */
-.carousel-item img {
-  max-width: 90%;
-  height: auto;
-  margin-bottom: 20px;
-}
-
+/* Responsive */
 @media (max-width: 768px) {
   .top-section h1 {
     font-size: 2rem;
   }
-
-  .top-section p {
-    font-size: 1rem;
-  }
-
   .podcast-title {
     font-size: 1.2rem;
   }
-
   .podcast-desc {
-    font-size: 0.95rem;
+    font-size: 0.9rem;
   }
-
   .listen-btn {
-    padding: 8px 18px;
     font-size: 0.9rem;
   }
 }
-
 
 
 
