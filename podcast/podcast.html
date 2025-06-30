@@ -1,10 +1,4 @@
-<div class="podcast-card">
-  <img src="https://i.scdn.co/image/ab6765630000ba8a4a3f5ec7d0fceaf5b1deef79" alt="Podcast Cover">
-  <h3>Learning Machines 101</h3>
-  <p>Explore the fascinating world of AI in this engaging podcast for learners of all levels.</p>
-  <a href="https://open.spotify.com/show/3y1c6mUVqezhgjY9Vp1f2y" target="_blank" class="listen-btn">Listen Now</a>
-</div>
-
+spotify card style
 .podcast-card {
   background-color: #1f1f2f;
   border-radius: 15px;
@@ -46,11 +40,91 @@
   border-radius: 25px;
   text-decoration: none;
   transition: background 0.3s ease;
+  border: none;
+  cursor: pointer;
 }
 
 .listen-btn:hover {
   background-color: #cc0099;
 }
+
+HTML
+<div class="carousel-item active">
+  <div class="d-flex flex-column align-items-center text-center podcast-card">
+    <img class="podcast-cover" src="https://i.scdn.co/image/ab6765630000ba8a7a228df10e7b43c705ab0f74" alt="Learning Machines Cover">
+    
+    <h3 class="podcast-title">Learning Machines 101</h3>
+    <p class="podcast-desc">Explore the fascinating world of AI and Machine Learning in this beginner-friendly series.</p>
+    
+    <button class="listen-btn" onclick="togglePlayer(this)">🎧 Listen Now</button>
+    
+    <div class="spotify-player" style="display: none; margin-top: 15px;">
+      <iframe style="border-radius:12px;" 
+              src="https://open.spotify.com/embed/show/5qX1nRTaFsfWdmdj5JWO1G" 
+              width="100%" 
+              height="152" 
+              frameborder="0" 
+              allowtransparency="true" 
+              allow="encrypted-media">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 2: AI Innovators -->
+<div class="carousel-item">
+  <div class="d-flex flex-column align-items-center text-center podcast-card">
+    <img class="podcast-cover" src="https://i.scdn.co/image/ab6765630000ba8a9c35ab6cfc01bcf464daedc0" alt="AI Innovators">
+    <h3 class="podcast-title">AI Innovators</h3>
+    <p class="podcast-desc">A podcast featuring interviews with pioneers advancing the frontiers of artificial intelligence.</p>
+    <button class="listen-btn" onclick="togglePlayer(this)">🎧 Listen Now</button>
+    <div class="spotify-player" style="display: none; margin-top: 15px;">
+      <iframe style="border-radius:12px;" 
+              src="https://open.spotify.com/embed/show/0jXjONuVvdUPEFMUyRYpMK" 
+              width="100%" 
+              height="152" 
+              frameborder="0" 
+              allowtransparency="true" 
+              allow="encrypted-media">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+<!-- Slide 3: AZ TechCast -->
+<div class="carousel-item">
+  <div class="d-flex flex-column align-items-center text-center podcast-card">
+    <img class="podcast-cover" src="https://i.scdn.co/image/ab6765630000ba8a7b29d85b9c3a1dc56c5d4e83" alt="AZ TechCast">
+    <h3 class="podcast-title">AZ TechCast</h3>
+    <p class="podcast-desc">Arizona’s leading voices discuss tech innovation, trends, and industry insights in a digestible way.</p>
+    <button class="listen-btn" onclick="togglePlayer(this)">🎧 Listen Now</button>
+    <div class="spotify-player" style="display: none; margin-top: 15px;">
+      <iframe style="border-radius:12px;" 
+              src="https://open.spotify.com/embed/show/5w6yTtu0nxUofLoYiF7RpF" 
+              width="100%" 
+              height="152" 
+              frameborder="0" 
+              allowtransparency="true" 
+              allow="encrypted-media">
+      </iframe>
+    </div>
+  </div>
+</div>
+
+JAVASCRIPT
+<script>
+  function togglePlayer(button) {
+    const playerDiv = button.nextElementSibling;
+    if (playerDiv.style.display === "none") {
+      playerDiv.style.display = "block";
+      button.textContent = "🔽 Hide Player";
+    } else {
+      playerDiv.style.display = "none";
+      button.textContent = "🎧 Listen Now";
+    }
+  }
+</script>
+
 
 
 
