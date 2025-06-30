@@ -712,12 +712,140 @@ UPDATED STYLE
   box-shadow: 0 0 15px #ff7ce5;
 }
 
-<img src="https://i.scdn.co/image/ab6765630000ba8a70f9f7c78f5dd5cdccf40c67" alt="AI Podcast Cover">
 
 
 
-<iframe style="border-radius:12px"
-  src="https://open.spotify.com/embed/show/3y1c6mUVqezhgjY9Vp1f2y?utm_source=generator&theme=0"
-  width="100%" height="152" frameBorder="0" allowfullscreen=""
-  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
-</iframe>
+
+
+
+
+
+
+
+
+scroll function
+<script>
+  function scrollLeft() {
+    document.getElementById("podcastContainer").scrollBy({
+      left: -300,
+      behavior: "smooth"
+    });
+  }
+
+  function scrollRight() {
+    document.getElementById("podcastContainer").scrollBy({
+      left: 300,
+      behavior: "smooth"
+    });
+  }
+</script>
+
+
+scroll button style
+.podcast-slider-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.podcast-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  scroll-behavior: smooth;
+  padding: 10px;
+  scroll-snap-type: x mandatory;
+}
+
+.podcast-card {
+  flex: 0 0 auto;
+  width: 270px;
+  scroll-snap-align: start;
+  text-align: center;
+}
+
+.spotify-card {
+  width: 100%;
+  height: 152px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 0 10px #ff4edb55;
+}
+
+.podcast-card-title {
+  color: white;
+  font-size: 14px;
+  margin-top: 8px;
+  text-shadow: 0 0 5px #ff4edb;
+}
+
+.scroll-btn {
+  position: absolute;
+  top: 45%;
+  transform: translateY(-50%);
+  background-color: #ff4edb;
+  border: none;
+  color: white;
+  font-size: 22px;
+  padding: 10px 14px;
+  cursor: pointer;
+  z-index: 10;
+  border-radius: 50%;
+  box-shadow: 0 0 10px #ff4edb80;
+}
+
+.scroll-btn.left {
+  left: 5px;
+}
+
+.scroll-btn.right {
+  right: 5px;
+}
+
+.scroll-btn:hover {
+  background-color: #cc0099;
+}
+
+HTML
+<section class="section bottom-section">
+  <h2 class="glow-text">Popular Podcasts</h2>
+
+  <div class="podcast-slider-wrapper">
+    <!-- Left Button -->
+    <button class="scroll-btn left" onclick="scrollLeft()">
+      ◀
+    </button>
+
+    <!-- Scrollable Container -->
+    <div class="podcast-scroll-container" id="podcastContainer">
+      <div class="podcast-card">
+        <iframe class="spotify-card" src="https://open.spotify.com/embed/show/7nGlH9y4MQtFZDnccDo4Iw?utm_source=generator" allowfullscreen="" loading="lazy"></iframe>
+        <div class="podcast-card-title">The EdTech Podcast</div>
+      </div>
+
+      <div class="podcast-card">
+        <iframe class="spotify-card" src="https://open.spotify.com/embed/show/6GXtWnWbDhJAYQnnUN5EcC6?utm_source=generator" allowfullscreen="" loading="lazy"></iframe>
+        <div class="podcast-card-title">AI in Education</div>
+      </div>
+
+      <div class="podcast-card">
+        <iframe class="spotify-card" src="https://open.spotify.com/embed/show/OKgD3AkjOY6WXnDClTx4Rh?utm_source=generator" allowfullscreen="" loading="lazy"></iframe>
+        <div class="podcast-card-title">Tech for Learning</div>
+      </div>
+
+      <div class="podcast-card">
+        <iframe class="spotify-card" src="https://open.spotify.com/embed/show/OeEIRkpKjSaIMJNebNgz5n4?utm_source=generator" allowfullscreen="" loading="lazy"></iframe>
+        <div class="podcast-card-title">Machine Learning Weekly</div>
+      </div>
+    </div>
+
+    <!-- Right Button -->
+    <button class="scroll-btn right" onclick="scrollRight()">
+      ▶
+    </button>
+  </div>
+</section>
+
