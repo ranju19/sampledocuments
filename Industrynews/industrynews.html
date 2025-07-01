@@ -1,151 +1,145 @@
-INDUSTRY NEWS PAGE CODE:
-
+HTML:
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Industry News - TechnicalAcumen</title>
+  <title>Industry News | TechnicalAcumen</title>
   <link rel="stylesheet" href="style.css" />
-  <style>
-    body {
-      background-color: #121212;
-      color: #ffffff;
-      font-family: 'Segoe UI', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-
-    .section {
-      padding: 50px 20px;
-      text-align: center;
-    }
-
-    .section-heading {
-      font-size: 2.5em;
-      margin-bottom: 30px;
-      font-weight: bold;
-      color: #e0e0e0;
-      border-bottom: 2px solid maroon;
-      display: inline-block;
-    }
-
-    .news-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 20px;
-      padding: 0 10px;
-      margin-top: 30px;
-    }
-
-    .news-card {
-      background-color: #1e1e1e;
-      padding: 20px;
-      border-radius: 12px;
-      box-shadow: 0 0 10px maroon;
-      transition: transform 0.3s ease;
-    }
-
-    .news-card:hover {
-      transform: scale(1.02);
-    }
-
-    .news-card h3 {
-      font-size: 1.2em;
-      margin: 10px 0;
-      color: #ffffff;
-    }
-
-    .news-card a {
-      text-decoration: none;
-      color: #ff4c4c;
-      font-weight: bold;
-    }
-
-    .news-card a:hover {
-      text-decoration: underline;
-    }
-
-    .ai-section { background-color: #2a2a2a; }
-    .jobs-section { background-color: #1f1f1f; }
-    .startup-section { background-color: #292929; }
-    .policy-section { background-color: #242424; }
-    .opinion-section { background-color: #2c2c2c; }
-    .visual-section { background-color: #1a1a1a; }
-    .video-section { background-color: #252525; }
-  </style>
 </head>
 <body>
+  <header>
+    <h1 class="glow-title">⚡ Industry News</h1>
+  </header>
 
-  <div class="section ai-section">
-    <h2 class="section-heading">AI & Machine Learning</h2>
-    <div class="news-grid">
-      <div class="news-card">
-        <h3><a href="#">OpenAI launches GPT-5 with multimodal support</a></h3>
-      </div>
-      <div class="news-card">
-        <h3><a href="#">Europe advances AI transparency laws</a></h3>
-      </div>
-      <!-- Add 5-8 AI news cards here -->
+  <nav class="category-nav">
+    <button onclick="filterNews('all')">All</button>
+    <button onclick="filterNews('trending')">Trending</button>
+    <button onclick="filterNews('future')">Future Tech</button>
+    <button onclick="filterNews('recent')">Recent</button>
+    <button onclick="filterNews('popular')">Popular</button>
+  </nav>
+
+  <main id="news-container">
+    <!-- Each news block -->
+    <div class="news-card trending">
+      <h2><a href="https://www.theverge.com/tech" target="_blank">AI now generates code better than junior devs?</a></h2>
+      <p>According to OpenAI and Google DeepMind, the next-gen coders might not be human.</p>
     </div>
-  </div>
 
-  <div class="section jobs-section">
-    <h2 class="section-heading">Jobs & Career</h2>
-    <div class="news-grid">
-      <div class="news-card">
-        <h3><a href="#">26% growth expected in AI/ML job roles by 2033</a></h3>
-      </div>
-      <div class="news-card">
-        <h3><a href="#">Top AI certifications in 2025</a></h3>
-      </div>
+    <div class="news-card future">
+      <h2><a href="https://spectrum.ieee.org/future-tech" target="_blank">How quantum computing is changing tomorrow</a></h2>
+      <p>From medical drug discovery to cryptography—quantum breakthroughs in 2025.</p>
     </div>
-  </div>
 
-  <div class="section startup-section">
-    <h2 class="section-heading">Startups & Innovation</h2>
-    <div class="news-grid">
-      <div class="news-card">
-        <h3><a href="#">ZappyTech raises $50M to revolutionize voice AI</a></h3>
-      </div>
+    <div class="news-card recent">
+      <h2><a href="https://www.techcrunch.com" target="_blank">Apple drops surprise update with AI integration</a></h2>
+      <p>The new iOS beta introduces personalized Siri backed by real-time LLMs.</p>
     </div>
-  </div>
 
-  <div class="section policy-section">
-    <h2 class="section-heading">Global Tech Policy</h2>
-    <div class="news-grid">
-      <div class="news-card">
-        <h3><a href="#">Canada scraps controversial digital tax proposal</a></h3>
-      </div>
+    <div class="news-card popular">
+      <h2><a href="https://www.wired.com" target="_blank">Top 10 tech startups to watch in 2025</a></h2>
+      <p>These companies are shaking up robotics, health AI, and metaverse development.</p>
     </div>
-  </div>
 
-  <div class="section opinion-section">
-    <h2 class="section-heading">Expert Opinions</h2>
-    <div class="news-grid">
-      <div class="news-card">
-        <h3><a href="#">"AI is a tool, not a replacement" – Dr. Fei-Fei Li</a></h3>
-      </div>
+    <div class="news-card trending">
+      <h2><a href="https://www.bbc.com/news/technology" target="_blank">Elon Musk's Neuralink gets FDA nod for wider testing</a></h2>
+      <p>Human-computer interface trials to expand across US hospitals in 2025.</p>
     </div>
-  </div>
+  </main>
 
-  <div class="section visual-section">
-    <h2 class="section-heading">Infographic of the Week</h2>
-    <div class="news-grid">
-      <div class="news-card">
-        <h3><a href="#">Timeline: AI Job Roles from 2010–2025</a></h3>
-      </div>
-    </div>
-  </div>
-
-  <div class="section video-section">
-    <h2 class="section-heading">Video Highlights</h2>
-    <div class="news-grid">
-      <div class="news-card">
-        <h3><a href="#">Watch: What is the EU AI Act?</a></h3>
-      </div>
-    </div>
-  </div>
-
+  <script src="script.js"></script>
 </body>
 </html>
+
+CSS:
+
+body {
+  margin: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background-color: #0a0a0a;
+  color: white;
+}
+
+header {
+  background-color: #1a1a1a;
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid #ff1c1c;
+}
+
+.glow-title {
+  color: #ff1c1c;
+  font-size: 2.5em;
+  text-shadow: 0 0 10px #ff1c1c, 0 0 20px #ff1c1c;
+}
+
+.category-nav {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  background: #111;
+  padding: 10px;
+  gap: 10px;
+  position: sticky;
+  top: 0;
+  z-index: 99;
+}
+
+.category-nav button {
+  padding: 10px 20px;
+  border: none;
+  background: #ff1c1c;
+  color: white;
+  cursor: pointer;
+  border-radius: 20px;
+  transition: 0.3s;
+}
+
+.category-nav button:hover {
+  background: #ff4444;
+  box-shadow: 0 0 10px #ff1c1c;
+}
+
+#news-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 20px;
+  padding: 20px;
+}
+
+.news-card {
+  background: #1b1b1b;
+  border-left: 4px solid #ff1c1c;
+  padding: 20px;
+  border-radius: 10px;
+  transition: transform 0.3s ease;
+}
+
+.news-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 15px #ff1c1c;
+}
+
+.news-card a {
+  color: #ff6666;
+  text-decoration: none;
+}
+
+.news-card a:hover {
+  text-decoration: underline;
+}
+
+
+JS:
+
+function filterNews(category) {
+  const cards = document.querySelectorAll('.news-card');
+  cards.forEach(card => {
+    if (category === 'all') {
+      card.style.display = 'block';
+    } else {
+      card.style.display = card.classList.contains(category) ? 'block' : 'none';
+    }
+  });
+}
