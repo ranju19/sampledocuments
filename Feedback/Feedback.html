@@ -1,1 +1,53 @@
+<div class="emojis" id="emojiGroup">
+  <span class="emoji">
+    <img src="images/emojis/sad.png" class="static-img" alt="Sad">
+    <img src="images/emojis/sad.gif" class="hover-img" alt="Sad Animated">
+  </span>
+  <span class="emoji">
+    <img src="images/emojis/sad2.png" class="static-img" alt="Not Happy">
+    <img src="images/emojis/sad2.gif" class="hover-img" alt="Not Happy Animated">
+  </span>
+  <span class="emoji">
+    <img src="images/emojis/neutral.png" class="static-img" alt="Neutral">
+    <img src="images/emojis/neutral.gif" class="hover-img" alt="Neutral Animated">
+  </span>
+  <span class="emoji">
+    <img src="images/emojis/happy.png" class="static-img" alt="Happy">
+    <img src="images/emojis/happy.gif" class="hover-img" alt="Happy Animated">
+  </span>
+  <span class="emoji">
+    <img src="images/emojis/super-happy.png" class="static-img" alt="Super Happy">
+    <img src="images/emojis/super-happy.gif" class="hover-img" alt="Super Happy Animated">
+  </span>
+</div>
 
+
+
+.emoji {
+  position: relative;
+  display: inline-block;
+  margin: 0 10px;
+}
+
+.static-img, .hover-img {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.hover-img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: none;
+}
+
+.emoji:hover .static-img {
+  display: none;
+}
+
+.emoji:hover .hover-img {
+  display: inline;
+  transform: scale(1.15);
+}
