@@ -1,0 +1,178 @@
+HTML
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Thread Chatroom</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="chat-container">
+    <h1>💬 Thread Chatroom</h1>
+    <div class="input-area">
+      <textarea id="messageInput" placeholder="What's on your mind?"></textarea>
+      <button onclick="postMessage()">Post</button>
+    </div>
+    <div id="chatThread"></div>
+  </div>
+
+  <!-- Firebase -->
+  <script type="module" src="app.js"></script>
+</body>
+</html>
+
+
+STYLE
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', sans-serif;
+  background: #000;
+  color: #fff;
+}
+
+.chat-container {
+  max-width: 700px;
+  margin: 30px auto;
+  padding: 20px;
+  border: 2px solid yellow;
+  border-radius: 15px;
+  background: #111;
+  box-shadow: 0 0 20px yellow;
+}
+
+h1 {
+  text-align: center;
+  color: yellow;
+  text-shadow: 0 0 10px yellow;
+}
+
+.input-area {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+textarea {
+  padding: 10px;
+  background: #222;
+  color: #fff;
+  border: 2px solid yellow;
+  border-radius: 10px;
+  resize: vertical;
+}
+
+button {
+  background: yellow;
+  color: #000;
+  padding: 10px;
+  border: none;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #fff700;
+}
+
+.thread-message {
+  margin-top: 20px;
+  border-left: 2px solid yellow;
+  padding-left: 15px;
+  margin-left: 10px;
+}
+
+.reply-button {
+  background: none;
+  border: none;
+  color: yellow;
+  cursor: pointer;
+  margin-top: 5px;
+  font-size: 0.9em;
+}
+
+.reply-input {
+  margin-top: 10px;
+}
+
+
+JAVA SCRIPT
+
+// Import Firebase SDK
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import {
+  getFirestore,
+  collection,
+  addDoc,
+  query,
+  onSnapshot,
+  orderBy,
+} from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+// 🔑 Replace this with your Firebase config
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID",
+  storageBucket: "YOUR_PROJECT.appspot.com",
+  messagingSenderId: "XXXXXXX",
+  appId: "APP_ID"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const messagesRef = collection(db, "messages");
+
+// 📨 Post a message (parent or reply)
+async function postMessage(parentId = null, replyText = null) {
+  const input = replyText ?? document.getElementById("messageInput").value;
+  if (!input.trim()) return;
+
+  await addDoc(messagesRef, {
+    text: input,
+    parent: parentId,
+    timestamp: new Date()
+  });
+
+  if (!replyText) document.getElementById("messageInput").value = "";
+}
+
+// 🧠 Recursive function to render threads
+function renderThread(messages, parentId = null, level = 0) {
+  return messages
+    .filter(msg => msg.data.parent === parentId)
+    .map(msg => {
+      const replies = renderThread(messages, msg.id, level + 1);
+      return `
+        <div class="thread-message" style="margin-left: ${level * 20}px">
+          <p>${msg.data.text}</p>
+          <button class="reply-button" onclick="showReplyBox('${msg.id}')">↪ Reply</button>
+          <div id="reply-${msg.id}" class="reply-input"></div>
+          ${replies.join("")}
+        </div>
+      `;
+    });
+}
+
+// 🧩 Listen for changes and render
+onSnapshot(query(messagesRef, orderBy("timestamp")), snapshot => {
+  const allMessages = snapshot.docs.map(doc => ({
+    id: doc.id,
+    data: doc.data()
+  }));
+
+  const threadHTML = renderThread(allMessages).join("");
+  document.getElementById("chatThread").innerHTML = threadHTML;
+});
+
+window.showReplyBox = function (msgId) {
+  const replyDiv = document.getElementById(`reply-${msgId}`);
+  replyDiv.innerHTML = `
+    <textarea placeholder="Reply..."></textarea>
+    <button onclick="postMessage('${msgId}', this.previousElementSibling.value)">Post Reply</button>
+  `;
+};
