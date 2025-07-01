@@ -143,3 +143,123 @@ function filterNews(category) {
     }
   });
 }
+
+
+UPDATED CODE:
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>⚡ Industry News</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #0d0d0d;
+      color: white;
+    }
+
+    h1 {
+      text-align: center;
+      padding: 30px;
+      font-size: 2.5rem;
+      color: #ff0033;
+      text-shadow: 0 0 10px #ff0033;
+    }
+
+    #news-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: center;
+      padding: 30px;
+    }
+
+    .news-card {
+      width: 300px;
+      background-color: #1a1a1a;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 0 15px rgba(255, 0, 80, 0.6);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .news-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 0 25px rgba(255, 0, 80, 1);
+    }
+
+    .news-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .news-card h3 {
+      font-size: 18px;
+      color: #fff;
+      margin: 15px;
+      text-shadow: 0 0 5px #ff0033;
+    }
+
+    .news-card p {
+      color: #ccc;
+      font-size: 14px;
+      margin: 0 15px 15px;
+      line-height: 1.5;
+    }
+
+    .read-more {
+      display: block;
+      margin: 0 15px 15px;
+      padding: 8px 16px;
+      text-align: center;
+      background: #ff0033;
+      color: white;
+      text-decoration: none;
+      border-radius: 25px;
+      transition: background 0.3s ease;
+    }
+
+    .read-more:hover {
+      background: #cc0044;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚡ Industry News</h1>
+  <div id="news-container"></div>
+
+  <script>
+    async function fetchNews() {
+      try {
+        const response = await fetch("https://inshortsapi.vercel.app/news?category=technology");
+        const data = await response.json();
+
+        const newsContainer = document.getElementById("news-container");
+
+        data.data.slice(0, 12).forEach((news) => {
+          const card = document.createElement("div");
+          card.className = "news-card";
+
+          card.innerHTML = `
+            <img src="${news.imageUrl}" alt="news image">
+            <h3>${news.title}</h3>
+            <p>${news.content}</p>
+            <a class="read-more" href="${news.readMoreUrl || news.url}" target="_blank">Read More</a>
+          `;
+
+          newsContainer.appendChild(card);
+        });
+      } catch (error) {
+        console.error("Failed to load news:", error);
+      }
+    }
+
+    fetchNews();
+  </script>
+</body>
+</html>
+
