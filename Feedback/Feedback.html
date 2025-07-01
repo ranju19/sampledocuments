@@ -51,3 +51,12 @@
   display: inline;
   transform: scale(1.15);
 }
+
+
+
+document.querySelectorAll('.emoji').forEach((emoji) => {
+  emoji.addEventListener('click', () => {
+    document.querySelectorAll('.emoji').forEach(e => e.classList.remove('selected'));
+    emoji.classList.add('selected');
+  });
+});
