@@ -1,0 +1,101 @@
+Full Working calendar.html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calendar - Join Events</title>
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #fff;
+      font-family: 'Segoe UI', sans-serif;
+      padding: 20px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #ffa500;
+    }
+
+    #calendar {
+      max-width: 900px;
+      margin: 40px auto;
+      background: #1c1c1c;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 15px #ffa50077;
+    }
+
+    .fc-event-title {
+      color: white;
+    }
+
+    .fc-event-time {
+      display: none;
+    }
+
+    .fc-event {
+      background-color: #ffb400;
+      border: none;
+      color: #000;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>🗓️ Upcoming Calendar Events</h1>
+  <div id="calendar"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+      const calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        themeSystem: 'standard',
+        height: "auto",
+        events: [
+          {
+            title: 'Team Sync Meeting 1',
+            start: '2025-07-06T10:00:00',
+            end: '2025-07-06T11:00:00',
+            url: 'https://teams.microsoft.com/l/meetup-join/fake-meeting-1171'
+          },
+          {
+            title: 'Team Sync Meeting 2',
+            start: '2025-07-07T10:00:00',
+            end: '2025-07-07T11:00:00',
+            url: 'https://teams.microsoft.com/l/meetup-join/fake-meeting-8755'
+          },
+          {
+            title: 'Team Sync Meeting 3',
+            start: '2025-07-08T10:00:00',
+            end: '2025-07-08T11:00:00',
+            url: 'https://teams.microsoft.com/l/meetup-join/fake-meeting-1500'
+          },
+          {
+            title: 'Team Sync Meeting 4',
+            start: '2025-07-09T10:00:00',
+            end: '2025-07-09T11:00:00',
+            url: 'https://teams.microsoft.com/l/meetup-join/fake-meeting-2498'
+          },
+          {
+            title: 'Team Sync Meeting 5',
+            start: '2025-07-10T10:00:00',
+            end: '2025-07-10T11:00:00',
+            url: 'https://teams.microsoft.com/l/meetup-join/fake-meeting-8818'
+          }
+        ],
+        eventClick: function (info) {
+          info.jsEvent.preventDefault(); // prevents browser from following the link automatically
+          window.open(info.event.url, '_blank'); // opens join link in new tab
+        }
+      });
+      calendar.render();
+    });
+  </script>
+</body>
+</html>
