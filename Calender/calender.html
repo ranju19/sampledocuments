@@ -99,3 +99,141 @@ Full Working calendar.html
   </script>
 </body>
 </html>
+
+
+UPDATED
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Event Calendar</title>
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet"/>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 0;
+      margin: 0;
+      background: #111;
+      color: #fff;
+    }
+    #calendar {
+      max-width: 90%;
+      margin: 40px auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      color: black;
+    }
+    .fc-event {
+      cursor: pointer;
+    }
+    #eventForm {
+      position: fixed;
+      top: 20%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #222;
+      padding: 20px;
+      border-radius: 8px;
+      display: none;
+      z-index: 1000;
+    }
+    #eventForm input, #eventForm button {
+      display: block;
+      margin: 10px 0;
+      width: 100%;
+    }
+    #overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      z-index: 999;
+    }
+    button {
+      background-color: yellow;
+      border: none;
+      padding: 10px 15px;
+      font-weight: bold;
+      margin: 10px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <button onclick="openForm()">➕ Add Event</button>
+
+  <div id="overlay" onclick="closeForm()"></div>
+  <div id="eventForm">
+    <input type="text" id="title" placeholder="Event Title" required />
+    <input type="datetime-local" id="start" required />
+    <input type="datetime-local" id="end" required />
+    <input type="url" id="link" placeholder="Meeting Link (Zoom/Teams)" />
+    <input type="text" id="password" placeholder="Password (optional)" />
+    <input type="text" id="access" placeholder="Access Number (optional)" />
+    <button onclick="addEvent()">Add Event</button>
+  </div>
+
+  <div id="calendar"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <script>
+    const calendarEvents = [];
+
+    function openForm() {
+      document.getElementById("eventForm").style.display = "block";
+      document.getElementById("overlay").style.display = "block";
+    }
+
+    function closeForm() {
+      document.getElementById("eventForm").style.display = "none";
+      document.getElementById("overlay").style.display = "none";
+    }
+
+    function addEvent() {
+      const title = document.getElementById("title").value;
+      const start = document.getElementById("start").value;
+      const end = document.getElementById("end").value;
+      const link = document.getElementById("link").value;
+      const password = document.getElementById("password").value;
+      const access = document.getElementById("access").value;
+
+      if (!title || !start || !end) {
+        alert("Please fill in title, start and end time.");
+        return;
+      }
+
+      calendar.addEvent({
+        title,
+        start,
+        end,
+        extendedProps: { link, password, access },
+        backgroundColor: '#007bff',
+        textColor: '#fff'
+      });
+
+      closeForm();
+    }
+
+    const calendar = new FullCalendar.Calendar(document.getElementById('calendar'), {
+      initialView: 'timeGridWeek',
+      nowIndicator: true,
+      editable: false,
+      events: calendarEvents,
+      eventClick: function(info) {
+        const props = info.event.extendedProps;
+        let message = `<b>${info.event.title}</b><br>`;
+        if (props.link) message += `<a href="${props.link}" target="_blank">🔗 Join Meeting</a><br>`;
+        if (props.password) message += `🔐 Password: ${props.password}<br>`;
+        if (props.access) message += `📞 Access #: ${props.access}`;
+        alert(message);
+      }
+    });
+
+    calendar.render();
+  </script>
+</body>
+</html>
