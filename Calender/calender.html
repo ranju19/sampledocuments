@@ -14,6 +14,7 @@
       margin: 0;
       padding: 0;
     }
+
     header {
       text-align: center;
       padding: 1rem;
@@ -21,7 +22,22 @@
       font-size: 1.5rem;
       font-weight: bold;
       color: #ffd700;
+      position: relative;
     }
+
+    #addBtn {
+      position: absolute;
+      right: 20px;
+      top: 15px;
+      background: #ffd700;
+      color: #000;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 5px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
     #calendar {
       max-width: 900px;
       margin: 30px auto;
@@ -29,12 +45,14 @@
       padding: 20px;
       border-radius: 10px;
     }
+
     .fc-event {
       background-color: #ff0 !important;
       border: none !important;
       color: #000 !important;
       cursor: pointer;
     }
+
     .tooltip {
       position: absolute;
       z-index: 9999;
@@ -47,50 +65,80 @@
       white-space: pre-line;
       display: none;
     }
+
+    #modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.7);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #modalContent {
+      background: #111;
+      padding: 20px;
+      border-radius: 10px;
+      width: 300px;
+    }
+
+    #modalContent input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 4px;
+      border: none;
+    }
+
+    #modalContent button {
+      width: 100%;
+      padding: 8px;
+      border: none;
+      background: #ffd700;
+      font-weight: bold;
+      border-radius: 4px;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-<header>📅 AI Resource Hub — Calendar</header>
+<header>
+  📅 AI Resource Hub — Calendar
+  <button id="addBtn">+ Add Event</button>
+</header>
 
 <div id="calendar"></div>
 <div class="tooltip" id="tooltip"></div>
 
-<script>
-  document.addEventListener('DOMContentLoaded', function () {
-    const tooltip = document.getElementById('tooltip');
+<!-- Add Event Modal -->
+<div id="modal">
+  <div id="modalContent">
+    <h3>Add New Event</h3>
+    <input type="text" id="eventTitle" placeholder="Event Title" required>
+    <input type="datetime-local" id="eventStart">
+    <input type="datetime-local" id="eventEnd">
+    <input type="url" id="eventLink" placeholder="Teams URL">
+    <input type="text" id="eventPassword" placeholder="Password">
+    <input type="text" id="eventAccess" placeholder="Access Code">
+    <button onclick="saveEvent()">Add Event</button>
+  </div>
+</div>
 
+<script>
+  let calendar;
+  const tooltip = document.getElementById('tooltip');
+
+  document.addEventListener('DOMContentLoaded', function () {
     const calendarEl = document.getElementById('calendar');
-    const calendar = new FullCalendar.Calendar(calendarEl, {
+    calendar = new FullCalendar.Calendar(calendarEl, {
       initialView: 'dayGridMonth',
       height: 'auto',
-      events: [
-        {
-          title: 'Technicalacumen-Discussion2',
-          start: '2025-07-01T11:30:00',
-          end: '2025-07-01T12:30:00',
-          url: 'https://teams.microsoft.com/l/meetup-join/19%3ameeting_abcdef1234@thread.v2/0?context=%7b%22Tid%22%3a%22xyz%22%7d',
-          extendedProps: {
-            password: 'gggggggg',
-            accessCode: '123456'
-          }
-        },
-        {
-          title: 'REVA-Next Discussion',
-          start: '2025-07-01T12:00:00',
-          end: '2025-07-01T13:00:00',
-          url: 'https://teams.microsoft.com/l/meetup-join/19%3ameeting_abcd5678@thread.v2/0?context=%7b%22Tid%22%3a%22xyz%22%7d',
-          extendedProps: {
-            password: 'reva123',
-            accessCode: ''
-          }
-        }
-      ],
+      events: [],
       eventClick: function(info) {
         info.jsEvent.preventDefault();
-        if (info.event.url) {
-          window.open(info.event.url, '_blank');
-        }
+        if (info.event.url) window.open(info.event.url, '_blank');
       },
       eventMouseEnter: function(info) {
         const { password, accessCode } = info.event.extendedProps;
@@ -103,27 +151,52 @@
         `;
         tooltip.style.display = 'block';
       },
-      eventMouseLeave: function () {
-        tooltip.style.display = 'none';
-      }
+      eventMouseLeave: () => tooltip.style.display = 'none'
     });
 
     calendar.render();
 
-    document.addEventListener('mousemove', (e) => {
+    document.addEventListener('mousemove', e => {
       tooltip.style.left = e.pageX + 15 + 'px';
       tooltip.style.top = e.pageY + 15 + 'px';
     });
+
+    document.getElementById('addBtn').onclick = () => {
+      document.getElementById('modal').style.display = 'flex';
+    };
   });
+
+  function saveEvent() {
+    const title = document.getElementById('eventTitle').value;
+    const start = document.getElementById('eventStart').value;
+    const end = document.getElementById('eventEnd').value;
+    const url = document.getElementById('eventLink').value;
+    const password = document.getElementById('eventPassword').value;
+    const access = document.getElementById('eventAccess').value;
+
+    if (!title || !start) {
+      alert("Please enter at least title and start date.");
+      return;
+    }
+
+    calendar.addEvent({
+      title: title,
+      start: start,
+      end: end,
+      url: url,
+      extendedProps: {
+        password: password,
+        accessCode: access
+      }
+    });
+
+    document.getElementById('modal').style.display = 'none';
+    document.querySelectorAll('#modalContent input').forEach(i => i.value = '');
+  }
 </script>
 
 </body>
 </html>
-
-
-
-
-
 
 
 
