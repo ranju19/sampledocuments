@@ -1,4 +1,151 @@
-   let calendar; // Global calendar object
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Calendar | AI Resource Hub</title>
+  <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    header {
+      text-align: center;
+      padding: 1rem;
+      background: #111;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #ffd700;
+    }
+    #calendar {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #222;
+      padding: 20px;
+      border-radius: 10px;
+    }
+    .fc-event {
+      background-color: #ff0 !important;
+      border: none !important;
+      color: #000 !important;
+      cursor: pointer;
+    }
+    .tooltip {
+      position: absolute;
+      z-index: 9999;
+      background: #333;
+      color: #fff;
+      padding: 6px 10px;
+      border-radius: 5px;
+      font-size: 0.9rem;
+      pointer-events: none;
+      white-space: pre-line;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<header>📅 AI Resource Hub — Calendar</header>
+
+<div id="calendar"></div>
+<div class="tooltip" id="tooltip"></div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const tooltip = document.getElementById('tooltip');
+
+    const calendarEl = document.getElementById('calendar');
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      height: 'auto',
+      events: [
+        {
+          title: 'Technicalacumen-Discussion2',
+          start: '2025-07-01T11:30:00',
+          end: '2025-07-01T12:30:00',
+          url: 'https://teams.microsoft.com/l/meetup-join/19%3ameeting_abcdef1234@thread.v2/0?context=%7b%22Tid%22%3a%22xyz%22%7d',
+          extendedProps: {
+            password: 'gggggggg',
+            accessCode: '123456'
+          }
+        },
+        {
+          title: 'REVA-Next Discussion',
+          start: '2025-07-01T12:00:00',
+          end: '2025-07-01T13:00:00',
+          url: 'https://teams.microsoft.com/l/meetup-join/19%3ameeting_abcd5678@thread.v2/0?context=%7b%22Tid%22%3a%22xyz%22%7d',
+          extendedProps: {
+            password: 'reva123',
+            accessCode: ''
+          }
+        }
+      ],
+      eventClick: function(info) {
+        info.jsEvent.preventDefault();
+        if (info.event.url) {
+          window.open(info.event.url, '_blank');
+        }
+      },
+      eventMouseEnter: function(info) {
+        const { password, accessCode } = info.event.extendedProps;
+        const time = info.event.start.toLocaleString();
+        tooltip.innerHTML = `
+<b>${info.event.title}</b><br>
+🕒 ${time}<br>
+🔑 Password: ${password || 'None'}<br>
+📞 Access Code: ${accessCode || 'None'}
+        `;
+        tooltip.style.display = 'block';
+      },
+      eventMouseLeave: function () {
+        tooltip.style.display = 'none';
+      }
+    });
+
+    calendar.render();
+
+    document.addEventListener('mousemove', (e) => {
+      tooltip.style.left = e.pageX + 15 + 'px';
+      tooltip.style.top = e.pageY + 15 + 'px';
+    });
+  });
+</script>
+
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+let calendar; // Global calendar object
 
     function openForm() {
       document.getElementById("eventForm").style.display = "block";
