@@ -1,3 +1,84 @@
+   let calendar; // Global calendar object
+
+    function openForm() {
+      document.getElementById("eventForm").style.display = "block";
+      document.getElementById("overlay").style.display = "block";
+    }
+
+    function closeForm() {
+      document.getElementById("eventForm").style.display = "none";
+      document.getElementById("overlay").style.display = "none";
+    }
+
+    function addEvent() {
+      const title = document.getElementById("title").value;
+      const start = document.getElementById("start").value;
+      const end = document.getElementById("end").value;
+      const link = document.getElementById("link").value;
+      const password = document.getElementById("password").value;
+      const access = document.getElementById("access").value;
+
+      if (!title || !start || !end) {
+        alert("Please fill in title, start and end time.");
+        return;
+      }
+
+      calendar.addEvent({
+        title,
+        start,
+        end,
+        extendedProps: { link, password, access },
+        backgroundColor: '#007bff',
+        textColor: '#fff'
+      });
+
+      closeForm();
+
+      // Clear form
+      document.getElementById("title").value = "";
+      document.getElementById("start").value = "";
+      document.getElementById("end").value = "";
+      document.getElementById("link").value = "";
+      document.getElementById("password").value = "";
+      document.getElementById("access").value = "";
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      const calendarEl = document.getElementById('calendar');
+      calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        nowIndicator: true,
+        editable: false,
+        events: [],
+        eventClick: function(info) {
+          const props = info.event.extendedProps;
+          let message = `<b>${info.event.title}</b><br>`;
+          if (props.link) message += `<a href="${props.link}" target="_blank">🔗 Join Meeting</a><br>`;
+          if (props.password) message += `🔐 Password: ${props.password}<br>`;
+          if (props.access) message += `📞 Access #: ${props.access}`;
+          alert(message);
+        }
+      });
+      calendar.render();
+    });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 Full Working calendar.html
 
 <!DOCTYPE html>
