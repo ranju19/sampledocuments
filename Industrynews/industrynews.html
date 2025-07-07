@@ -302,4 +302,141 @@ ________________________________________________________________________________
   </script>
 </body>
 </html>
+-------------------------------------------------------------------------------------------------------------------
+new code for 7sections
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TechnicalAcumen - Industry News</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/rss-parser/dist/rss-parser.min.js"></script>
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      color: #ff3c00;
+      padding: 1rem;
+      border-bottom: 1px solid #333;
+    }
+    .section {
+      padding: 1rem;
+    }
+    .news-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .news-item {
+      background: #111;
+      border: 1px solid #222;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 60, 0, 0.3);
+    }
+    .news-item img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    .news-item a {
+      color: #ff3c00;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .news-item a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center; color: #ff3c00; padding: 1rem;">📰 Industry News - TechnicalAcumen</h1>
+
+  <div class="section" id="highlights">
+    <h2>🔥 Highlights</h2>
+    <div class="news-grid" id="highlights-news"></div>
+  </div>
+
+  <div class="section" id="trending">
+    <h2>📈 Trending Now</h2>
+    <div class="news-grid" id="trending-news"></div>
+  </div>
+
+  <div class="section" id="ai">
+    <h2>🤖 AI & Machine Learning</h2>
+    <div class="news-grid" id="ai-news"></div>
+  </div>
+
+  <div class="section" id="cybersecurity">
+    <h2>🛡 Cybersecurity & Privacy</h2>
+    <div class="news-grid" id="cyber-news"></div>
+  </div>
+
+  <div class="section" id="futuretech">
+    <h2>🚀 Future Tech</h2>
+    <div class="news-grid" id="future-news"></div>
+  </div>
+
+  <div class="section" id="popular">
+    <h2>📢 Popular Reads</h2>
+    <div class="news-grid" id="popular-news"></div>
+  </div>
+
+  <div class="section" id="recent">
+    <h2>🆕 Recent Updates</h2>
+    <div class="news-grid" id="recent-news"></div>
+  </div>
+
+  <script>
+    const parser = new RSSParser();
+
+    const feeds = {
+      highlights: 'https://www.theverge.com/rss/index.xml',
+      trending: 'https://www.wired.com/feed/rss',
+      ai: 'https://spectrum.ieee.org/rss/topic/artificial-intelligence',
+      cyber: 'https://www.csoonline.com/index.rss',
+      future: 'https://www.popularmechanics.com/technology/rss/',
+      popular: 'https://feeds.feedburner.com/TechCrunch/',
+      recent: 'https://www.engadget.com/rss.xml'
+    };
+
+    async function loadNews(feedUrl, containerId) {
+      try {
+        const feed = await parser.parseURL(feedUrl);
+        const container = document.getElementById(containerId);
+        feed.items.slice(0, 10).forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'news-item';
+
+          const imageUrl = item.enclosure?.url || 'https://via.placeholder.com/300x200?text=News';
+
+          div.innerHTML = `
+            <img src="${imageUrl}" alt="News thumbnail">
+            <a href="${item.link}" target="_blank">${item.title}</a>
+            <p>${item.contentSnippet?.slice(0, 100)}...</p>
+          `;
+          container.appendChild(div);
+        });
+      } catch (error) {
+        console.error(`Failed to fetch ${containerId}:`, error);
+      }
+    }
+
+    loadNews(feeds.highlights, 'highlights-news');
+    loadNews(feeds.trending, 'trending-news');
+    loadNews(feeds.ai, 'ai-news');
+    loadNews(feeds.cyber, 'cyber-news');
+    loadNews(feeds.future, 'future-news');
+    loadNews(feeds.popular, 'popular-news');
+    loadNews(feeds.recent, 'recent-news');
+  </script>
+</body>
+</html>
 
