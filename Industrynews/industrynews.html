@@ -1,4 +1,173 @@
+UPDATED CODE(ALTERED SECTIONS AND LINKS)
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>TechnicalAcumen - Industry News</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Orbitron', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    h2 {
+      color: #ff3c00;
+      padding: 1rem;
+      border-bottom: 1px solid #333;
+    }
+    .section {
+      padding: 1rem;
+    }
+    .news-grid,
+    .highlight-grid,
+    .trending-scroll {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .trending-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 1rem;
+    }
+    .trending-scroll .news-item {
+      min-width: 280px;
+    }
+    .highlight-grid {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+    }
+    .news-item {
+      background: #111;
+      border: 1px solid #222;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 60, 0, 0.3);
+    }
+    .news-item img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    .news-item a {
+      color: #ff3c00;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .news-item a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <h1 style="text-align: center; color: #ff3c00; padding: 1rem;">📰 Industry News - TechnicalAcumen</h1>
+
+  <div class="section" id="highlights">
+    <h2>🔥 Highlights</h2>
+    <div class="highlight-grid" id="highlights-news"></div>
+  </div>
+
+  <div class="section" id="trending">
+    <h2>📈 Trending Now</h2>
+    <div class="trending-scroll" id="trending-news"></div>
+  </div>
+
+  <div class="section" id="ai">
+    <h2>🤖 AI & Machine Learning</h2>
+    <div class="news-grid" id="ai-news"></div>
+  </div>
+
+  <div class="section" id="cybersecurity">
+    <h2>🛡 Cybersecurity, Bitcoin & Tech Watch</h2>
+    <div class="news-grid" id="cyber-news"></div>
+  </div>
+
+  <script>
     const rss2json = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+    const feeds = {
+      highlights: [
+        'https://www.theverge.com/rss/index.xml',
+        'https://feeds.feedburner.com/TechCrunch/',
+        'https://www.engadget.com/rss.xml',
+        'https://feeds.arstechnica.com/arstechnica/index',
+        'https://www.technologyreview.com/feed/',
+        'https://venturebeat.com/feed/',
+        'https://spectrum.ieee.org/feed',
+        'https://www.cnet.com/rss/all/',
+        'https://www.popularmechanics.com/technology/rss/'
+      ],
+      trending: [
+        'http://rss.slashdot.org/Slashdot/slashdotMain',
+        'https://www.zdnet.com/news/rss.xml',
+        'https://www.techrepublic.com/rssfeeds/articles/',
+        'https://www.digitaltrends.com/feed/',
+        'https://www.makeuseof.com/feed/',
+        'https://www.techspot.com/backend.xml',
+        'https://www.neowin.net/news/rss/',
+        'https://readwrite.com/feed/',
+        'https://www.geekwire.com/feed/',
+        'https://www.androidauthority.com/feed/',
+        'https://www.ghacks.net/feed/'
+      ],
+      ai: [
+        'https://spectrum.ieee.org/rss/topic/artificial-intelligence',
+        'https://the-decoder.com/feed/',
+        'https://www.technologyreview.com/feed/',
+        'https://ai.googleblog.com/feeds/posts/default',
+        'https://venturebeat.com/category/ai/feed/',
+        'https://medium.com/feed/towards-data-science',
+        'https://blogs.nvidia.com/blog/category/ai/feed/'
+      ],
+      cyber: [
+        'https://www.csoonline.com/index.rss',
+        'https://www.securityweek.com/feed/',
+        'https://threatpost.com/feed/',
+        'https://www.darkreading.com/rss.xml',
+        'https://www.coindesk.com/arc/outboundfeeds/rss/',
+        'https://cointelegraph.com/rss',
+        'https://news.bitcoin.com/feed/'
+      ]
+    };
+
+    async function loadNews(feedUrl, containerId) {
+      try {
+        const res = await fetch(rss2json + encodeURIComponent(feedUrl));
+        const data = await res.json();
+        const container = document.getElementById(containerId);
+        data.items.slice(0, 10).forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'news-item';
+
+          const imageUrl = item.thumbnail || 'https://via.placeholder.com/300x200?text=News';
+
+          div.innerHTML = `
+            <img src="${imageUrl}" alt="News thumbnail">
+            <a href="${item.link}" target="_blank">${item.title}</a>
+            <p>${item.description.slice(0, 100)}...</p>
+          `;
+          container.appendChild(div);
+        });
+      } catch (error) {
+        console.error(`Error fetching ${containerId}:`, error);
+      }
+    }
+
+    feeds.highlights.forEach(url => loadNews(url, 'highlights-news'));
+    feeds.trending.forEach(url => loadNews(url, 'trending-news'));
+    feeds.ai.forEach(url => loadNews(url, 'ai-news'));
+    feeds.cyber.forEach(url => loadNews(url, 'cyber-news'));
+  </script>
+</body>
+</html>
+
+______________________________________________________________________________________________________________________
+
+
+const rss2json = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
     const feeds = {
       highlights: 'https://www.theverge.com/rss/index.xml',
