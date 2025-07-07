@@ -201,4 +201,105 @@
 
 </body>
 </html>
+_______________________________________________________________________________________________________________
+✅ 🧠 Copy-paste-ready industrynews.html (or your news page):
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/all.min.css"/>
+  <script src="https://cdn.jsdelivr.net/npm/rss-parser/dist/rss-parser.min.js"></script>
+
+  <title>AI RESOURCE HUB</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500&family=DM+Serif+Text&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Philosopher&display=swap" rel="stylesheet">
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="nav-left-group">
+      <span id="burger-icon" onclick="toggleSidebar()">☰</span>
+      <a href="index.html" class="nav-left">Technicalacumen</a>
+    </div>
+    <div class="nav-right">
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Feed Your Curiosity...">
+      </div>
+      <a href="index.html">HOME</a>
+      <a href="#downloads">DOWNLOADS</a>
+      <a href="#contact">CONTACT</a>
+      <a href="login.html">LOGIN</a>
+    </div>
+  </nav>
+
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>Dashboard</h2>
+    </div>
+    <ul>
+      <li><a>Calender</a></li>
+      <li><a href="blog.html">Blogs</a></li>
+      <li><a href="industrynews.html">Industry News</a></li>
+      <li><a href="podcast.html">Podcast</a></li>
+      <li><a>Activity</a></li>
+      <li><a>Leaderboard</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+  </div>
+
+  <div class="section" id="tech-news">
+    <h2 class="section-heading">Live Tech News (RSS)</h2>
+    <div class="news-grid" id="rss-grid">
+      <!-- RSS cards will be injected here -->
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 AI Resources Hub . Built by INH</p>
+  </footer>
+
+  <script>
+    const parser = new RSSParser();
+    const rssFeeds = [
+      'https://feeds.feedburner.com/TechCrunch/',
+      'https://www.theverge.com/rss/index.xml',
+      'https://www.wired.com/feed/rss'
+    ];
+
+    async function fetchRSSFeed() {
+      const container = document.getElementById('rss-grid');
+      container.innerHTML = '';
+
+      for (let feedUrl of rssFeeds) {
+        try {
+          const feed = await parser.parseURL(feedUrl);
+          feed.items.slice(0, 4).forEach(item => {
+            const card = document.createElement('div');
+            card.className = 'news-card';
+
+            card.innerHTML = `
+              <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
+              <p><em>${item.pubDate}</em></p>
+              <p>${item.contentSnippet ? item.contentSnippet.substring(0, 120) + '...' : 'No summary available.'}</p>
+            `;
+
+            container.appendChild(card);
+          });
+        } catch (err) {
+          console.error(`Error loading ${feedUrl}:`, err);
+          container.innerHTML += '<p>⚠️ Some feeds could not load.</p>';
+        }
+      }
+    }
+
+    fetchRSSFeed();
+  </script>
+</body>
+</html>
 
