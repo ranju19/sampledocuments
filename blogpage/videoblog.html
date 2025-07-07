@@ -1,3 +1,84 @@
+<script>
+  const ytFeeds = [
+    {
+      id: 'UCX6b17PVsYBQ0ip5gyeme-Q', // TechLinked
+      name: 'TechLinked'
+    },
+    {
+      id: 'UCPDis9pjXuqyI7RYLJ-TTSA', // Linus Tech Tips
+      name: 'Linus Tech Tips'
+    },
+    {
+      id: 'UCsBjURrPoezykLs9EqgamOA', // Fireship
+      name: 'Fireship'
+    }
+  ];
+
+  async function fetchYouTubeVideos() {
+    const container = document.getElementById('video-feed');
+    container.innerHTML = '';
+
+    for (let feed of ytFeeds) {
+      try {
+        const feedURL = `https://www.youtube.com/feeds/videos.xml?channel_id=${feed.id}`;
+        const apiURL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedURL)}`;
+
+        const response = await fetch(apiURL);
+        const data = await response.json();
+
+        data.items.slice(0, 3).forEach(item => {
+          const videoId = item.link.split('=')[1];
+          const thumbnail = item.thumbnail;
+
+          const card = document.createElement('div');
+          card.className = 'video-card';
+
+          card.innerHTML = `
+            <img src="${thumbnail}" alt="Video thumbnail">
+            <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
+            <p><em>${item.pubDate}</em></p>
+            <p class="source-label">📺 From: ${feed.name}</p>
+          `;
+
+          container.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error(`Error loading YouTube feed for ${feed.name}:`, err);
+      }
+    }
+  }
+
+  fetchYouTubeVideos();
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
