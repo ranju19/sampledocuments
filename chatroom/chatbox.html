@@ -1,3 +1,356 @@
+FINAL UPDATED CODE 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>AI RESOURCE HUB</title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500&family=DM+Serif+Text&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Philosopher&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/all.min.css"/>
+
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background-color: #111;
+      color: white;
+    }
+
+    nav.navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: black;
+      padding: 12px 20px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .nav-left-group {
+      display: flex;
+      align-items: center;
+    }
+
+    #burger-icon {
+      font-size: 24px;
+      cursor: pointer;
+      margin-right: 10px;
+    }
+
+    .nav-left {
+      font-family: 'Philosopher', sans-serif;
+      font-size: 24px;
+      text-decoration: none;
+      color: #ff6d00;
+    }
+
+    .nav-right a {
+      margin: 0 12px;
+      color: white;
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .search-container input {
+      padding: 5px;
+      border-radius: 4px;
+      border: none;
+    }
+
+    .sidebar {
+      position: fixed;
+      left: -250px;
+      top: 0;
+      width: 250px;
+      height: 100%;
+      background: #333;
+      overflow-y: auto;
+      transition: 0.3s;
+      padding-top: 60px;
+      z-index: 99;
+    }
+
+    .sidebar.active {
+      left: 0;
+    }
+
+    .sidebar h2 {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar ul li {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .sidebar ul li a {
+      color: white;
+      text-decoration: none;
+    }
+
+    .chat-container {
+      max-width: 800px;
+      margin: 100px auto;
+      padding: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 6px;
+      border: none;
+      font-size: 14px;
+    }
+
+    button {
+      padding: 8px 15px;
+      background-color: #ff6d00;
+      border: none;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .thread-message {
+      background-color: #1e1e1e;
+      padding: 10px;
+      border-radius: 8px;
+      margin-top: 10px;
+    }
+
+    .reply-button {
+      font-size: 12px;
+      margin-top: 5px;
+      background: #333;
+    }
+
+    #chat-button {
+      position: fixed;
+      bottom: 25px;
+      right: 25px;
+      background: #ff6d00;
+      border-radius: 50%;
+      padding: 15px;
+      font-size: 20px;
+      cursor: pointer;
+      z-index: 100;
+    }
+
+    #chat-box {
+      display: none;
+      position: fixed;
+      bottom: 90px;
+      right: 25px;
+      width: 300px;
+      background: #222;
+      border-radius: 10px;
+      overflow: hidden;
+      z-index: 100;
+    }
+
+    .chat-header {
+      background: #ff6d00;
+      color: white;
+      padding: 10px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .chat-content {
+      max-height: 200px;
+      overflow-y: auto;
+      padding: 10px;
+      background: #111;
+    }
+
+    .chat-input {
+      padding: 10px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: black;
+      margin-top: 50px;
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar">
+    <div class="nav-left-group">
+      <span id="burger-icon" onclick="toggleSidebar()">☰</span>
+      <a href="index.html" class="nav-left">Technicalacumen</a>
+    </div>
+    <div class="nav-right">
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Feed Your Curiosity...">
+      </div>
+      <a href="index.html">HOME</a>
+      <a href="chatroom.html">CHATROOM</a>
+      <a href="#contact">CONTACT</a>
+      <a href="login.html">LOGIN</a>
+    </div>
+  </nav>
+
+  <div class="sidebar" id="sidebar">
+    <h2>Dashboard</h2>
+    <ul>
+      <li><a>Calendar</a></li>
+      <li><a href="blog.html">Blogs</a></li>
+      <li><a href="industrynews.html">Industry News</a></li>
+      <li><a href="podcast.html">Podcast</a></li>
+      <li><a>Activity</a></li>
+      <li><a>Leaderboard</a></li>
+      <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+  </div>
+
+  <div class="chat-container">
+    <h1>💬 Thread Chatroom</h1>
+    <div class="input-area">
+      <textarea id="messageInput" placeholder="What's on your mind?"></textarea>
+      <button onclick="sendMessage()">Post</button>
+    </div>
+    <div id="chatThread"></div>
+  </div>
+
+  <div id="chat-button" onclick="toggleChat()">💬</div>
+  <div id="chat-box">
+    <div class="chat-header">
+      <span>Welcome to Live Chat!</span>
+      <span onclick="closeChat()">✖</span>
+    </div>
+    <div id="chat-content" class="chat-content"></div>
+    <div class="chat-input">
+      <textarea placeholder="Type here..."></textarea>
+      <button onclick="postMessage()">➤</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 AI Resources Hub . Built by INH</p>
+  </footer>
+
+  <!-- Firebase Thread Logic -->
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+    import {
+      getFirestore,
+      collection,
+      addDoc,
+      query,
+      onSnapshot,
+      orderBy,
+    } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyDUsFY_MZpSEER_AKZbW1Bsmynlr7MtmR4",
+      authDomain: "threadchat-82e4e.firebaseapp.com",
+      projectId: "threadchat-82e4e",
+      storageBucket: "threadchat-82e4e.appspot.com",
+      messagingSenderId: "936732463790",
+      appId: "1:936732463790:web:4df64af0ee5594cb35d33f",
+      measurementId: "G-R06YNDQH2M"
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
+    const messagesRef = collection(db, "messages");
+
+    window.sendMessage = async function(parentId = null, replyText = null) {
+      const input = replyText ?? document.getElementById("messageInput").value;
+      if (!input.trim()) return;
+
+      await addDoc(messagesRef, {
+        text: input,
+        parent: parentId,
+        timestamp: new Date()
+      });
+
+      if (!replyText) document.getElementById("messageInput").value = "";
+    };
+
+    function renderThread(messages, parentId = null, level = 0) {
+      return messages
+        .filter(msg => msg.data.parent === parentId)
+        .map(msg => {
+          const replies = renderThread(messages, msg.id, level + 1);
+          return `
+            <div class="thread-message" style="margin-left: ${level * 20}px">
+              <p>${msg.data.text}</p>
+              <button class="reply-button" onclick="showReplyBox('${msg.id}')">↪ Reply</button>
+              <div id="reply-${msg.id}" class="reply-input"></div>
+              ${replies.join("")}
+            </div>
+          `;
+        });
+    }
+
+    onSnapshot(query(messagesRef, orderBy("timestamp")), snapshot => {
+      const allMessages = snapshot.docs.map(doc => ({
+        id: doc.id,
+        data: doc.data()
+      }));
+      const threadHTML = renderThread(allMessages).join("");
+      document.getElementById("chatThread").innerHTML = threadHTML;
+    });
+
+    window.showReplyBox = function (msgId) {
+      const replyDiv = document.getElementById(`reply-${msgId}`);
+      replyDiv.innerHTML = `
+        <textarea placeholder="Reply..."></textarea>
+        <button onclick="sendMessage('${msgId}', this.previousElementSibling.value)">Post Reply</button>
+      `;
+    };
+  </script>
+
+  <!-- Sidebar Toggle Script -->
+  <script>
+    function toggleSidebar() {
+      document.getElementById("sidebar").classList.toggle("active");
+    }
+
+    function toggleChat() {
+      const chatBox = document.getElementById("chat-box");
+      chatBox.style.display = chatBox.style.display === "block" ? "none" : "block";
+    }
+
+    function closeChat() {
+      document.getElementById("chat-box").style.display = "none";
+    }
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
