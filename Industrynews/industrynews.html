@@ -1,3 +1,67 @@
+    const rss2json = 'https://api.rss2json.com/v1/api.json?rss_url=';
+
+    const feeds = {
+      highlights: 'https://www.theverge.com/rss/index.xml',
+      trending: 'https://www.wired.com/feed/rss',
+      ai: 'https://spectrum.ieee.org/rss/topic/artificial-intelligence',
+      cyber: 'https://www.csoonline.com/index.rss',
+      future: 'https://www.popularmechanics.com/technology/rss/',
+      popular: 'https://feeds.feedburner.com/TechCrunch/',
+      recent: 'https://www.engadget.com/rss.xml'
+    };
+
+    async function loadNews(feedUrl, containerId) {
+      try {
+        const res = await fetch(rss2json + encodeURIComponent(feedUrl));
+        const data = await res.json();
+        const container = document.getElementById(containerId);
+        data.items.slice(0, 10).forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'news-item';
+
+          const imageUrl = item.thumbnail || 'https://via.placeholder.com/300x200?text=News';
+
+          div.innerHTML = `
+            <img src="${imageUrl}" alt="News thumbnail">
+            <a href="${item.link}" target="_blank">${item.title}</a>
+            <p>${item.description.slice(0, 100)}...</p>
+          `;
+          container.appendChild(div);
+        });
+      } catch (error) {
+        console.error(`Error fetching ${containerId}:`, error);
+      }
+    }
+
+    // Load all feeds
+    loadNews(feeds.highlights, 'highlights-news');
+    loadNews(feeds.trending, 'trending-news');
+    loadNews(feeds.ai, 'ai-news');
+    loadNews(feeds.cyber, 'cyber-news');
+    loadNews(feeds.future, 'future-news');
+    loadNews(feeds.popular, 'popular-news');
+    loadNews(feeds.recent, 'recent-news');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
