@@ -892,3 +892,492 @@ HTML
   </div>
 </section>
 
+
+
+
+
+
+
+
+
+
+
+FINAL
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=0.1" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/all.min.css"/>
+
+  <title>TechCast: Latest in AI & Innovation</title>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500&family=DM+Serif+Text&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Philosopher&display=swap" rel="stylesheet">
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body class="podcast-page-body">
+    <nav class="navbar">
+      <div class="nav-left-group">
+
+        <span id="burger-icon" onclick="toggleSidebar()">☰</span>
+
+        <a href="index.html" class="nav-left">Technicalacumen</a>
+      </div>
+      <div class="nav-right">
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Feed Your Curiosity...">
+
+      </div>
+        <a href="index.html">HOME</a>
+        <a href="#downloads">DOWNLOADS</a>
+        <a href="#contact">CONTACT</a>
+        <a href="login.html">LOGIN</a>
+      </div>
+
+    </nav>
+
+
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>Dashboard</h2>
+    </div>
+    <ul>
+     <li><a>Calender</a></li>
+     <li><a href="blog.html">Blogs</a></li>
+     <li><a>Industry News</a></li>
+     <li><a href="podcast.html">Podcast</a></li>
+     <li><a>Activity</a></li>
+     <li><a>Leaderboard</a></li>
+     <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+  </div>
+
+  <!--Top Section-->
+  <section class="section top-section">
+    <img src="https://raw.githubusercontent.com/ranju19/Technicalacumen/main/podcast/Podcast-BG.jpeg" alt="Podcast Banner Background">
+    <div class="top-text">
+      <h1>NEONCAST: INTELLIGENCE UNPLUGGED</h1>
+      <p>Stay ahead with the sharpest minds in technology, AI, and learning.<br>Weekly episodes. Always insightful.</p>
+    </div>
+  </section>
+
+
+<!-- Podcast Carousel Section -->
+<section class="section podcast-carousel">
+  <h2 class="text-center mb-4" style="color: white;">🎧 Explore Learning Podcasts</h2>
+
+  <div id="podcastCarousel" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+
+      <!-- Slide 1: Learning Machines 101 -->
+      <div class="carousel-item active">
+        <div class="d-flex flex-column align-items-center text-center">
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/show/5qX1nRTaFsfWdmdj5JWO1G/video?utm_source=generator&t=0"
+           width="624" height="351" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+          </iframe>
+          <h3 class="podcast-title">Learning Machines 101</h3>
+          <p class="podcast-desc">Explore the fascinating world of AI and Machine Learning in this accessible and engaging podcast.</p>
+          <a href="https://open.spotify.com/show/5qX1nRTaFsfWdmdj5JWO1G" target="_blank" class="listen-btn">Listen Now</a>
+        </div>
+      </div>
+
+      <div class="carousel-item">
+        <div class="d-flex flex-column align-items-center text-center">
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/show/0jXj0NuVvdUPEFMUyRYpMK?utm_source=generator"
+          width="50%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+          </iframe>
+          <h3 class="podcast-title">AI Innovators</h3>
+          <p class="podcast-desc">A podcast featuring interviews with pioneers advancing the frontiers of artificial intelligence.</p>
+          <a href="https://open.spotify.com/show/0jXj0NuVvdUPEFMUyRYpMK" target="_blank" class="listen-btn">Listen Now</a>
+        </div>
+      </div>
+
+      <!-- Slide 3: AZ TechCast -->
+      <div class="carousel-item">
+        <div class="d-flex flex-column align-items-center text-center">
+          <iframe style="border-radius:12px" src="https://open.spotify.com/embed/show/5w8yJIu0Axf0LhFgVKSUA6?utm_source=generator"
+          width="50%" height="352" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+          </iframe>
+          <h3 class="podcast-title">AZ TechCast</h3>
+          <p class="podcast-desc">Arizona’s leading voices discuss tech innovation, trends, and industry insights in a digestible way.</p>
+          <a href="https://open.spotify.com/show/5w8yJIu0Axf0LhFgVKSUA6" target="_blank" class="listen-btn">Listen Now</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Previous Button -->
+    <button class="carousel-control-prev" type="button" data-bs-target="#podcastCarousel" data-bs-slide="prev">
+      <span class="carousel-control-prev-icon custom-arrow">&#9664;</span>
+    </button>
+
+<!-- Next Button -->
+    <button class="carousel-control-next" type="button" data-bs-target="#podcastCarousel" data-bs-slide="next">
+      <span class="carousel-control-next-icon custom-arrow">&#9654;</span>
+    </button>
+  </div>
+</section>
+
+
+<!-- Bottom Section: Popular Podcasts -->
+<section class="section bottom-section">
+  <h2 class="glow-text">Popular Podcasts</h2>
+  <div class="podcast-slider-wrapper">
+
+    <!-- Left Button -->
+    <button class="scroll-btn left" onclick="scrollLeft()">&#10094;</button>
+
+    <div class="podcast-scroll-container" id="podcastContainer">
+      <div class="podcast-card">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/show/5oOBPrlO68dNZXen9Kxg0e?utm_source=generator"
+        width="100%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+        </iframe>
+        <div class="podcast-card-title">The EdTech Podcast</div>
+      </div>
+
+      <div class="podcast-card">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/show/2F2srBvTeYu9Xcg6K910ol?utm_source=generator"
+        width="100%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+        </iframe>
+        <div class="podcast-card-title">AI in Education</div>
+      </div>
+
+      <div class="podcast-card">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/show/5eLYl2HXeqP7gLNAfvfoQa?utm_source=generator"
+        width="100%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+        </iframe>
+        <div class="podcast-card-title">Tech for Learning</div>
+      </div>
+
+      <div class="podcast-card">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/show/5M9yZpSyF1jc7uFp2MlhP9?utm_source=generator&theme=0"
+        width="100%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+        </iframe>
+        <div class="podcast-card-title">Machine Learning Weekly</div>
+      </div>
+
+      <div class="podcast-card">
+        <iframe style="border-radius:12px" src="https://open.spotify.com/embed/show/4TB4pnynaiZ6YHoKmyVN0L?utm_source=generator"
+        width="100%" height="250" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy">
+        </iframe>
+        <div class="podcast-card-title">NVIDIA AI Podcast</div>
+      </div>
+
+    </div>
+
+    <!-- Right Button -->
+    <button class="scroll-btn right" onclick="scrollRight()">&#10095;</button>
+
+
+  </div>
+</section>
+
+
+<script src="script.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+  <footer>
+    <p>&copy; 2025 AI Resources Hub . Built by INH</p>
+  </footer>
+
+
+</body>
+</html>
+
+/*podcast-page styles*/
+
+.podcast-page-body{
+  padding: 0;
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #0a0a0a;
+  color: #fff;
+}
+
+.section {
+  padding: 60px 20px;
+  text-align: center;
+}
+
+.top-section {
+  position: relative;
+  background: black;
+  padding: 0;
+}
+
+.top-section img{
+  width: 100vw;
+  height: 650px;
+  object-fit: cover;
+  object-position: top;
+  display: block;
+  padding-bottom: 20px;
+}
+
+.top-text{
+  position: absolute;
+  top: 50%;
+  transform: tranbslate(-50%, -50%);
+  text-align: center;
+  color: white;
+  padding: 0px;
+  width: 100%;
+}
+
+.top-section h1 {
+  font-size: 48px;
+  font-weight: bold;
+  margin-bottom: 10px;
+  color: white;
+  text-align: center;
+  text-shadow: 0 0 5px #ff4edb, 0 0 10px #ff4edb, 0 0 20px #ff4edb, 2px 2px 0 #ff00aa, 4px 4px 0 #990066, 6px 6px 0 #330033;
+}
+
+.top-section p {
+  font-size: 18px;
+  color: #ffe6f2;
+  text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
+  margin-top: 10px;
+}
+
+.middle-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: #1e1e2f;
+}
+
+.podcast-box {
+  display: flex;
+  background-color: #2a2a40;
+  border-radius: 15px;
+  overflow: hidden;
+  width: 80%;
+  max-width: 900px;
+  box-shadow: 0 0 20px #ff00cc44;
+}
+
+.podcast-box img {
+  width: 250px;
+  height: auto;
+}
+
+.podcast-info {
+  padding: 20px;
+  text-align: left;
+}
+
+.podcast-info h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+  color: #ffb3ff;
+}
+
+.podcast-info p {
+  font-size: 16px;
+  color: #ccc;
+}
+
+.podcast-info a {
+  display: inline-block;
+  margin-top: 15px;
+  background-color: #ff00cc;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: 0.3s;
+}
+
+.podcast-info a:hover {
+  background-color: #d100aa;
+}
+
+.bottom-section {
+  background-color: #121212;
+}
+
+.bottom-section h2.glow-text {
+  text-align: center;
+  font-size: 2rem;
+  color: #ff7ce5;
+  text-shadow: 0 0 8px #ff7ce5;
+  margin-bottom: 2rem;
+}
+
+.podcast-grid {
+  display: flex;
+  align-items: center;
+  position: center;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  justify-content: center;
+}
+
+.podcast-grid::-webkit-scrollbar{
+  display: none;
+}
+
+.carousel-control-prev-icon.custom-arrow,
+.carousel-control-next-icon.custom-arrow {
+  background-color: #ff7ce5;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  color: white;
+  font-size: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 10px #ff7ce5;
+  font-weight: bold;
+}
+
+.carousel-control-prev-icon.custom-arrow:hover,
+.carousel-control-next-icon.custom-arrow:hover {
+  background-color: #ff4cd4;
+  box-shadow: 0 0 15px #ff4cd4;
+}
+
+.listen-btn {
+  background: transparent;
+  color: white;
+  padding: 10px 22px;
+  border: 2px solid #ff7ce5;
+  border-radius: 30px;
+  font-weight: bold;
+  text-decoration: none;
+  transition: 0.4s ease;
+  font-size: 1rem;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+}
+
+.listen-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(120deg, #ff7ce5, #c770ff);
+  color: white;
+  transition: 0.4s ease;
+  z-index: -1;
+}
+
+.listen-btn:hover::before {
+  left: 0;
+}
+
+.listen-btn:hover {
+  color: #111;
+  box-shadow: 0 0 15px #ff7ce5;
+}
+
+  .podcast-title {
+    padding-top: 20px;
+}
+
+@media (max-width: 768px) {
+  .top-section h1 {
+    font-size: 2rem;
+  }
+  .podcast-title {
+    font-size: 1.2rem;
+  }
+  .podcast-desc {
+    font-size: 0.9rem;
+  }
+}
+
+/*Scroll button last section podcast*/
+.podcast-slider-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 20px;
+}
+
+.podcast-scroll-container {
+  display: flex;
+  overflow-x: auto;
+  gap: 20px;
+  scroll-behavior: smooth;
+  padding: 10px;
+  scroll-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+}
+
+.podcast-scroll-container::-webkit-scrollbar{
+  display: none;
+}
+
+.podcast-card {
+  flex: 0 0 auto;
+  width: 270px;
+  scroll-snap-align: start;
+  text-align: center;
+}
+.spotify-card {
+  width: 100%;
+  height: 152px;
+  border-radius: 12px;
+  border: none;
+  box-shadow: 0 0 10px #ff4edb55;
+}
+
+.podcast-card-title {
+  color: white;
+  font-size: 14px;
+  margin-top: 8px;
+  text-shadow: 0 0 5px #ff4edb;
+}
+
+.scroll-btn {
+  position: absolute;
+  align-items: center;
+  justify-content: center;
+  top: 45%;
+  transform: translateY(-50%);
+  background: #373737;
+  width: 40px;
+  height: 40px;
+  border: none;
+  color: white;
+  font-size: 20px;
+  padding: 10px 14px;
+  cursor: pointer;
+  z-index: 5;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+  visibility: hidden;
+  box-shadow: 0 0 10px #ff4edb80;
+}
+
+.scroll-btn.left {
+  left: 10px;
+}
+
+.scroll-btn.right {
+  right: 10px;
+}
+.scroll-btn:hover {
+  box-shadow: 0 0 15px #ff4edb;
+  color: #ff4edb;
+}
+
