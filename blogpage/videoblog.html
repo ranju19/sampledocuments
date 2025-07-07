@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Video Blogs | Technicalacumen</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/rss-parser/dist/rss-parser.min.js"></script>
+
+  <style>
+    body {
+      background-color: #0a0a0a;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      padding: 60px 20px;
+    }
+
+    h1.section-heading {
+      text-align: center;
+      font-size: 2.5em;
+      margin-bottom: 40px;
+      color: #ff7ce5;
+      text-shadow: 0 0 10px #ff7ce5;
+    }
+
+    .video-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 25px;
+      margin-top: 30px;
+    }
+
+    .video-card {
+      background-color: #1e1e1e;
+      padding: 20px;
+      border-radius: 15px;
+      box-shadow: 0 0 15px #ff4edb55;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .video-card:hover {
+      transform: scale(1.02);
+      box-shadow: 0 0 25px #ff7ce5;
+    }
+
+    .video-card img {
+      width: 100%;
+      border-radius: 10px;
+      margin-bottom: 15px;
+    }
+
+    .video-card h3 {
+      font-size: 1.1em;
+      margin-bottom: 10px;
+      color: #ffffff;
+    }
+
+    .video-card a {
+      text-decoration: none;
+      color: #ff7ce5;
+      font-weight: bold;
+    }
+
+    .video-card a:hover {
+      text-shadow: 0 0 10px #ff7ce5;
+    }
+
+    .video-card p {
+      font-size: 0.9em;
+      color: #ccc;
+    }
+
+    .source-label {
+      font-size: 0.85em;
+      color: #ff7ce5;
+      margin-top: 10px;
+    }
+  </style>
+</head>
+
+<body>
+  <h1 class="section-heading">🎥 Latest Tech Video Blogs (Auto Feed)</h1>
+  <div class="video-grid" id="video-feed">
+    <!-- YouTube video cards will load here -->
+  </div>
+
+  <script>
+    const parser = new RSSParser();
+    const ytFeeds = [
+      {
+        id: 'UCX6b17PVsYBQ0ip5gyeme-Q', // TechLinked
+        name: 'TechLinked'
+      },
+      {
+        id: 'UCPDis9pjXuqyI7RYLJ-TTSA', // Linus Tech Tips
+        name: 'Linus Tech Tips'
+      },
+      {
+        id: 'UCsBjURrPoezykLs9EqgamOA', // Fireship
+        name: 'Fireship'
+      }
+    ];
+
+    async function fetchYouTubeVideos() {
+      const container = document.getElementById('video-feed');
+      container.innerHTML = '';
+
+      for (let feed of ytFeeds) {
+        try {
+          const url = `https://www.youtube.com/feeds/videos.xml?channel_id=${feed.id}`;
+          const parsed = await parser.parseURL(url);
+
+          parsed.items.slice(0, 3).forEach(item => {
+            const videoId = item.id.split(':').pop();
+            const thumbnail = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+
+            const card = document.createElement('div');
+            card.className = 'video-card';
+
+            card.innerHTML = `
+              <img src="${thumbnail}" alt="Video thumbnail">
+              <h3><a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">${item.title}</a></h3>
+              <p><em>${item.pubDate}</em></p>
+              <p class="source-label">📺 From: ${feed.name}</p>
+            `;
+
+            container.appendChild(card);
+          });
+        } catch (err) {
+          console.error(`Error loading YouTube feed for ${feed.name}:`, err);
+        }
+      }
+    }
+
+    fetchYouTubeVideos();
+  </script>
+</body>
+</html>
