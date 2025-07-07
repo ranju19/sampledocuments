@@ -1,3 +1,93 @@
+<script>
+  const parser = new RSSParser();
+
+  const podcastFeeds = [
+    'https://feeds.megaphone.fm/learningmachines101',
+    'https://feeds.npr.org/510289/podcast.xml',
+    'https://lexfridman.com/feed/podcast/'
+  ];
+
+  async function fetchTechPodcasts() {
+    const container = document.getElementById('rss-podcast-feed');
+    container.innerHTML = '';
+
+    for (let url of podcastFeeds) {
+      try {
+        const feed = await parser.parseURL(url);
+
+        // Optional: Show feed source name
+        const sourceTitle = feed.title || 'Podcast';
+
+        feed.items.slice(0, 3).forEach(item => {
+          // 💡 Filter: Only if title/desc contains "AI", "tech", "machine", etc.
+          const isTechRelated = /(ai|tech|machine|learning|robot|neural|innovation)/i.test(item.title + item.contentSnippet);
+
+          if (!isTechRelated) return; // ❌ skip if not tech-related
+
+          const card = document.createElement('div');
+          card.className = 'news-card';
+
+          // Attempt to get thumbnail image if available
+          let thumbnail = '';
+          if (item.itunes && item.itunes.image) {
+            thumbnail = `<img src="${item.itunes.image}" alt="Episode Thumbnail">`;
+          }
+
+          card.innerHTML = `
+            ${thumbnail}
+            <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
+            <p><em>${item.pubDate}</em></p>
+            <p>${item.contentSnippet ? item.contentSnippet.substring(0, 120) + '...' : 'No description available.'}</p>
+            <p style="color: #ff7ce5; font-size: 0.9em;">🎙️ From: ${sourceTitle}</p>
+          `;
+
+          container.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error(`Error loading ${url}:`, err);
+        container.innerHTML += '<p>Error loading some podcasts.</p>';
+      }
+    }
+  }
+
+  fetchTechPodcasts();
+</script>
+
+
+.news-card img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 🔁 Step-by-Step Final Code for Multiple Feeds
 ✅ 1. Keep This Script Block right before </body> tag:
 (You can replace your existing fetchPodcastRSS() with this full working version)
