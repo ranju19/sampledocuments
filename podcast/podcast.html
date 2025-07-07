@@ -1,3 +1,102 @@
+🔁 Step-by-Step Final Code for Multiple Feeds
+✅ 1. Keep This Script Block right before </body> tag:
+(You can replace your existing fetchPodcastRSS() with this full working version)
+
+html
+Copy
+Edit
+<script>
+  const parser = new RSSParser();
+
+  const podcastFeeds = [
+    'https://feeds.megaphone.fm/learningmachines101',
+    'https://feeds.npr.org/510289/podcast.xml',
+    'https://lexfridman.com/feed/podcast/'
+  ];
+
+  async function fetchMultiplePodcastRSS() {
+    const container = document.getElementById('rss-podcast-feed');
+    container.innerHTML = '';
+
+    for (let url of podcastFeeds) {
+      try {
+        const feed = await parser.parseURL(url);
+
+        feed.items.slice(0, 2).forEach(item => {
+          const card = document.createElement('div');
+          card.className = 'news-card';
+
+          card.innerHTML = `
+            <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
+            <p><em>${item.pubDate}</em></p>
+            <p>${item.contentSnippet ? item.contentSnippet.substring(0, 100) + '...' : 'No description available.'}</p>
+          `;
+
+          container.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error(`Error loading feed from ${url}:`, err);
+      }
+    }
+  }
+
+  fetchMultiplePodcastRSS();
+</script>
+✅ 2. Ensure this HTML block exists (or keep as-is from earlier):
+Place above footer in your page:
+
+html
+Copy
+Edit
+<section class="section rss-podcast-section">
+  <h2 class="glow-text">🧠 Latest Episodes (Auto Updates)</h2>
+  <div class="news-grid" id="rss-podcast-feed">
+    <!-- Podcast cards will be auto-filled here -->
+  </div>
+</section>
+✅ 3. Confirm the Parser Script is Present in <head> or before scripts:
+html
+Copy
+Edit
+<script src="https://cdn.jsdelivr.net/npm/rss-parser/dist/rss-parser.min.js"></script>
+✨ Optional Enhancements Later:
+Show which podcast each item belongs to (feed.title)
+
+Add thumbnails (if available in the feed)
+
+Add filter by podcast name
+
+All set! 🚀 This will now pull:
+
+Top 2 episodes each from 3 major podcasts
+
+Display them cleanly styled using your existing .news-card layout
+
+Shall I also show how to display the podcast name above each block? (e.g., “🎙️ From: Lex Fridman Podcast”) 👀
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <script>
   const slider = document.getElementById("podcastContainer");
   const leftBtn = document.querySelector(".scroll-btn.left");
