@@ -1,68 +1,60 @@
-UPDATED CODE(ALTERED SECTIONS AND LINKS)
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>TechnicalAcumen - Industry News</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-  <style>
-    body {
-      background-color: #000;
-      color: #fff;
-      font-family: 'Orbitron', sans-serif;
-      margin: 0;
-      padding: 0;
-    }
-    h2 {
-      color: #ff3c00;
-      padding: 1rem;
-      border-bottom: 1px solid #333;
-    }
-    .section {
-      padding: 1rem;
-    }
-    .news-grid,
-    .highlight-grid,
-    .trending-scroll {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 1rem;
-    }
-    .trending-scroll {
-      display: flex;
-      overflow-x: auto;
-      gap: 1rem;
-    }
-    .trending-scroll .news-item {
-      min-width: 280px;
-    }
-    .highlight-grid {
-      grid-template-columns: 2fr 1fr 1fr 1fr;
-    }
-    .news-item {
-      background: #111;
-      border: 1px solid #222;
-      padding: 1rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(255, 60, 0, 0.3);
-    }
-    .news-item img {
-      width: 100%;
-      border-radius: 8px;
-      margin-bottom: 0.5rem;
-    }
-    .news-item a {
-      color: #ff3c00;
-      text-decoration: none;
-      font-weight: bold;
-    }
-    .news-item a:hover {
-      text-decoration: underline;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width, initial-scale=0.1" />
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/all.min.css"/>
+
+  <title>AI RESOURCE HUB</title>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500&family=DM+Serif+Text&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Philosopher&display=swap" rel="stylesheet">
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+
 </head>
-<body>
+
+<body class="newspage-body">
+    <nav class="navbar">
+      <div class="nav-left-group">
+
+        <span id="burger-icon" onclick="toggleSidebar()">☰</span>
+
+        <a href="index.html" class="nav-left">Technicalacumen</a>
+      </div>
+      <div class="nav-right">
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Feed Your Curiosity...">
+
+      </div>
+        <a href="index.html">HOME</a>
+        <a href="#downloads">DOWNLOADS</a>
+        <a href="#contact">CONTACT</a>
+        <a href="login.html">LOGIN</a>
+      </div>
+
+    </nav>
+
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>Dashboard</h2>
+    </div>
+    <ul>
+     <li><a>Calender</a></li>
+     <li><a href="blog.html">Blogs</a></li>
+     <li><a href="industrynews.html">Industry News</a></li>
+     <li><a href="podcast.html">Podcast</a></li>
+     <li><a>Activity</a></li>
+     <li><a>Leaderboard</a></li>
+     <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+  </div>
+
   <h1 style="text-align: center; color: #ff3c00; padding: 1rem;">📰 Industry News - TechnicalAcumen</h1>
 
   <div class="section" id="highlights">
@@ -85,7 +77,12 @@ UPDATED CODE(ALTERED SECTIONS AND LINKS)
     <div class="news-grid" id="cyber-news"></div>
   </div>
 
-  <script>
+
+  <footer>
+    <p>&copy; 2025 AI Resources Hub . Built by INH</p>
+  </footer>
+
+<script>
     const rss2json = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
     const feeds = {
@@ -160,412 +157,46 @@ UPDATED CODE(ALTERED SECTIONS AND LINKS)
     feeds.trending.forEach(url => loadNews(url, 'trending-news'));
     feeds.ai.forEach(url => loadNews(url, 'ai-news'));
     feeds.cyber.forEach(url => loadNews(url, 'cyber-news'));
-  </script>
-</body>
-</html>
-
-______________________________________________________________________________________________________________________
-
-
-const rss2json = 'https://api.rss2json.com/v1/api.json?rss_url=';
-
-    const feeds = {
-      highlights: 'https://www.theverge.com/rss/index.xml',
-      trending: 'https://www.wired.com/feed/rss',
-      ai: 'https://spectrum.ieee.org/rss/topic/artificial-intelligence',
-      cyber: 'https://www.csoonline.com/index.rss',
-      future: 'https://www.popularmechanics.com/technology/rss/',
-      popular: 'https://feeds.feedburner.com/TechCrunch/',
-      recent: 'https://www.engadget.com/rss.xml'
-    };
-
-    async function loadNews(feedUrl, containerId) {
-      try {
-        const res = await fetch(rss2json + encodeURIComponent(feedUrl));
-        const data = await res.json();
-        const container = document.getElementById(containerId);
-        data.items.slice(0, 10).forEach(item => {
-          const div = document.createElement('div');
-          div.className = 'news-item';
-
-          const imageUrl = item.thumbnail || 'https://via.placeholder.com/300x200?text=News';
-
-          div.innerHTML = `
-            <img src="${imageUrl}" alt="News thumbnail">
-            <a href="${item.link}" target="_blank">${item.title}</a>
-            <p>${item.description.slice(0, 100)}...</p>
-          `;
-          container.appendChild(div);
-        });
-      } catch (error) {
-        console.error(`Error fetching ${containerId}:`, error);
-      }
-    }
-
-    // Load all feeds
-    loadNews(feeds.highlights, 'highlights-news');
-    loadNews(feeds.trending, 'trending-news');
-    loadNews(feeds.ai, 'ai-news');
-    loadNews(feeds.cyber, 'cyber-news');
-    loadNews(feeds.future, 'future-news');
-    loadNews(feeds.popular, 'popular-news');
-    loadNews(feeds.recent, 'recent-news');
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=0.1" />
-
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/all.min.css"/>
-
-  <title>AI RESOURCE HUB</title>
-
-
-  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500&family=DM+Serif+Text&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Philosopher&display=swap" rel="stylesheet">
-</head>
-
-<body>
-    <nav class="navbar">
-      <div class="nav-left-group">
-
-        <span id="burger-icon" onclick="toggleSidebar()">☰</span>
-
-        <a href="index.html" class="nav-left">Technicalacumen</a>
-      </div>
-      <div class="nav-right">
-      <div class="search-container">
-        <input type="text" class="search-input" placeholder="Feed Your Curiosity...">
-
-      </div>
-        <a href="index.html">HOME</a>
-        <a href="#downloads">DOWNLOADS</a>
-        <a href="#contact">CONTACT</a>
-        <a href="login.html">LOGIN</a>
-      </div>
-
-    </nav>
-
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <h2>Dashboard</h2>
-    </div>
-    <ul>
-     <li><a>Calender</a></li>
-     <li><a href="blog.html">Blogs</a></li>
-     <li><a href="industrynews.html">Industry News</a></li>
-     <li><a href="podcast.html">Podcast</a></li>
-     <li><a>Activity</a></li>
-     <li><a>Leaderboard</a></li>
-     <li><a href="feedback.html">Feedback</a></li>
-    </ul>
-  </div>
-
-  <div class="section" id="tech-news">
-    <h2 class="section-heading">Live Tech News</h2>
-    <div class="news-grid" id="news-grid">
-      <!-- News cards will be injected here -->
-    </div>
-  </div>
-
-
-  <footer>
-    <p>&copy; 2025 AI Resources Hub . Built by INH</p>
-  </footer>
-
-<script>
-    const apiKey = 'pub_bf68cc6190444799893a6c2a29fd0b7e'; // <-- Replace with your actual NewsData.io API key
-    const url = 'https://newsdata.io/api/1/latest?apikey=pub_bf68cc6190444799893a6c2a29fd0b7e&q=tech%20Industry';
-
-    async function fetchNews() {
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        const articles = data.results.slice(0, 13); // Take top 8 articles
-
-        const container = document.getElementById('news-grid');
-        container.innerHTML = '';
-
-        articles.forEach(article => {
-          const card = document.createElement('div');
-          card.className = 'news-card';
-
-          card.innerHTML = `
-            <img src="${article.image_url || 'https://via.placeholder.com/300x180?text=No+Image'}" alt="news">
-            <h3><a href="${article.link}" target="_blank">${article.title}</a></h3>
-            <p>${article.description ? article.description.substring(0, 120) + '...' : 'No description available.'}</p>
-
-          `;
-
-          container.appendChild(card);
-        });
-      } catch (err) {
-        console.error('Error fetching news:', err);
-        document.getElementById('news-grid').innerHTML = '<p>Unable to load news at this moment.</p>';
-      }
-    }
-
-    fetchNews();
-
 </script>
-
-
-
-
-      .section {
-      padding: 60px 20px;
-      text-align: center;
-    }
-
-    .section-heading {
-      font-size: 2.5em;
-      margin-bottom: 40px;
-      font-weight: bold;
-      color: #ffffff;
-      border-bottom: 2px solid #ff1c1c;
-      display: inline-block;
-      padding-bottom: 10px;
-    }
-
-    .news-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-      gap: 25px;
-      margin-top: 30px;
-    }
-
-    .news-card {
-      background-color: #1e1e1e;
-      padding: 20px;
-      border-radius: 15px;
-      box-shadow: 0 0 15px #ff1c1c;
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
-    }
-
-    .news-card:hover {
-      transform: scale(1.02);
-      box-shadow: 0 0 25px #ff1c1c;
-    }
-
-    .news-card img {
-      width: 100%;
-      height: 180px;
-      object-fit: cover;
-      border-radius: 10px;
-    }
-    .news-card h3 {
-      font-size: 1.2em;
-      margin: 15px 0 10px;
-    }
-
-    .news-card p {
-      font-size: 0.95em;
-      color: #ccc;
-    }
-
-    .news-card a {
-      text-decoration: none;
-      color: white;
-      font-weight: bold;
-    }
-
-    .news-card a:hover {
-      color: #ffffff;
-      text-shadow: 0 0 10px #ff1c1c;
-    }
-
-//news page function
-    const apiKey = 'pub_bf68cc6190444799893a6c2a29fd0b7e'; // <-- Replace with your actual NewsData.io API key
-    const url = 'https://newsdata.io/api/1/latest?apikey=pub_bf68cc6190444799893a6c2a29fd0b7e';
-
-    async function fetchNews() {
-      try {
-        const response = await fetch(url);
-        const data = await response.json();
-        const articles = data.results.slice(0, 8); // Take top 8 articles
-
-        const container = document.getElementById('news-grid');
-        container.innerHTML = '';
-
-        articles.forEach(article => {
-          const card = document.createElement('div');
-          card.className = 'news-card';
-
-          card.innerHTML = `
-            <img src="${article.image_url || 'https://via.placeholder.com/300x180?text=No+Image'}" alt="news">
-            <h3><a href="${article.link}" target="_blank">${article.title}</a></h3>
-            <p>${article.description ? article.description.substring(0, 120) + '...' : 'No description available.'}</p>
-          `;
-
-          container.appendChild(card);
-        });
-      } catch (err) {
-        console.error('Error fetching news:', err);
-        document.getElementById('news-grid').innerHTML = '<p>Unable to load news at this moment.</p>';
-      }
-    }
-
-    fetchNews();
-
-
+<script src="script.js"></script>
 
 </body>
 </html>
-_______________________________________________________________________________________________________________
-✅ 🧠 Copy-paste-ready industrynews.html (or your news page):
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/all.min.css"/>
-  <script src="https://cdn.jsdelivr.net/npm/rss-parser/dist/rss-parser.min.js"></script>
-
-  <title>AI RESOURCE HUB</title>
-
-  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500&family=DM+Serif+Text&display=swap" rel="stylesheet"/>
-  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Philosopher&display=swap" rel="stylesheet">
-</head>
-
-<body>
-  <nav class="navbar">
-    <div class="nav-left-group">
-      <span id="burger-icon" onclick="toggleSidebar()">☰</span>
-      <a href="index.html" class="nav-left">Technicalacumen</a>
-    </div>
-    <div class="nav-right">
-      <div class="search-container">
-        <input type="text" class="search-input" placeholder="Feed Your Curiosity...">
-      </div>
-      <a href="index.html">HOME</a>
-      <a href="#downloads">DOWNLOADS</a>
-      <a href="#contact">CONTACT</a>
-      <a href="login.html">LOGIN</a>
-    </div>
-  </nav>
-
-  <div class="sidebar" id="sidebar">
-    <div class="sidebar-header">
-      <h2>Dashboard</h2>
-    </div>
-    <ul>
-      <li><a>Calender</a></li>
-      <li><a href="blog.html">Blogs</a></li>
-      <li><a href="industrynews.html">Industry News</a></li>
-      <li><a href="podcast.html">Podcast</a></li>
-      <li><a>Activity</a></li>
-      <li><a>Leaderboard</a></li>
-      <li><a href="feedback.html">Feedback</a></li>
-    </ul>
-  </div>
-
-  <div class="section" id="tech-news">
-    <h2 class="section-heading">Live Tech News (RSS)</h2>
-    <div class="news-grid" id="rss-grid">
-      <!-- RSS cards will be injected here -->
-    </div>
-  </div>
-
-  <footer>
-    <p>&copy; 2025 AI Resources Hub . Built by INH</p>
-  </footer>
-
-  <script>
-    const parser = new RSSParser();
-    const rssFeeds = [
-      'https://feeds.feedburner.com/TechCrunch/',
-      'https://www.theverge.com/rss/index.xml',
-      'https://www.wired.com/feed/rss'
-    ];
-
-    async function fetchRSSFeed() {
-      const container = document.getElementById('rss-grid');
-      container.innerHTML = '';
-
-      for (let feedUrl of rssFeeds) {
-        try {
-          const feed = await parser.parseURL(feedUrl);
-          feed.items.slice(0, 4).forEach(item => {
-            const card = document.createElement('div');
-            card.className = 'news-card';
-
-            card.innerHTML = `
-              <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
-              <p><em>${item.pubDate}</em></p>
-              <p>${item.contentSnippet ? item.contentSnippet.substring(0, 120) + '...' : 'No summary available.'}</p>
-            `;
-
-            container.appendChild(card);
-          });
-        } catch (err) {
-          console.error(`Error loading ${feedUrl}:`, err);
-          container.innerHTML += '<p>⚠️ Some feeds could not load.</p>';
-        }
-      }
-    }
-
-    fetchRSSFeed();
-  </script>
-</body>
-</html>
--------------------------------------------------------------------------------------------------------------------
-new code for 7sections
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>TechnicalAcumen - Industry News</title>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/rss-parser/dist/rss-parser.min.js"></script>
-  <style>
-    body {
+/*newspage-style*/
+    .newspage-body {
       background-color: #000;
       color: #fff;
       font-family: 'Orbitron', sans-serif;
       margin: 0;
       padding: 0;
     }
-    h2 {
+    .news-h2 {
       color: #ff3c00;
       padding: 1rem;
       border-bottom: 1px solid #333;
     }
+
     .section {
       padding: 1rem;
     }
-    .news-grid {
+    .news-grid,
+    .highlight-grid,
+    .trending-scroll {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
       gap: 1rem;
+    }
+    .trending-scroll {
+      display: flex;
+      overflow-x: auto;
+      gap: 1rem;
+    }
+    .trending-scroll .news-item {
+      min-width: 280px;
+    }
+    .highlight-grid {
+      grid-template-columns: 2fr 1fr 1fr 1fr;
     }
     .news-item {
       background: #111;
@@ -587,89 +218,4 @@ new code for 7sections
     .news-item a:hover {
       text-decoration: underline;
     }
-  </style>
-</head>
-<body>
-  <h1 style="text-align: center; color: #ff3c00; padding: 1rem;">📰 Industry News - TechnicalAcumen</h1>
-
-  <div class="section" id="highlights">
-    <h2>🔥 Highlights</h2>
-    <div class="news-grid" id="highlights-news"></div>
-  </div>
-
-  <div class="section" id="trending">
-    <h2>📈 Trending Now</h2>
-    <div class="news-grid" id="trending-news"></div>
-  </div>
-
-  <div class="section" id="ai">
-    <h2>🤖 AI & Machine Learning</h2>
-    <div class="news-grid" id="ai-news"></div>
-  </div>
-
-  <div class="section" id="cybersecurity">
-    <h2>🛡 Cybersecurity & Privacy</h2>
-    <div class="news-grid" id="cyber-news"></div>
-  </div>
-
-  <div class="section" id="futuretech">
-    <h2>🚀 Future Tech</h2>
-    <div class="news-grid" id="future-news"></div>
-  </div>
-
-  <div class="section" id="popular">
-    <h2>📢 Popular Reads</h2>
-    <div class="news-grid" id="popular-news"></div>
-  </div>
-
-  <div class="section" id="recent">
-    <h2>🆕 Recent Updates</h2>
-    <div class="news-grid" id="recent-news"></div>
-  </div>
-
-  <script>
-    const parser = new RSSParser();
-
-    const feeds = {
-      highlights: 'https://www.theverge.com/rss/index.xml',
-      trending: 'https://www.wired.com/feed/rss',
-      ai: 'https://spectrum.ieee.org/rss/topic/artificial-intelligence',
-      cyber: 'https://www.csoonline.com/index.rss',
-      future: 'https://www.popularmechanics.com/technology/rss/',
-      popular: 'https://feeds.feedburner.com/TechCrunch/',
-      recent: 'https://www.engadget.com/rss.xml'
-    };
-
-    async function loadNews(feedUrl, containerId) {
-      try {
-        const feed = await parser.parseURL(feedUrl);
-        const container = document.getElementById(containerId);
-        feed.items.slice(0, 10).forEach(item => {
-          const div = document.createElement('div');
-          div.className = 'news-item';
-
-          const imageUrl = item.enclosure?.url || 'https://via.placeholder.com/300x200?text=News';
-
-          div.innerHTML = `
-            <img src="${imageUrl}" alt="News thumbnail">
-            <a href="${item.link}" target="_blank">${item.title}</a>
-            <p>${item.contentSnippet?.slice(0, 100)}...</p>
-          `;
-          container.appendChild(div);
-        });
-      } catch (error) {
-        console.error(`Failed to fetch ${containerId}:`, error);
-      }
-    }
-
-    loadNews(feeds.highlights, 'highlights-news');
-    loadNews(feeds.trending, 'trending-news');
-    loadNews(feeds.ai, 'ai-news');
-    loadNews(feeds.cyber, 'cyber-news');
-    loadNews(feeds.future, 'future-news');
-    loadNews(feeds.popular, 'popular-news');
-    loadNews(feeds.recent, 'recent-news');
-  </script>
-</body>
-</html>
 
