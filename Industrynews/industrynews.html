@@ -1,116 +1,131 @@
-----JS------
-// industrynews.js
-const parser = new RSSParser();
+document.addEventListener("DOMContentLoaded", function () {
+  const parser = new RSSParser();
+  const feedUrls = [
+    "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://www.theverge.com/rss/index.xml"),
+    "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://www.engadget.com/rss.xml"),
+    "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://feeds.arstechnica.com/arstechnica/index"),
+    "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://www.techradar.com/rss")
+  ];
 
-const highlightFeeds = [
-  'https://www.theverge.com/rss/index.xml',
-  'https://feeds.feedburner.com/TechCrunch/',
-  'https://www.engadget.com/rss.xml'
-];
+  const carousel = document.getElementById("news-carousel");
+  const trendingBox = document.getElementById("trending-news");
+  const miniBox = document.getElementById("mini-box");
 
-const trendingFeeds = [
-  'https://www.digitaltrends.com/feed/',
-  'https://www.makeuseof.com/feed/',
-  'https://www.techspot.com/backend.xml'
-];
+  let currentSlide = 0;
+  let currentMini = 0;
 
-const placeholderImg = 'https://via.placeholder.com/400x200?text=News';
-
-let highlightItems = [];
-let trendingItems = [];
-let currentSlide = 0;
-let currentMiniSlide = 0;
-
-async function loadFeeds() {
-  for (const feedUrl of highlightFeeds) {
-    const feed = await parser.parseURL(feedUrl);
-    highlightItems.push(...feed.items);
-  }
-  for (const feedUrl of trendingFeeds) {
-    const feed = await parser.parseURL(feedUrl);
-    trendingItems.push(...feed.items);
-  }
-  renderCarousel();
-  renderMiniHighlights();
-  renderMiniCarousel();
-  renderStaticHighlights();
-}
-
-function renderCarousel() {
-  const carousel = document.getElementById('carousel-slides');
-  carousel.innerHTML = '';
-  highlightItems.slice(0, 10).forEach((item, index) => {
-    const div = document.createElement('div');
-    div.className = 'carousel-slide' + (index === 0 ? ' active' : '');
-    div.innerHTML = `
-      <img src="${item.enclosure?.url || placeholderImg}" alt="thumb">
-      <a href="${item.link}" target="_blank">${item.title}</a>
+  function createCard(item) {
+    const card = document.createElement("div");
+    card.className = "news-card";
+    card.innerHTML = `
+      <img src="${item.enclosure?.url || "https://via.placeholder.com/600x300?text=No+Image"}" alt="News image">
+      <h3>${item.title}</h3>
+      <p>${item.contentSnippet || ""}</p>
+      <a href="${item.link}" target="_blank">→</a>
     `;
-    carousel.appendChild(div);
-  });
-}
+    return card;
+  }
 
-function nextSlide() {
-  const slides = document.querySelectorAll('#carousel-slides .carousel-slide');
-  slides[currentSlide].classList.remove('active');
-  currentSlide = (currentSlide + 1) % slides.length;
-  slides[currentSlide].classList.add('active');
-}
+  function createMiniCard(item) {
+    const card = document.createElement("div");
+    card.className = "mini-slide";
+    card.innerHTML = `
+      <h4>${item.title}</h4>
+      <p>${item.contentSnippet || ""}</p>
+    `;
+    return card;
+  }
 
-function prevSlide() {
-  const slides = document.querySelectorAll('#carousel-slides .carousel-slide');
-  slides[currentSlide].classList.remove('active');
-  currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-  slides[currentSlide].classList.add('active');
-}
+  async function loadFeeds() {
+    const allItems = [];
 
-function renderMiniHighlights() {
-  const item1 = highlightItems[11] || highlightItems[1];
-  const item2 = highlightItems[12] || highlightItems[2];
-  document.getElementById('mini-highlight-1').innerHTML = cardHtml(item1);
-  document.getElementById('mini-highlight-2').innerHTML = cardHtml(item2);
-}
+    for (let url of feedUrls) {
+      try {
+        const feed = await parser.parseURL(url);
+        allItems.push(...feed.items.slice(0, 5));
+      } catch (err) {
+        console.error("Failed to fetch", url, err);
+      }
+    }
 
-function renderMiniCarousel() {
-  const mini = document.getElementById('mini-carousel-slides');
-  mini.innerHTML = '';
-  trendingItems.slice(0, 5).forEach((item, index) => {
-    const div = document.createElement('div');
-    div.className = 'carousel-slide' + (index === 0 ? ' active' : '');
-    div.innerHTML = cardHtml(item);
-    mini.appendChild(div);
-  });
-}
+    // Main Carousel News
+    allItems.slice(0, 10).forEach((item) => {
+      const card = createCard(item);
+      carousel.appendChild(card);
+    });
 
-function nextMiniSlide() {
-  const slides = document.querySelectorAll('#mini-carousel-slides .carousel-slide');
-  slides[currentMiniSlide].classList.remove('active');
-  currentMiniSlide = (currentMiniSlide + 1) % slides.length;
-  slides[currentMiniSlide].classList.add('active');
-}
+    // Trending News
+    allItems.slice(10, 16).forEach((item) => {
+      const card = createCard(item);
+      trendingBox.appendChild(card);
+    });
 
-function prevMiniSlide() {
-  const slides = document.querySelectorAll('#mini-carousel-slides .carousel-slide');
-  slides[currentMiniSlide].classList.remove('active');
-  currentMiniSlide = (currentMiniSlide - 1 + slides.length) % slides.length;
-  slides[currentMiniSlide].classList.add('active');
-}
+    // Mini Slides
+    allItems.slice(16, 22).forEach((item) => {
+      const mini = createMiniCard(item);
+      miniBox.appendChild(mini);
+    });
 
-function renderStaticHighlights() {
-  const staticBox = document.getElementById('highlight-static');
-  const smallBox = document.getElementById('highlight-small');
-  staticBox.innerHTML = cardHtml(highlightItems[13] || highlightItems[3]);
-  smallBox.innerHTML = cardHtml(highlightItems[14] || highlightItems[4]);
-}
+    updateSlides();
+  }
 
-function cardHtml(item) {
-  return `
-    <img src="${item.enclosure?.url || placeholderImg}" alt="thumb">
-    <a href="${item.link}" target="_blank">${item.title}</a>
-  `;
-}
+  function updateSlides() {
+    const slides = document.querySelectorAll("#news-carousel .news-card");
+    slides.forEach((slide, i) => {
+      slide.style.display = i === currentSlide ? "block" : "none";
+    });
 
-window.addEventListener('DOMContentLoaded', loadFeeds);
+    const miniSlides = document.querySelectorAll("#mini-box .mini-slide");
+    miniSlides.forEach((slide, i) => {
+      slide.classList.remove("active");
+      if (i === currentMini) slide.classList.add("active");
+    });
+  }
+
+  function nextSlide() {
+    const slides = document.querySelectorAll("#news-carousel .news-card");
+    if (slides.length === 0) return;
+    currentSlide = (currentSlide + 1) % slides.length;
+    updateSlides();
+  }
+
+  function prevSlide() {
+    const slides = document.querySelectorAll("#news-carousel .news-card");
+    if (slides.length === 0) return;
+    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+    updateSlides();
+  }
+
+  function nextMiniSlide() {
+    const miniSlides = document.querySelectorAll("#mini-box .mini-slide");
+    if (miniSlides.length === 0) return;
+    miniSlides[currentMini]?.classList.remove("active");
+    currentMini = (currentMini + 1) % miniSlides.length;
+    miniSlides[currentMini]?.classList.add("active");
+  }
+
+  function prevMiniSlide() {
+    const miniSlides = document.querySelectorAll("#mini-box .mini-slide");
+    if (miniSlides.length === 0) return;
+    miniSlides[currentMini]?.classList.remove("active");
+    currentMini = (currentMini - 1 + miniSlides.length) % miniSlides.length;
+    miniSlides[currentMini]?.classList.add("active");
+  }
+
+  // Button Event Listeners
+  const nextBtn = document.querySelector(".next-btn");
+  const prevBtn = document.querySelector(".prev-btn");
+  const nextMiniBtn = document.querySelector(".mini-next-btn");
+  const prevMiniBtn = document.querySelector(".mini-prev-btn");
+
+  if (nextBtn) nextBtn.addEventListener("click", nextSlide);
+  if (prevBtn) prevBtn.addEventListener("click", prevSlide);
+  if (nextMiniBtn) nextMiniBtn.addEventListener("click", nextMiniSlide);
+  if (prevMiniBtn) prevMiniBtn.addEventListener("click", prevMiniSlide);
+
+  loadFeeds();
+});
+
 
 --------------------------------------------------------------------------------------------------------------
 
