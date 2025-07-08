@@ -1,135 +1,117 @@
 ----JS------
-const RSSParser = new RSSParser();
-const rssFeeds = [
-  "https://www.theverge.com/rss/index.xml",
-  "https://www.engadget.com/rss.xml",
-  "https://www.wired.com/feed/rss",
-  "https://feeds.arstechnica.com/arstechnica/index",
-  "https://www.techradar.com/rss"
+// industrynews.js
+const parser = new RSSParser();
+
+const highlightFeeds = [
+  'https://www.theverge.com/rss/index.xml',
+  'https://feeds.feedburner.com/TechCrunch/',
+  'https://www.engadget.com/rss.xml'
 ];
 
-let allItems = [];
+const trendingFeeds = [
+  'https://www.digitaltrends.com/feed/',
+  'https://www.makeuseof.com/feed/',
+  'https://www.techspot.com/backend.xml'
+];
+
+const placeholderImg = 'https://via.placeholder.com/400x200?text=News';
+
+let highlightItems = [];
+let trendingItems = [];
 let currentSlide = 0;
-let miniSlide = 0;
+let currentMiniSlide = 0;
 
-async function fetchAllNews() {
-  for (const feedUrl of rssFeeds) {
-    try {
-      const feed = await RSSParser.parseURL(feedUrl);
-      allItems = allItems.concat(feed.items);
-    } catch (error) {
-      console.error("Error fetching:", feedUrl, error);
-    }
+async function loadFeeds() {
+  for (const feedUrl of highlightFeeds) {
+    const feed = await parser.parseURL(feedUrl);
+    highlightItems.push(...feed.items);
   }
-
-  allItems = allItems.sort(() => 0.5 - Math.random()).slice(0, 20); // Random 20 articles
+  for (const feedUrl of trendingFeeds) {
+    const feed = await parser.parseURL(feedUrl);
+    trendingItems.push(...feed.items);
+  }
   renderCarousel();
   renderMiniHighlights();
-  renderHighlightBoxes();
+  renderMiniCarousel();
+  renderStaticHighlights();
 }
 
-function createNewsCard(item) {
-  const card = document.createElement("div");
-  card.className = "news-card";
-
-  const link = document.createElement("a");
-  link.href = item.link || "#";
-  link.target = "_blank";
-  link.style.color = "inherit";
-  link.style.textDecoration = "none";
-
-  const img = document.createElement("img");
-  img.src = item.enclosure?.url || "https://via.placeholder.com/600x300?text=No+Image";
-  img.alt = item.title;
-  img.style.width = "100%";
-  img.style.borderRadius = "8px";
-
-  const title = document.createElement("h4");
-  title.innerText = item.title;
-
-  const desc = document.createElement("p");
-  desc.innerText = item.contentSnippet || item.content?.slice(0, 100) || "No description.";
-
-  link.appendChild(img);
-  link.appendChild(title);
-  link.appendChild(desc);
-  card.appendChild(link);
-  return card;
-}
-
-// ----------- HIGHLIGHT CAROUSEL -----------
 function renderCarousel() {
-  const container = document.getElementById("carousel-slides");
-  container.innerHTML = "";
-
-  allItems.slice(0, 10).forEach((item, index) => {
-    const slide = createNewsCard(item);
-    slide.classList.add("carousel-slide");
-    if (index === currentSlide) slide.classList.add("active");
-    container.appendChild(slide);
+  const carousel = document.getElementById('carousel-slides');
+  carousel.innerHTML = '';
+  highlightItems.slice(0, 10).forEach((item, index) => {
+    const div = document.createElement('div');
+    div.className = 'carousel-slide' + (index === 0 ? ' active' : '');
+    div.innerHTML = `
+      <img src="${item.enclosure?.url || placeholderImg}" alt="thumb">
+      <a href="${item.link}" target="_blank">${item.title}</a>
+    `;
+    carousel.appendChild(div);
   });
 }
 
 function nextSlide() {
-  const slides = document.querySelectorAll("#carousel-slides .carousel-slide");
-  slides[currentSlide].classList.remove("active");
+  const slides = document.querySelectorAll('#carousel-slides .carousel-slide');
+  slides[currentSlide].classList.remove('active');
   currentSlide = (currentSlide + 1) % slides.length;
-  slides[currentSlide].classList.add("active");
+  slides[currentSlide].classList.add('active');
 }
 
 function prevSlide() {
-  const slides = document.querySelectorAll("#carousel-slides .carousel-slide");
-  slides[currentSlide].classList.remove("active");
+  const slides = document.querySelectorAll('#carousel-slides .carousel-slide');
+  slides[currentSlide].classList.remove('active');
   currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-  slides[currentSlide].classList.add("active");
+  slides[currentSlide].classList.add('active');
 }
 
-// ----------- MINI SLIDE CAROUSEL -----------
 function renderMiniHighlights() {
-  const miniContainer = document.getElementById("mini-carousel-slides");
-  miniContainer.innerHTML = "";
+  const item1 = highlightItems[11] || highlightItems[1];
+  const item2 = highlightItems[12] || highlightItems[2];
+  document.getElementById('mini-highlight-1').innerHTML = cardHtml(item1);
+  document.getElementById('mini-highlight-2').innerHTML = cardHtml(item2);
+}
 
-  allItems.slice(10, 16).forEach((item, index) => {
-    const miniCard = createNewsCard(item);
-    miniCard.classList.add("carousel-slide");
-    if (index === miniSlide) miniCard.classList.add("active");
-    miniContainer.appendChild(miniCard);
+function renderMiniCarousel() {
+  const mini = document.getElementById('mini-carousel-slides');
+  mini.innerHTML = '';
+  trendingItems.slice(0, 5).forEach((item, index) => {
+    const div = document.createElement('div');
+    div.className = 'carousel-slide' + (index === 0 ? ' active' : '');
+    div.innerHTML = cardHtml(item);
+    mini.appendChild(div);
   });
 }
 
 function nextMiniSlide() {
-  const slides = document.querySelectorAll("#mini-carousel-slides .carousel-slide");
-  slides[miniSlide].classList.remove("active");
-  miniSlide = (miniSlide + 1) % slides.length;
-  slides[miniSlide].classList.add("active");
+  const slides = document.querySelectorAll('#mini-carousel-slides .carousel-slide');
+  slides[currentMiniSlide].classList.remove('active');
+  currentMiniSlide = (currentMiniSlide + 1) % slides.length;
+  slides[currentMiniSlide].classList.add('active');
 }
 
 function prevMiniSlide() {
-  const slides = document.querySelectorAll("#mini-carousel-slides .carousel-slide");
-  slides[miniSlide].classList.remove("active");
-  miniSlide = (miniSlide - 1 + slides.length) % slides.length;
-  slides[miniSlide].classList.add("active");
+  const slides = document.querySelectorAll('#mini-carousel-slides .carousel-slide');
+  slides[currentMiniSlide].classList.remove('active');
+  currentMiniSlide = (currentMiniSlide - 1 + slides.length) % slides.length;
+  slides[currentMiniSlide].classList.add('active');
 }
 
-// ----------- STATIC MINI BOXES & GRID BOXES -----------
-function renderHighlightBoxes() {
-  const mini1 = document.getElementById("mini-highlight-1");
-  const mini2 = document.getElementById("mini-highlight-2");
-  const smallBox = document.getElementById("highlight-small");
-  const staticBox = document.getElementById("highlight-static");
-
-  [mini1, mini2, smallBox, staticBox].forEach((el, i) => {
-    el.innerHTML = "";
-    const item = allItems[16 + i];
-    if (item) {
-      const card = createNewsCard(item);
-      el.appendChild(card);
-    }
-  });
+function renderStaticHighlights() {
+  const staticBox = document.getElementById('highlight-static');
+  const smallBox = document.getElementById('highlight-small');
+  staticBox.innerHTML = cardHtml(highlightItems[13] || highlightItems[3]);
+  smallBox.innerHTML = cardHtml(highlightItems[14] || highlightItems[4]);
 }
 
-// ----------- INIT -----------
-window.addEventListener("DOMContentLoaded", fetchAllNews);
+function cardHtml(item) {
+  return `
+    <img src="${item.enclosure?.url || placeholderImg}" alt="thumb">
+    <a href="${item.link}" target="_blank">${item.title}</a>
+  `;
+}
+
+window.addEventListener('DOMContentLoaded', loadFeeds);
+
 --------------------------------------------------------------------------------------------------------------
 
 ---HTML--
