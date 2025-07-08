@@ -1,103 +1,115 @@
 -- jss --
-// ===============================
-//         NEWS FEED SECTION
-// ===============================
+const rss2json = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
-const rssFeeds = [
-  'https://www.wired.com/feed/rss',
-  'https://www.cnet.com/rss/news/',
-];
+const feeds = {
+  highlights: [
+    'https://stackoverflow.blog/feed/',
+    'https://ai.googleblog.com/feeds/posts/default',
+    'https://www.microsoft.com/en-us/research/feed/',
+    'https://techcrunch.com/feed/',
+    'https://www.theverge.com/rss/index.xml',
+    'https://www.wired.com/feed/category/tech/latest/rss',
+    'https://www.technologyreview.com/feed/',
+    'https://venturebeat.com/feed/',
+    'https://news.crunchbase.com/feed/',
+    'https://futurism.com/feed',
+    'https://www.nextbigfuture.com/feed',
+    'https://syncedreview.com/feed/',
+    'https://towardsdatascience.com/feed',
+    'https://www.aitrends.com/feed/',
+    'https://dev.to/feed',
+    'https://hashnode.com/feed'
+  ],
+  trending: [
+    'https://news.ycombinator.com/rss',
+    'https://www.theverge.com/rss/index.xml',
+    'https://techcrunch.com/feed/',
+    'https://venturebeat.com/feed/',
+    'https://www.wired.com/feed/category/tech/latest/rss',
+    'https://www.technologyreview.com/feed/'
+  ]
+};
 
-const parser = new RSSParser();
-const container = document.getElementById("highlightNews");
-
-async function loadRSS() {
-  for (let url of rssFeeds) {
-    try {
-      const feed = await parser.parseURL(`https://api.rss2json.com/v1/api.json?rss_url=${url}`);
-      feed.items.slice(0, 5).forEach(item => {
-        const newsDiv = document.createElement("div");
-        newsDiv.className = "news-card";
-        newsDiv.innerHTML = `
-          <img src="${item.enclosure?.link || 'https://via.placeholder.com/300?text=No+Image'}" alt="News image" />
-          <h4>${item.title}</h4>
-          <p>${item.description.slice(0, 100)}...</p>
-          <a href="${item.link}" target="_blank">Read more</a>
-        `;
-        container.appendChild(newsDiv);
-      });
-    } catch (err) {
-      console.warn("Error fetching:", url, err);
-    }
-  }
+function createSlide(item) {
+  const imageUrl = item.thumbnail || 'https://via.placeholder.com/300x200?text=News';
+  return `
+    <div class="carousel-slide">
+      <img src="${imageUrl}" alt="News image" style="width:100%; border-radius: 10px;">
+      <h4><a href="${item.link}" target="_blank">${item.title}</a></h4>
+      <p>${item.description.slice(0, 100)}...</p>
+    </div>
+  `;
 }
 
-loadRSS();
-
-
-// ===============================
-//         SLIDER NAVIGATION
-// ===============================
-
-let currentSlide = 0;
-const slides = document.querySelectorAll(".news-card");
+let slideIndex = 0;
+function showSlides(containerId, slidesClass) {
+  const slides = document.querySelectorAll(`#${containerId} .${slidesClass}`);
+  slides.forEach((slide, i) => {
+    slide.style.display = (i === slideIndex) ? 'block' : 'none';
+  });
+}
 
 function nextSlide() {
-  if (slides.length === 0) return;
-  slides[currentSlide].classList.remove("active");
-  currentSlide = (currentSlide + 1) % slides.length;
-  slides[currentSlide].classList.add("active");
+  slideIndex++;
+  showSlides('carousel-slides', 'carousel-slide');
 }
-
 function prevSlide() {
-  if (slides.length === 0) return;
-  slides[currentSlide].classList.remove("active");
-  currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-  slides[currentSlide].classList.add("active");
+  slideIndex--;
+  showSlides('carousel-slides', 'carousel-slide');
 }
 
-// ===============================
-//         MINI SLIDER
-// ===============================
-
-let miniSlide = 0;
-const miniSlides = document.querySelectorAll(".mini-news-card");
-
+let miniSlideIndex = 0;
 function nextMiniSlide() {
-  if (miniSlides.length === 0) return;
-  miniSlides[miniSlide].classList.remove("active");
-  miniSlide = (miniSlide + 1) % miniSlides.length;
-  miniSlides[miniSlide].classList.add("active");
+  miniSlideIndex++;
+  showSlides('mini-carousel-slides', 'carousel-slide');
 }
-
 function prevMiniSlide() {
-  if (miniSlides.length === 0) return;
-  miniSlides[miniSlide].classList.remove("active");
-  miniSlide = (miniSlide - 1 + miniSlides.length) % miniSlides.length;
-  miniSlides[miniSlide].classList.add("active");
+  miniSlideIndex--;
+  showSlides('mini-carousel-slides', 'carousel-slide');
 }
 
-// ===============================
-//         SAFETY CHECKS
-// ===============================
+async function loadRSSFeed(feedUrls, containerId, limit = 10, isCarousel = false) {
+  const container = document.getElementById(containerId);
+  container.innerHTML = '';
+  let allItems = [];
 
-document.addEventListener("DOMContentLoaded", () => {
-  const yesBtn = document.getElementById("yesBtn");
-  const noBtn = document.getElementById("noBtn");
+  for (const url of feedUrls) {
+    try {
+      const res = await fetch(rss2json + encodeURIComponent(url));
+      const data = await res.json();
+      if (data.items && Array.isArray(data.items)) {
+        allItems = allItems.concat(data.items.slice(0, limit));
+      }
+    } catch (err) {
+      console.error('Feed fetch error for', url);
+    }
+  }
 
-  if (yesBtn && noBtn) {
-    yesBtn.addEventListener("click", () => {
-      yesBtn.classList.add("selected");
-      noBtn.classList.remove("selected");
-    });
-    noBtn.addEventListener("click", () => {
-      noBtn.classList.add("selected");
-      yesBtn.classList.remove("selected");
+  if (isCarousel) {
+    container.innerHTML = allItems.map(createSlide).join('');
+    showSlides(containerId, 'carousel-slide');
+  } else {
+    allItems.slice(0, limit).forEach(item => {
+      const div = document.createElement('div');
+      div.className = 'news-card';
+      const imageUrl = item.thumbnail || 'https://via.placeholder.com/300x200?text=News';
+      div.innerHTML = `
+        <img src="${imageUrl}" alt="thumbnail" style="width:100%; border-radius:8px;">
+        <h4><a href="${item.link}" target="_blank">${item.title}</a></h4>
+        <p>${item.description.slice(0, 100)}...</p>
+      `;
+      container.appendChild(div);
     });
   }
-});
+}
 
-
+// Load highlight carousel
+loadRSSFeed(feeds.highlights, 'carousel-slides', 10, true);
+loadRSSFeed(feeds.trending, 'mini-carousel-slides', 10, true);
+loadRSSFeed(feeds.highlights, 'mini-highlight-1', 1);
+loadRSSFeed(feeds.highlights, 'mini-highlight-2', 1);
+loadRSSFeed(feeds.highlights, 'highlight-small', 1);
+loadRSSFeed(feeds.highlights, 'highlight-static', 1);
 
 --------------------------------------------------------------------------------------------------------------
 
