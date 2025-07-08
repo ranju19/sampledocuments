@@ -19,10 +19,10 @@ const feeds = {
 };
 
 function createSlide(item) {
-  const imageUrl = item.thumbnail || 'https://via.placeholder.com/300x200?text=News';
+  const imageUrl = item.thumbnail && item.thumbnail.startsWith('http') ? item.thumbnail : 'https://via.placeholder.com/300x200?text=News';
   return `
     <div class="carousel-slide">
-      <img src="${imageUrl}" alt="News image" style="width:100%; border-radius: 10px;">
+      <img src="${imageUrl}" alt="News image" style="width:100%; height:200px; object-fit:cover; border-radius: 10px;">
       <h4><a href="${item.link}" target="_blank">${item.title}</a></h4>
       <p>${item.description.slice(0, 100)}...</p>
     </div>
@@ -73,16 +73,18 @@ async function loadRSSFeed(feedUrls, containerId, limit = 10, isCarousel = false
     }
   }
 
+  allItems = allItems.slice(0, limit);
+
   if (isCarousel) {
     container.innerHTML = allItems.map(createSlide).join('');
     showSlides(containerId, 'carousel-slide');
   } else {
-    allItems.slice(0, limit).forEach(item => {
+    allItems.forEach(item => {
       const div = document.createElement('div');
       div.className = 'news-card';
-      const imageUrl = item.thumbnail || 'https://via.placeholder.com/300x200?text=News';
+      const imageUrl = item.thumbnail && item.thumbnail.startsWith('http') ? item.thumbnail : 'https://via.placeholder.com/300x200?text=News';
       div.innerHTML = `
-        <img src="${imageUrl}" alt="thumbnail" style="width:100%; border-radius:8px;">
+        <img src="${imageUrl}" alt="thumbnail" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
         <h4><a href="${item.link}" target="_blank">${item.title}</a></h4>
         <p>${item.description.slice(0, 100)}...</p>
       `;
@@ -98,6 +100,7 @@ loadRSSFeed([feeds.highlights[0]], 'mini-highlight-1', 1);
 loadRSSFeed([feeds.highlights[1]], 'mini-highlight-2', 1);
 loadRSSFeed([feeds.trending[0]], 'highlight-small', 1);
 loadRSSFeed([feeds.trending[1]], 'highlight-static', 1);
+
 
 
 --------------------------------------------------------------------------------------------------------------
