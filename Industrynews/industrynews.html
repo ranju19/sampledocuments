@@ -1,130 +1,102 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const parser = new RSSParser();
-  const feedUrls = [
-    "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://www.theverge.com/rss/index.xml"),
-    "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://www.engadget.com/rss.xml"),
-    "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://feeds.arstechnica.com/arstechnica/index"),
-    "https://api.allorigins.win/raw?url=" + encodeURIComponent("https://www.techradar.com/rss")
-  ];
+-- jss --
+// ===============================
+//         NEWS FEED SECTION
+// ===============================
 
-  const carousel = document.getElementById("news-carousel");
-  const trendingBox = document.getElementById("trending-news");
-  const miniBox = document.getElementById("mini-box");
+const rssFeeds = [
+  'https://www.wired.com/feed/rss',
+  'https://www.cnet.com/rss/news/',
+];
 
-  let currentSlide = 0;
-  let currentMini = 0;
+const parser = new RSSParser();
+const container = document.getElementById("highlightNews");
 
-  function createCard(item) {
-    const card = document.createElement("div");
-    card.className = "news-card";
-    card.innerHTML = `
-      <img src="${item.enclosure?.url || "https://via.placeholder.com/600x300?text=No+Image"}" alt="News image">
-      <h3>${item.title}</h3>
-      <p>${item.contentSnippet || ""}</p>
-      <a href="${item.link}" target="_blank">→</a>
-    `;
-    return card;
-  }
-
-  function createMiniCard(item) {
-    const card = document.createElement("div");
-    card.className = "mini-slide";
-    card.innerHTML = `
-      <h4>${item.title}</h4>
-      <p>${item.contentSnippet || ""}</p>
-    `;
-    return card;
-  }
-
-  async function loadFeeds() {
-    const allItems = [];
-
-    for (let url of feedUrls) {
-      try {
-        const feed = await parser.parseURL(url);
-        allItems.push(...feed.items.slice(0, 5));
-      } catch (err) {
-        console.error("Failed to fetch", url, err);
-      }
+async function loadRSS() {
+  for (let url of rssFeeds) {
+    try {
+      const feed = await parser.parseURL(`https://api.rss2json.com/v1/api.json?rss_url=${url}`);
+      feed.items.slice(0, 5).forEach(item => {
+        const newsDiv = document.createElement("div");
+        newsDiv.className = "news-card";
+        newsDiv.innerHTML = `
+          <img src="${item.enclosure?.link || 'https://via.placeholder.com/300?text=No+Image'}" alt="News image" />
+          <h4>${item.title}</h4>
+          <p>${item.description.slice(0, 100)}...</p>
+          <a href="${item.link}" target="_blank">Read more</a>
+        `;
+        container.appendChild(newsDiv);
+      });
+    } catch (err) {
+      console.warn("Error fetching:", url, err);
     }
+  }
+}
 
-    // Main Carousel News
-    allItems.slice(0, 10).forEach((item) => {
-      const card = createCard(item);
-      carousel.appendChild(card);
+loadRSS();
+
+
+// ===============================
+//         SLIDER NAVIGATION
+// ===============================
+
+let currentSlide = 0;
+const slides = document.querySelectorAll(".news-card");
+
+function nextSlide() {
+  if (slides.length === 0) return;
+  slides[currentSlide].classList.remove("active");
+  currentSlide = (currentSlide + 1) % slides.length;
+  slides[currentSlide].classList.add("active");
+}
+
+function prevSlide() {
+  if (slides.length === 0) return;
+  slides[currentSlide].classList.remove("active");
+  currentSlide = (currentSlide - 1 + slides.length) % slides.length;
+  slides[currentSlide].classList.add("active");
+}
+
+// ===============================
+//         MINI SLIDER
+// ===============================
+
+let miniSlide = 0;
+const miniSlides = document.querySelectorAll(".mini-news-card");
+
+function nextMiniSlide() {
+  if (miniSlides.length === 0) return;
+  miniSlides[miniSlide].classList.remove("active");
+  miniSlide = (miniSlide + 1) % miniSlides.length;
+  miniSlides[miniSlide].classList.add("active");
+}
+
+function prevMiniSlide() {
+  if (miniSlides.length === 0) return;
+  miniSlides[miniSlide].classList.remove("active");
+  miniSlide = (miniSlide - 1 + miniSlides.length) % miniSlides.length;
+  miniSlides[miniSlide].classList.add("active");
+}
+
+// ===============================
+//         SAFETY CHECKS
+// ===============================
+
+document.addEventListener("DOMContentLoaded", () => {
+  const yesBtn = document.getElementById("yesBtn");
+  const noBtn = document.getElementById("noBtn");
+
+  if (yesBtn && noBtn) {
+    yesBtn.addEventListener("click", () => {
+      yesBtn.classList.add("selected");
+      noBtn.classList.remove("selected");
     });
-
-    // Trending News
-    allItems.slice(10, 16).forEach((item) => {
-      const card = createCard(item);
-      trendingBox.appendChild(card);
-    });
-
-    // Mini Slides
-    allItems.slice(16, 22).forEach((item) => {
-      const mini = createMiniCard(item);
-      miniBox.appendChild(mini);
-    });
-
-    updateSlides();
-  }
-
-  function updateSlides() {
-    const slides = document.querySelectorAll("#news-carousel .news-card");
-    slides.forEach((slide, i) => {
-      slide.style.display = i === currentSlide ? "block" : "none";
-    });
-
-    const miniSlides = document.querySelectorAll("#mini-box .mini-slide");
-    miniSlides.forEach((slide, i) => {
-      slide.classList.remove("active");
-      if (i === currentMini) slide.classList.add("active");
+    noBtn.addEventListener("click", () => {
+      noBtn.classList.add("selected");
+      yesBtn.classList.remove("selected");
     });
   }
-
-  function nextSlide() {
-    const slides = document.querySelectorAll("#news-carousel .news-card");
-    if (slides.length === 0) return;
-    currentSlide = (currentSlide + 1) % slides.length;
-    updateSlides();
-  }
-
-  function prevSlide() {
-    const slides = document.querySelectorAll("#news-carousel .news-card");
-    if (slides.length === 0) return;
-    currentSlide = (currentSlide - 1 + slides.length) % slides.length;
-    updateSlides();
-  }
-
-  function nextMiniSlide() {
-    const miniSlides = document.querySelectorAll("#mini-box .mini-slide");
-    if (miniSlides.length === 0) return;
-    miniSlides[currentMini]?.classList.remove("active");
-    currentMini = (currentMini + 1) % miniSlides.length;
-    miniSlides[currentMini]?.classList.add("active");
-  }
-
-  function prevMiniSlide() {
-    const miniSlides = document.querySelectorAll("#mini-box .mini-slide");
-    if (miniSlides.length === 0) return;
-    miniSlides[currentMini]?.classList.remove("active");
-    currentMini = (currentMini - 1 + miniSlides.length) % miniSlides.length;
-    miniSlides[currentMini]?.classList.add("active");
-  }
-
-  // Button Event Listeners
-  const nextBtn = document.querySelector(".next-btn");
-  const prevBtn = document.querySelector(".prev-btn");
-  const nextMiniBtn = document.querySelector(".mini-next-btn");
-  const prevMiniBtn = document.querySelector(".mini-prev-btn");
-
-  if (nextBtn) nextBtn.addEventListener("click", nextSlide);
-  if (prevBtn) prevBtn.addEventListener("click", prevSlide);
-  if (nextMiniBtn) nextMiniBtn.addEventListener("click", nextMiniSlide);
-  if (prevMiniBtn) prevMiniBtn.addEventListener("click", prevMiniSlide);
-
-  loadFeeds();
 });
+
 
 
 --------------------------------------------------------------------------------------------------------------
