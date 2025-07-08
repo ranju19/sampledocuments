@@ -20,9 +20,11 @@ UPDATED JS SECTION1
       container.innerHTML = '';
       const item = highlightItems[currentSlide];
       container.innerHTML = `
-        <img src="${item.thumbnail || 'https://via.placeholder.com/600x300'}" style="width:100%; border-radius:10px">
-        <h3 style="margin-top:0.5rem">${item.title}</h3>
-        <p>${item.description.slice(0, 100)}...</p>
+        <a href="${item.link}" target="_blank">
+          <img src="${item.thumbnail || 'https://via.placeholder.com/600x300'}" style="width:100%; border-radius:10px">
+          <h3 style="margin-top:0.5rem">${item.title}</h3>
+          <p>${item.description.slice(0, 100)}...</p>
+        </a>
       `;
     }
 
@@ -31,28 +33,32 @@ UPDATED JS SECTION1
       container.innerHTML = '';
       const item = highlightItems[(miniSlide + 1) % highlightItems.length];
       container.innerHTML = `
-        <img src="${item.thumbnail || 'https://via.placeholder.com/400x200'}" style="width:100%; border-radius:10px">
-        <h4 style="margin-top:0.5rem">${item.title}</h4>
+        <a href="${item.link}" target="_blank">
+          <img src="${item.thumbnail || 'https://via.placeholder.com/400x200'}" style="width:100%; border-radius:10px">
+          <h4 style="margin-top:0.5rem">${item.title}</h4>
+        </a>
       `;
     }
 
     function loadMiniBoxes() {
       document.getElementById('mini-highlight-1').innerHTML = `
-        <h4>${highlightItems[2].title}</h4>
+        <a href="${highlightItems[2].link}" target="_blank"><h4>${highlightItems[2].title}</h4></a>
       `;
       document.getElementById('mini-highlight-2').innerHTML = `
-        <h4>${highlightItems[3].title}</h4>
+        <a href="${highlightItems[3].link}" target="_blank"><h4>${highlightItems[3].title}</h4></a>
       `;
     }
 
     function loadStaticHighlights() {
       document.getElementById('highlight-small').innerHTML = `
-        <h4>${highlightItems[4].title}</h4>
+        <a href="${highlightItems[4].link}" target="_blank"><h4>${highlightItems[4].title}</h4></a>
       `;
       document.getElementById('highlight-static').innerHTML = `
-        <img src="${highlightItems[5].thumbnail || 'https://via.placeholder.com/400x200'}" style="width:100%; border-radius:10px">
-        <h3>${highlightItems[5].title}</h3>
-        <p>${highlightItems[5].description.slice(0, 100)}...</p>
+        <a href="${highlightItems[5].link}" target="_blank">
+          <img src="${highlightItems[5].thumbnail || 'https://via.placeholder.com/400x200'}" style="width:100%; border-radius:10px">
+          <h3>${highlightItems[5].title}</h3>
+          <p>${highlightItems[5].description.slice(0, 100)}...</p>
+        </a>
       `;
     }
 
