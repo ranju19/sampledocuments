@@ -1,3 +1,206 @@
+updated layout code 
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI RESOURCE HUB</title>
+
+  <link rel="stylesheet" href="style.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/all.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500&family=DM+Serif+Text&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Philosopher&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+  <style>
+    .newspage-body {
+      background-color: #000;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      margin: 0;
+      padding: 0;
+    }
+    .newspage-navbar {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem;
+      background: #111;
+      color: white;
+      align-items: center;
+    }
+    .newspage-navbar a {
+      color: white;
+      text-decoration: none;
+      margin: 0 0.5rem;
+    }
+    .news-carousel {
+      width: 100%;
+      overflow: hidden;
+      margin-bottom: 2rem;
+    }
+    .carousel-item {
+      width: 100%;
+      display: none;
+    }
+    .carousel-item.active {
+      display: block;
+    }
+    .top-stories-container {
+      display: flex;
+      padding: 1rem;
+    }
+    .top-stories {
+      flex: 1;
+      margin-right: 1rem;
+    }
+    .main-feature {
+      flex: 2;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1rem;
+    }
+    .news-item {
+      background: #111;
+      border: 1px solid #222;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(255, 60, 0, 0.3);
+    }
+    .news-item img {
+      width: 100%;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+    .news-item a {
+      color: #ff3c00;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .news-item a:hover {
+      text-decoration: underline;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #111;
+      color: #aaa;
+    }
+  </style>
+</head>
+<body class="newspage-body">
+
+  <nav class="newspage-navbar">
+    <div><a href="index.html">☰ TechnicalAcumen</a></div>
+    <div>
+      <input type="text" placeholder="Feed Your Curiosity..." style="padding:0.4rem; border-radius:5px; border:none;">
+      <a href="index.html">Home</a>
+      <a href="#downloads">Downloads</a>
+      <a href="#contact">Contact</a>
+      <a href="login.html">Login</a>
+    </div>
+  </nav>
+
+  <h1 style="text-align:center; color:#ff3c00; padding:1rem;">📰 Industry News - TechnicalAcumen</h1>
+
+  <div class="news-carousel">
+    <div class="carousel-item active" id="carousel-main">
+      <!-- Will be injected with JS -->
+    </div>
+  </div>
+
+  <div class="top-stories-container">
+    <div class="top-stories" id="highlights-news"></div>
+    <div class="main-feature">
+      <div id="trending-news"></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <h2>🤖 AI & Machine Learning</h2>
+    <div class="main-feature" id="ai-news"></div>
+  </div>
+
+  <div class="section">
+    <h2>🛡 Cybersecurity, Bitcoin & Tech Watch</h2>
+    <div class="main-feature" id="cyber-news"></div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 AI Resources Hub. Built by INH</p>
+  </footer>
+
+  <script>
+    const rss2json = 'https://api.rss2json.com/v1/api.json?rss_url=';
+    const feeds = {
+      highlights: [
+        'https://www.theverge.com/rss/index.xml',
+        'https://feeds.feedburner.com/TechCrunch/',
+        'https://www.engadget.com/rss.xml'
+      ],
+      trending: [
+        'http://rss.slashdot.org/Slashdot/slashdotMain',
+        'https://www.zdnet.com/news/rss.xml'
+      ],
+      ai: [
+        'https://spectrum.ieee.org/rss/topic/artificial-intelligence',
+        'https://the-decoder.com/feed/'
+      ],
+      cyber: [
+        'https://www.csoonline.com/index.rss',
+        'https://www.securityweek.com/feed/'
+      ]
+    };
+
+    async function loadNews(feedUrl, containerId, isCarousel = false) {
+      try {
+        const res = await fetch(rss2json + encodeURIComponent(feedUrl));
+        const data = await res.json();
+        const container = document.getElementById(containerId);
+
+        data.items.slice(0, 5).forEach((item, i) => {
+          const div = document.createElement('div');
+          div.className = 'news-item';
+          const imageUrl = item.thumbnail || 'https://via.placeholder.com/300x200?text=News';
+          div.innerHTML = `
+            <img src="${imageUrl}" alt="News thumbnail">
+            <a href="${item.link}" target="_blank">${item.title}</a>
+            <p>${item.description.slice(0, 100)}...</p>
+          `;
+          if (isCarousel && i === 0) container.innerHTML = div.innerHTML;
+          else container.appendChild(div);
+        });
+      } catch (error) {
+        console.error(`Error fetching ${containerId}:`, error);
+      }
+    }
+
+    loadNews(feeds.highlights[0], 'carousel-main', true);
+    feeds.highlights.forEach(url => loadNews(url, 'highlights-news'));
+    feeds.trending.forEach(url => loadNews(url, 'trending-news'));
+    feeds.ai.forEach(url => loadNews(url, 'ai-news'));
+    feeds.cyber.forEach(url => loadNews(url, 'cyber-news'));
+  </script>
+</body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
