@@ -1,143 +1,107 @@
-<script>
-window.onload = function () {
-  const rss2json = 'https://api.rss2json.com/v1/api.json?rss_url=';
+// industrynews.js
 
-  // 📰 Feeds
-  const highlightFeed = 'https://www.theverge.com/rss/index.xml'; // Highlight News
-  const trendingFeed = 'https://www.techspot.com/backend.xml'; // Trending Tech
+const highlightFeeds = [
+  'https://www.theverge.com/rss/index.xml',
+  'https://www.wired.com/feed/rss',
+  'https://techcrunch.com/feed/',
+  'https://www.cnet.com/rss/all/'
+];
 
-  let highlightItems = [], trendingItems = [];
-  let currentSlide = 0, miniSlide = 0;
+const trendingFeeds = [
+  'https://www.engadget.com/rss.xml',
+  'https://www.digitaltrends.com/feed/',
+  'https://www.zdnet.com/news/rss.xml'
+];
 
-  // 🔥 Load Highlights
-  async function fetchHighlights() {
+let currentSlide = 0;
+let miniCurrent = 0;
+let highlightArticles = [];
+let trendingArticles = [];
+
+async function fetchArticles(urls) {
+  const allItems = [];
+  for (const url of urls) {
     try {
-      const res = await fetch(rss2json + encodeURIComponent(highlightFeed));
+      const api = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`;
+      const res = await fetch(api);
       const data = await res.json();
-      if (!data.items) throw new Error('Highlight feed failed');
-
-      highlightItems = data.items.slice(0, 10);
-      updateCarousel();
-      loadMiniBoxes();
-      loadStaticHighlights();
-    } catch (err) {
-      console.error('Highlight error:', err);
+      if (data.items) {
+        allItems.push(...data.items);
+      }
+    } catch (e) {
+      console.error(`Error fetching ${url}:`, e);
     }
   }
+  return allItems.filter((item, index, self) =>
+    index === self.findIndex((t) => t.link === item.link)
+  );
+}
 
-  // 🔥 Load Trending
-  async function fetchTrending() {
-    try {
-      const res = await fetch(rss2json + encodeURIComponent(trendingFeed));
-      const data = await res.json();
-      if (!data.items) throw new Error('Trending feed failed');
+function createNewsCard(article) {
+  return `
+    <a href="${article.link}" target="_blank" style="text-decoration:none;color:inherit">
+      <div style="display:flex;flex-direction:column;height:100%;">
+        <img src="${article.thumbnail || article.enclosure?.link || 'https://via.placeholder.com/300x200'}" alt="" style="width:100%;height:auto;border-radius:5px;margin-bottom:0.5rem;"/>
+        <strong>${article.title}</strong>
+        <p style="font-size:0.85rem;color:#ccc">${article.description.slice(0, 100)}...</p>
+      </div>
+    </a>
+  `;
+}
 
-      trendingItems = data.items.slice(0, 10);
-      updateMiniCarousel();
-    } catch (err) {
-      console.error('Trending error:', err);
-    }
-  }
+function updateCarousel() {
+  const container = document.getElementById('carousel-slides');
+  container.innerHTML = createNewsCard(highlightArticles[currentSlide]);
+}
 
-  // 🎠 Main carousel (highlight)
-  function updateCarousel() {
-    const container = document.getElementById('carousel-slides');
-    const item = highlightItems[currentSlide];
-    if (!item) return;
+function updateMiniCarousel() {
+  const container = document.getElementById('mini-carousel-slides');
+  container.innerHTML = '';
+  const articles = trendingArticles.slice(miniCurrent, miniCurrent + 3);
+  articles.forEach(article => {
+    const div = document.createElement('div');
+    div.innerHTML = createNewsCard(article);
+    container.appendChild(div);
+  });
+}
 
-    container.innerHTML = `
-      <a href="${item.link}" target="_blank">
-        <img src="${item.thumbnail || 'https://via.placeholder.com/600x300'}" style="width:100%; border-radius:10px">
-        <h3 style="margin-top:0.5rem">${item.title}</h3>
-        <p>${item.description?.slice(0, 100) || ''}...</p>
-      </a>
-    `;
-  }
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % highlightArticles.length;
+  updateCarousel();
+}
+function prevSlide() {
+  currentSlide = (currentSlide - 1 + highlightArticles.length) % highlightArticles.length;
+  updateCarousel();
+}
 
-  // 🎠 Mini-carousel (trending)
-  function updateMiniCarousel() {
-    const container = document.getElementById('mini-carousel-slides');
-    const item = trendingItems[miniSlide];
-    if (!item) return;
+function nextMiniSlide() {
+  miniCurrent = (miniCurrent + 3) % trendingArticles.length;
+  updateMiniCarousel();
+}
+function prevMiniSlide() {
+  miniCurrent = (miniCurrent - 3 + trendingArticles.length) % trendingArticles.length;
+  updateMiniCarousel();
+}
 
-    container.innerHTML = `
-      <a href="${item.link}" target="_blank">
-        <img src="${item.thumbnail || 'https://via.placeholder.com/400x200'}" style="width:100%; border-radius:10px">
-        <h4 style="margin-top:0.5rem">${item.title}</h4>
-        <p>${item.description?.slice(0, 80) || ''}...</p>
-      </a>
-    `;
-  }
+async function renderAll() {
+  highlightArticles = await fetchArticles(highlightFeeds);
+  trendingArticles = await fetchArticles(trendingFeeds);
 
-  // 🧱 Mini boxes (highlight)
-  function loadMiniBoxes() {
-    const box1 = document.getElementById('mini-highlight-1');
-    const box2 = document.getElementById('mini-highlight-2');
-    if (highlightItems[2]) {
-      box1.innerHTML = `
-        <a href="${highlightItems[2].link}" target="_blank">
-          <img src="${highlightItems[2].thumbnail || 'https://via.placeholder.com/300x200'}" style="width:100%; border-radius:10px">
-          <h4>${highlightItems[2].title}</h4>
-          <p>${highlightItems[2].description?.slice(0, 60) || ''}...</p>
-        </a>`;
-    }
-    if (highlightItems[3]) {
-      box2.innerHTML = `
-        <a href="${highlightItems[3].link}" target="_blank">
-          <img src="${highlightItems[3].thumbnail || 'https://via.placeholder.com/300x200'}" style="width:100%; border-radius:10px">
-          <h4>${highlightItems[3].title}</h4>
-          <p>${highlightItems[3].description?.slice(0, 60) || ''}...</p>
-        </a>`;
-    }
-  }
-
-  // 📌 Small static highlight boxes
-  function loadStaticHighlights() {
-    const small = document.getElementById('highlight-small');
-    const staticBox = document.getElementById('highlight-static');
-
-    if (highlightItems[4]) {
-      small.innerHTML = `
-        <a href="${highlightItems[4].link}" target="_blank">
-          <img src="${highlightItems[4].thumbnail || 'https://via.placeholder.com/300x200'}" style="width:100%; border-radius:10px">
-          <h4>${highlightItems[4].title}</h4>
-          <p>${highlightItems[4].description?.slice(0, 60) || ''}...</p>
-        </a>`;
-    }
-
-    if (highlightItems[5]) {
-      staticBox.innerHTML = `
-        <a href="${highlightItems[5].link}" target="_blank">
-          <img src="${highlightItems[5].thumbnail || 'https://via.placeholder.com/400x250'}" style="width:100%; border-radius:10px">
-          <h3>${highlightItems[5].title}</h3>
-          <p>${highlightItems[5].description?.slice(0, 100) || ''}...</p>
-        </a>`;
-    }
-  }
-
-  // ⏮ & ⏭ controls
-  window.prevSlide = function () {
-    currentSlide = (currentSlide - 1 + highlightItems.length) % highlightItems.length;
+  if (highlightArticles.length) {
     updateCarousel();
-  };
-  window.nextSlide = function () {
-    currentSlide = (currentSlide + 1) % highlightItems.length;
-    updateCarousel();
-  };
-  window.prevMiniSlide = function () {
-    miniSlide = (miniSlide - 1 + trendingItems.length) % trendingItems.length;
-    updateMiniCarousel();
-  };
-  window.nextMiniSlide = function () {
-    miniSlide = (miniSlide + 1) % trendingItems.length;
-    updateMiniCarousel();
-  };
+    document.getElementById('mini-highlight-1').innerHTML = createNewsCard(highlightArticles[1]);
+    document.getElementById('mini-highlight-2').innerHTML = createNewsCard(highlightArticles[2]);
+    document.getElementById('highlight-small').innerHTML = createNewsCard(highlightArticles[3]);
+    document.getElementById('highlight-static').innerHTML = createNewsCard(highlightArticles[4]);
+  }
 
-  // 🚀 Run fetches
-  fetchHighlights();
-  fetchTrending();
-};
-</script>
+  if (trendingArticles.length) {
+    updateMiniCarousel();
+  }
+}
+
+renderAll();
+
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 
