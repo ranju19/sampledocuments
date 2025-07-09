@@ -1,3 +1,31 @@
+New
+
+function showMainSlides() {
+  const slides = document.querySelectorAll(`#carousel-slides .carousel-slide`);
+  slides.forEach((slide, i) => {
+    slide.style.display = (i === slideIndex % slides.length) ? 'block' : 'none';
+  });
+}
+
+function showMiniSlides() {
+  const slides = document.querySelectorAll(`#mini-carousel-slides .carousel-slide`);
+  slides.forEach((slide, i) => {
+    slide.style.display = (i === miniSlideIndex % slides.length) ? 'block' : 'none';
+  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 OLD
 function showSlides(containerId, slidesClass) {
   const slides = document.querySelectorAll(`#${containerId} .${slidesClass}`);
