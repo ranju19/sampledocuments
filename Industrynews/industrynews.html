@@ -1,3 +1,4 @@
+New
 function nextSlide() {
   const slides = document.querySelectorAll('#carousel-slides .carousel-slide');
   slideIndex = (slideIndex + 1) % slides.length;
@@ -9,7 +10,16 @@ function prevSlide() {
   slideIndex = (slideIndex - 1 + slides.length) % slides.length;
   showSlides('carousel-slides', 'carousel-slide');
 }
-
+-----------------------------------------------------------------------------------------------
+old
+function nextSlide() {
+  slideIndex++;
+  showSlides('carousel-slides', 'carousel-slide');
+}
+function prevSlide() {
+  slideIndex--;
+  showSlides('carousel-slides', 'carousel-slide');
+}
 
 
 
