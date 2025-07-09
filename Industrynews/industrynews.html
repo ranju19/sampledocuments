@@ -17,7 +17,7 @@ const feeds = {
   ]
 };
 
-// Create a slide item for carousels
+
 function createSlide(item) {
   let imageUrl = item.thumbnail && item.thumbnail.startsWith('http')
     ? item.thumbnail
@@ -43,11 +43,11 @@ function createSlide(item) {
   `;
 }
 
-// Track current slide indexes
+
 let slideIndex = 0;
 let miniSlideIndex = 0;
 
-// Show slides for main carousel
+
 function showMainSlides() {
   const slides = document.querySelectorAll(`#carousel-slides .carousel-slide`);
   slides.forEach((slide, i) => {
@@ -55,7 +55,7 @@ function showMainSlides() {
   });
 }
 
-// Show slides for mini carousel
+
 function showMiniSlides() {
   const slides = document.querySelectorAll(`#mini-carousel-slides .carousel-slide`);
   slides.forEach((slide, i) => {
@@ -63,7 +63,7 @@ function showMiniSlides() {
   });
 }
 
-// Navigation buttons for main carousel
+
 function nextSlide() {
   const slides = document.querySelectorAll('#carousel-slides .carousel-slide');
   slideIndex = (slideIndex + 1) % slides.length;
@@ -76,7 +76,7 @@ function prevSlide() {
   showMainSlides();
 }
 
-// Navigation buttons for mini carousel
+
 function nextMiniSlide() {
   const slides = document.querySelectorAll('#mini-carousel-slides .carousel-slide');
   miniSlideIndex = (miniSlideIndex + 1) % slides.length;
@@ -89,7 +89,6 @@ function prevMiniSlide() {
   showMiniSlides();
 }
 
-// Load feed and render content
 async function loadRSSFeed(feedUrls, containerId, limit = 10, isCarousel = false) {
   const container = document.getElementById(containerId);
   container.innerHTML = '';
@@ -109,7 +108,7 @@ async function loadRSSFeed(feedUrls, containerId, limit = 10, isCarousel = false
 
   allItems = allItems.slice(0, limit);
 
-  // Remove duplicates
+
   const uniqueLinks = new Set();
   allItems = allItems.filter(item => {
     if (uniqueLinks.has(item.link)) return false;
@@ -145,7 +144,23 @@ async function loadRSSFeed(feedUrls, containerId, limit = 10, isCarousel = false
       }
 
       div.innerHTML = `
-        <img src="${imageUrl}" alt="News Image" style="width:10
+        <img src="${imageUrl}" alt="News Image" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
+        <h4><a href="${item.link}" target="_blank">${item.title}</a></h4>
+        <p>${item.description.slice(0, 100)}...</p>
+      `;
+      container.appendChild(div);
+    });
+  }
+}
+
+
+loadRSSFeed(feeds.highlights, 'carousel-slides', 10, true);
+loadRSSFeed(feeds.trending, 'mini-carousel-slides', 10, true);
+loadRSSFeed([feeds.highlights[0]], 'mini-highlight-1', 1);
+loadRSSFeed([feeds.highlights[1]], 'mini-highlight-2', 1);
+loadRSSFeed([feeds.trending[0]], 'highlight-small', 1);
+loadRSSFeed([feeds.trending[2]], 'highlight-static', 1);
+
 
 
 ------------------------------------------------------------------------
