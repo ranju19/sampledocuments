@@ -1,3 +1,44 @@
+OLD
+function showSlides(containerId, slidesClass) {
+  const slides = document.querySelectorAll(`#${containerId} .${slidesClass}`);
+  slides.forEach((slide, i) => {
+    slide.style.display = (i === slideIndex % slides.length) ? 'block' : 'none';
+  });
+}
+
+function nextMiniSlide() {
+  miniSlideIndex++;
+  showSlides('mini-carousel-slides', 'carousel-slide');
+}
+function prevMiniSlide() {
+  miniSlideIndex--;
+  showSlides('mini-carousel-slides', 'carousel-slide');
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 New
 function nextSlide() {
   const slides = document.querySelectorAll('#carousel-slides .carousel-slide');
