@@ -1,3 +1,28 @@
+let imageUrl = item.thumbnail && item.thumbnail.startsWith('http')
+  ? item.thumbnail
+  : '';
+
+if (!imageUrl && item.enclosure && item.enclosure.link) {
+  imageUrl = item.enclosure.link;
+} else if (!imageUrl) {
+  const imgMatch = item.description.match(/<img[^>]+src="([^">]+)"/);
+  if (imgMatch && imgMatch[1]) {
+    imageUrl = imgMatch[1];
+  }
+}
+
+if (!imageUrl) {
+  imageUrl = 'https://placehold.co/300x200?text=News';
+}
+-------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
 <!-- SECTION 1: MSN STYLE COMBO LAYOUT-->
   <div class="section1-layout">
     <div class="news-card carousel-box" id="highlight-carousel">
