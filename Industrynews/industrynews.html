@@ -1,3 +1,113 @@
+// ==== SECTION 3: Cybersecurity & Tech News ====
+
+const cyberTechFeeds = [
+  'https://www.darkreading.com/rss.xml',
+  'https://threatpost.com/feed/',
+  'https://cointelegraph.com/rss',
+  'https://bitcoinmagazine.com/.rss/full',
+  'https://www.zdnet.com/news/rss.xml'
+];
+
+// Shared function from previous sections – no conflict
+function extractImage(item) {
+  let imageUrl = '';
+
+  if (item.thumbnail && item.thumbnail.startsWith('http')) {
+    imageUrl = item.thumbnail;
+  } else if (item.enclosure?.link?.startsWith('http')) {
+    imageUrl = item.enclosure.link;
+  } else {
+    const match = (item.content || item.description || '').match(/<img[^>]+src="([^">]+)"/);
+    if (match && match[1]) imageUrl = match[1];
+  }
+
+  return imageUrl || 'https://placehold.co/300x200?text=News';
+}
+
+// Load main cyber/tech news content
+async function loadCyberTechNews() {
+  const rss2json = 'https://api.rss2json.com/v1/api.json?rss_url=';
+  let allItems = [];
+
+  for (const url of cyberTechFeeds) {
+    try {
+      const res = await fetch(`${rss2json}${encodeURIComponent(url)}`);
+      const data = await res.json();
+      if (data.items) allItems = allItems.concat(data.items);
+    } catch (err) {
+      console.error('Cyber Feed error:', url);
+    }
+  }
+
+  const seen = new Set();
+  allItems = allItems.filter(item => {
+    if (seen.has(item.link)) return false;
+    seen.add(item.link);
+    return true;
+  }).slice(0, 12); // Enough for all sections
+
+  if (allItems.length < 7) return;
+
+  // --- LEFT: Tall feature box ---
+  const feature = allItems[0];
+  document.getElementById('cyber-feature-box').insertAdjacentHTML("afterbegin", `
+    <img src="${extractImage(feature)}" />
+    <h3><a href="${feature.link}" target="_blank" style="color:#fff;">${feature.title}</a></h3>
+    <p style="color:#ccc;">${feature.description.slice(0, 120)}...</p>
+  `);
+
+  // Queue for Read More (store in global)
+  window.cyberReadQueue = allItems.slice(10, 12);
+
+  // --- MIDDLE BOX ---
+  const middle = allItems[1];
+  document.getElementById('cyber-middle-box').innerHTML = `
+    <img src="${extractImage(middle)}" />
+    <h4><a href="${middle.link}" target="_blank" style="color:#fff;">${middle.title}</a></h4>
+    <p style="color:#ccc;">${middle.description.slice(0, 100)}...</p>
+  `;
+
+  // --- RIGHT 3 MINI CARDS ---
+  [2, 3, 4].forEach((i, index) => {
+    const card = document.getElementById(`cyber-mini-${index + 1}`);
+    card.innerHTML = `
+      <img src="${extractImage(allItems[i])}" />
+      <h4><a href="${allItems[i].link}" target="_blank" style="color:#fff;">${allItems[i].title}</a></h4>
+    `;
+  });
+
+  // --- BOTTOM ROW 2 (4 small cards) ---
+  const row2 = document.getElementById('cyber-row-2');
+  [5, 6, 7, 8].forEach(i => {
+    const div = document.createElement('div');
+    div.className = 'cyber-small-card';
+    div.innerHTML = `
+      <img src="${extractImage(allItems[i])}" />
+      <h4><a href="${allItems[i].link}" target="_blank">${allItems[i].title}</a></h4>
+    `;
+    row2.appendChild(div);
+  });
+}
+
+// Read More logic (only inside feature box)
+function loadMoreCyber() {
+  const readMoreDiv = document.getElementById('cyber-read-more');
+  if (!window.cyberReadQueue) return;
+
+  window.cyberReadQueue.forEach(item => {
+    const el = document.createElement('div');
+    el.innerHTML = `<h4><a href="${item.link}" target="_blank" style="color:#ccc;">${item.title}</a></h4>`;
+    readMoreDiv.appendChild(el);
+  });
+
+  // Clear queue after loading
+  window.cyberReadQueue = [];
+}
+
+// Trigger on page load (just like section 1 & 2)
+window.addEventListener('DOMContentLoaded', loadCyberTechNews);
+
+-------------------------------------------------------------------------------------------------------------------
 HTML & CSS
 <!-- SECTION 3: Cybersecurity & Tech News -->
 <section class="cyber-section">
