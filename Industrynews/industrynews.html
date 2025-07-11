@@ -1,3 +1,143 @@
+HTML & CSS
+<!-- SECTION 3: Cybersecurity & Tech News -->
+<section class="cyber-section">
+  <h2 class="cyber-section-title">🛡️ Cybersecurity & Tech News</h2>
+
+  <!-- ROW 1: Left (feature), Middle (wide), Right (3 mini boxes) -->
+  <div class="cyber-row-one">
+    <!-- LEFT: Tall static feature box with Read More -->
+    <div class="cyber-left-feature" id="cyber-feature-box">
+      <!-- Main item will be inserted here by JS -->
+      <div id="cyber-read-more"></div>
+      <button onclick="loadMoreCyber()" class="cyber-readmore-btn">Read More</button>
+    </div>
+
+    <!-- MIDDLE: Wide static news box -->
+    <div class="cyber-middle-box" id="cyber-middle-box">
+      <!-- JS fills content -->
+    </div>
+
+    <!-- RIGHT: 3 stacked mini boxes -->
+    <div class="cyber-right-column">
+      <div class="cyber-mini-card" id="cyber-mini-1"></div>
+      <div class="cyber-mini-card" id="cyber-mini-2"></div>
+      <div class="cyber-mini-card" id="cyber-mini-3"></div>
+    </div>
+  </div>
+
+  <!-- ROW 2: 4 small cards in grid -->
+  <div class="cyber-row-two" id="cyber-row-2"></div>
+</section>
+Updated Section 3 CSS (style.css)
+.cyber-section {
+  background-color: #1f1f1f;
+  padding: 2rem 1rem;
+  color: #fff;
+}
+
+.cyber-section-title {
+  text-align: center;
+  color: #ff3c00;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  font-family: 'Poppins', sans-serif;
+}
+
+/* === Row 1 Layout === */
+.cyber-row-one {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr;
+  gap: 1rem;
+}
+
+/* Left: Tall feature box */
+.cyber-left-feature {
+  background-color: #111;
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 0 10px rgba(255, 60, 0, 0.3);
+}
+
+.cyber-left-feature img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.5rem;
+}
+
+.cyber-readmore-btn {
+  margin-top: 1rem;
+  background: #ff3c00;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* Middle: Wide static news */
+.cyber-middle-box {
+  background-color: #111;
+  padding: 1rem;
+  border-radius: 10px;
+  box-shadow: 0 0 8px rgba(255, 60, 0, 0.3);
+}
+
+.cyber-middle-box img {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 6px;
+  margin-bottom: 0.5rem;
+}
+
+/* Right: 3 stacked mini boxes */
+.cyber-right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.cyber-mini-card {
+  background-color: #111;
+  padding: 0.8rem;
+  border-radius: 8px;
+  box-shadow: 0 0 6px rgba(255, 60, 0, 0.25);
+}
+
+.cyber-mini-card img {
+  width: 100%;
+  height: 110px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+/* === Row 2 Grid === */
+.cyber-row-two {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.cyber-small-card {
+  background-color: #111;
+  padding: 0.7rem;
+  border-radius: 8px;
+  box-shadow: 0 0 5px rgba(255, 60, 0, 0.2);
+}
+
+.cyber-small-card img {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  border-radius: 6px;
+}
+
+------------------------------------------------------------------------------------------
 COMBINED JS FOR SEC 1 & SEC 2
 <script>
 const aiMlFeeds = [
