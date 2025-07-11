@@ -1,30 +1,14 @@
 COMBINED JS FOR SEC 1 & SEC 2
 <script>
-const rss2json = 'https://api.rss2json.com/v1/api.json?rss_url=';
+const aiMlFeeds = [
+  'https://spectrum.ieee.org/rss/topic/artificial-intelligence',
+  'https://www.topbots.com/feed/',
+  'https://ai.googleblog.com/feeds/posts/default',
+  'https://openai.com/blog/rss.xml',
+  'https://machinelearningmastery.com/blog/feed/'
+];
 
-const feeds = {
-  highlights: [
-    'https://techcrunch.com/feed/',
-    'https://www.theverge.com/rss/index.xml',
-    'https://venturebeat.com/feed/',
-    'https://feeds.arstechnica.com/arstechnica/index',
-    'https://www.technologyreview.com/feed/'
-  ],
-  trending: [
-    'https://news.ycombinator.com/rss',
-    'https://www.analyticsvidhya.com/blog/feed/',
-    'https://www.zdnet.com/news/rss.xml',
-    'https://thenextweb.com/feed',
-    'https://www.cnet.com/rss/news/'
-  ],
-  ai_ml: [
-    'https://spectrum.ieee.org/rss/topic/artificial-intelligence',
-    'https://www.topbots.com/feed/',
-    'https://ai.googleblog.com/feeds/posts/default',
-    'https://openai.com/blog/rss.xml',
-    'https://machinelearningmastery.com/blog/feed/'
-  ]
-};
+const rss2json = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
 function extractImage(item) {
   let imageUrl = '';
@@ -41,95 +25,10 @@ function extractImage(item) {
   return imageUrl || 'https://placehold.co/300x200?text=News';
 }
 
-async function loadHighlightsSection() {
-  let allItems = [];
-
-  const combinedFeeds = [...feeds.highlights, ...feeds.trending];
-  for (const url of combinedFeeds) {
-    try {
-      const res = await fetch(`${rss2json}${encodeURIComponent(url)}`);
-      const data = await res.json();
-      if (data.items) allItems = allItems.concat(data.items);
-    } catch (e) {
-      console.error('Highlight Feed Error:', url);
-    }
-  }
-
-  const seen = new Set();
-  allItems = allItems.filter(item => {
-    if (seen.has(item.link)) return false;
-    seen.add(item.link);
-    return true;
-  });
-
-  const get = id => document.getElementById(id);
-  const slides = allItems.slice(0, 5).map(item => `
-    <div class="carousel-slide">
-      <img src="${extractImage(item)}" style="width:100%; height:200px; object-fit:cover; border-radius:10px;">
-      <h4><a href="${item.link}" target="_blank">${item.title}</a></h4>
-      <p>${item.description.slice(0, 100)}...</p>
-    </div>
-  `).join('');
-
-  get('carousel-slides').innerHTML = slides;
-  get('mini-highlight-1').innerHTML = buildCard(allItems[5]);
-  get('mini-highlight-2').innerHTML = buildCard(allItems[6]);
-  get('highlight-small').innerHTML = buildCard(allItems[7]);
-  get('highlight-static').innerHTML = buildCard(allItems[8]);
-
-  showMainSlides();
-  showMiniSlides();
-}
-
-function buildCard(item) {
-  return `
-    <img src="${extractImage(item)}" style="width:100%; height:200px; object-fit:cover; border-radius:8px;">
-    <h4><a href="${item.link}" target="_blank" style="color:#fff;">${item.title}</a></h4>
-    <p style="color:#ccc;">${item.description.slice(0, 100)}...</p>
-  `;
-}
-
-let slideIndex = 0;
-let miniSlideIndex = 0;
-
-function showMainSlides() {
-  const slides = document.querySelectorAll(`#carousel-slides .carousel-slide`);
-  slides.forEach((s, i) => s.style.display = i === slideIndex % slides.length ? 'block' : 'none');
-}
-
-function showMiniSlides() {
-  const slides = document.querySelectorAll(`#mini-carousel-slides .carousel-slide`);
-  slides.forEach((s, i) => s.style.display = i === miniSlideIndex % slides.length ? 'block' : 'none');
-}
-
-function nextSlide() {
-  const slides = document.querySelectorAll('#carousel-slides .carousel-slide');
-  slideIndex = (slideIndex + 1) % slides.length;
-  showMainSlides();
-}
-
-function prevSlide() {
-  const slides = document.querySelectorAll('#carousel-slides .carousel-slide');
-  slideIndex = (slideIndex - 1 + slides.length) % slides.length;
-  showMainSlides();
-}
-
-function nextMiniSlide() {
-  const slides = document.querySelectorAll('#mini-carousel-slides .carousel-slide');
-  miniSlideIndex = (miniSlideIndex + 1) % slides.length;
-  showMiniSlides();
-}
-
-function prevMiniSlide() {
-  const slides = document.querySelectorAll('#mini-carousel-slides .carousel-slide');
-  miniSlideIndex = (miniSlideIndex - 1 + slides.length) % slides.length;
-  showMiniSlides();
-}
-
 async function loadAiMlNews() {
   let allItems = [];
 
-  for (const url of feeds.ai_ml) {
+  for (const url of aiMlFeeds) {
     try {
       const res = await fetch(`${rss2json}${encodeURIComponent(url)}`);
       const data = await res.json();
@@ -148,9 +47,15 @@ async function loadAiMlNews() {
 
   if (allItems.length < 6) return;
 
+  // FEATURED BOX
   const featured = allItems[0];
-  document.getElementById('ai-featured').innerHTML = buildCard(featured);
+  document.getElementById('ai-featured').innerHTML = `
+    <img src="${extractImage(featured)}" style="width:100%; height:220px; object-fit:cover; border-radius:8px;">
+    <h4><a href="${featured.link}" target="_blank" style="color:#fff;">${featured.title}</a></h4>
+    <p style="color:#ccc;">${featured.description.slice(0, 100)}...</p>
+  `;
 
+  // MINI BOXES
   [1, 2].forEach((i, index) => {
     const miniBox = document.getElementById(`ai-mini-${index + 1}`);
     miniBox.innerHTML = `
@@ -159,6 +64,7 @@ async function loadAiMlNews() {
     `;
   });
 
+  // ROW 2 & 3
   const row2 = document.getElementById('ai-row-2');
   const row3 = document.getElementById('ai-row-3');
 
@@ -183,11 +89,9 @@ async function loadAiMlNews() {
   });
 }
 
-window.addEventListener('DOMContentLoaded', () => {
-  loadHighlightsSection();
-  loadAiMlNews();
-});
+window.addEventListener('DOMContentLoaded', loadAiMlNews);
 </script>
+
 
 --------------------------------------------------------------------
 SECTION 2 
