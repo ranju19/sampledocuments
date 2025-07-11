@@ -2,7 +2,6 @@ COMBINED JS FOR SEC 1 & SEC 2
 <script>
 const rss2json = 'https://api.rss2json.com/v1/api.json?rss_url=';
 
-// === FEED SOURCES ===
 const feeds = {
   highlights: [
     'https://techcrunch.com/feed/',
@@ -27,7 +26,6 @@ const feeds = {
   ]
 };
 
-// === COMMON IMAGE HANDLER ===
 function extractImage(item) {
   let imageUrl = '';
 
@@ -43,7 +41,6 @@ function extractImage(item) {
   return imageUrl || 'https://placehold.co/300x200?text=News';
 }
 
-// === SECTION 1: HIGHLIGHTS (Carousel + Mini Cards) ===
 async function loadHighlightsSection() {
   let allItems = [];
 
@@ -65,7 +62,6 @@ async function loadHighlightsSection() {
     return true;
   });
 
-  // Static Highlights
   const get = id => document.getElementById(id);
   const slides = allItems.slice(0, 5).map(item => `
     <div class="carousel-slide">
@@ -93,7 +89,6 @@ function buildCard(item) {
   `;
 }
 
-// === Carousel Controls ===
 let slideIndex = 0;
 let miniSlideIndex = 0;
 
@@ -131,7 +126,6 @@ function prevMiniSlide() {
   showMiniSlides();
 }
 
-// === SECTION 2: AI & ML Layout ===
 async function loadAiMlNews() {
   let allItems = [];
 
@@ -154,7 +148,6 @@ async function loadAiMlNews() {
 
   if (allItems.length < 6) return;
 
-  // Populate Section 2
   const featured = allItems[0];
   document.getElementById('ai-featured').innerHTML = buildCard(featured);
 
@@ -190,7 +183,6 @@ async function loadAiMlNews() {
   });
 }
 
-// === INIT ===
 window.addEventListener('DOMContentLoaded', () => {
   loadHighlightsSection();
   loadAiMlNews();
