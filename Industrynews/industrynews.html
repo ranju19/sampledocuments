@@ -8,7 +8,6 @@ const cyberTechFeeds = [
   'https://www.zdnet.com/news/rss.xml'
 ];
 
-// Shared function from previous sections – no conflict
 function extractImage(item) {
   let imageUrl = '';
 
@@ -24,7 +23,6 @@ function extractImage(item) {
   return imageUrl || 'https://placehold.co/300x200?text=News';
 }
 
-// Load main cyber/tech news content
 async function loadCyberTechNews() {
   const rss2json = 'https://api.rss2json.com/v1/api.json?rss_url=';
   let allItems = [];
@@ -48,7 +46,6 @@ async function loadCyberTechNews() {
 
   if (allItems.length < 7) return;
 
-  // --- LEFT: Tall feature box ---
   const feature = allItems[0];
   document.getElementById('cyber-feature-box').insertAdjacentHTML("afterbegin", `
     <img src="${extractImage(feature)}" />
@@ -56,10 +53,8 @@ async function loadCyberTechNews() {
     <p style="color:#ccc;">${feature.description.slice(0, 120)}...</p>
   `);
 
-  // Queue for Read More (store in global)
   window.cyberReadQueue = allItems.slice(10, 12);
 
-  // --- MIDDLE BOX ---
   const middle = allItems[1];
   document.getElementById('cyber-middle-box').innerHTML = `
     <img src="${extractImage(middle)}" />
@@ -67,7 +62,6 @@ async function loadCyberTechNews() {
     <p style="color:#ccc;">${middle.description.slice(0, 100)}...</p>
   `;
 
-  // --- RIGHT 3 MINI CARDS ---
   [2, 3, 4].forEach((i, index) => {
     const card = document.getElementById(`cyber-mini-${index + 1}`);
     card.innerHTML = `
@@ -76,7 +70,6 @@ async function loadCyberTechNews() {
     `;
   });
 
-  // --- BOTTOM ROW 2 (4 small cards) ---
   const row2 = document.getElementById('cyber-row-2');
   [5, 6, 7, 8].forEach(i => {
     const div = document.createElement('div');
@@ -89,7 +82,6 @@ async function loadCyberTechNews() {
   });
 }
 
-// Read More logic (only inside feature box)
 function loadMoreCyber() {
   const readMoreDiv = document.getElementById('cyber-read-more');
   if (!window.cyberReadQueue) return;
@@ -100,11 +92,9 @@ function loadMoreCyber() {
     readMoreDiv.appendChild(el);
   });
 
-  // Clear queue after loading
   window.cyberReadQueue = [];
 }
 
-// Trigger on page load (just like section 1 & 2)
 window.addEventListener('DOMContentLoaded', loadCyberTechNews);
 
 -------------------------------------------------------------------------------------------------------------------
