@@ -1,3 +1,175 @@
+UPDATED SECTION 1 & 2
+<!-- Existing code untouched -->
+<!-- Below goes the addition for Section 1 and Section 2 -->
+
+<!-- Section 1: Recent Tech Write-Ups with extra row + Load More -->
+<h1 class="section-heading">📝 Trending Tech Write-Ups</h1>
+<div class="blog-grid" id="blog-feed"></div>
+<button id="loadMoreRecent" class="glow-button-right">Load More</button>
+
+<!-- Section 2: Hidden Tech Treasures -->
+<h1 class="section-heading">🔍 Hidden Tech Treasures</h1>
+<div id="tech-treasure-list" class="treasure-container"></div>
+<button id="loadMoreHidden" class="glow-button-center">Discover More</button>
+
+<script>
+  const parser = new RSSParser();
+
+  const blogFeeds = [
+    'https://techcrunch.com/feed/',
+    'https://www.theverge.com/rss/index.xml',
+    'https://www.wired.com/feed/rss',
+    'https://hnrss.org/frontpage'
+  ];
+
+  const hiddenFeeds = [
+    'https://www.analyticsvidhya.com/blog/feed/',
+    'https://feeds.arstechnica.com/arstechnica/index',
+    'https://venturebeat.com/feed/',
+    'https://thenextweb.com/feed/'
+  ];
+
+  async function fetchBlogs(feedUrls, containerId, maxPerFeed = 4, start = 0, end = 4) {
+    const container = document.getElementById(containerId);
+
+    for (let url of feedUrls) {
+      try {
+        const feed = await parser.parseURL(url);
+        const source = feed.title;
+        const items = feed.items.slice(start, end);
+
+        items.forEach(item => {
+          const card = document.createElement('div');
+          card.className = containerId === 'tech-treasure-list' ? 'treasure-card fade-in' : 'blog-card fade-in';
+
+          card.innerHTML = `
+            <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
+            <p>${item.pubDate}</p>
+            <p>${item.contentSnippet ? item.contentSnippet.substring(0, 120) + '...' : 'No summary available.'}</p>
+            <p class="source-label">📚 Source: ${source}</p>
+          `;
+
+          container.appendChild(card);
+        });
+      } catch (err) {
+        console.error(`Error loading ${url}:`, err);
+      }
+    }
+  }
+
+  let recentBatch = 0;
+  document.getElementById('loadMoreRecent').onclick = () => {
+    recentBatch++;
+    fetchBlogs(blogFeeds, 'blog-feed', 4, recentBatch * 4, (recentBatch + 1) * 4);
+  };
+
+  let hiddenBatch = 0;
+  document.getElementById('loadMoreHidden').onclick = () => {
+    hiddenBatch++;
+    fetchBlogs(hiddenFeeds, 'tech-treasure-list', 5, hiddenBatch * 5, (hiddenBatch + 1) * 5);
+  };
+
+  fetchBlogs(blogFeeds, 'blog-feed', 4, 0, 8);
+  fetchBlogs(hiddenFeeds, 'tech-treasure-list', 5, 0, 5);
+</script>
+
+<style>
+  .treasure-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 0 20px;
+    animation: fadeIn 1s ease-in-out;
+  }
+
+  .treasure-card {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 20px;
+    background-color: #1e1e1e;
+    padding: 20px;
+    border-radius: 15px;
+    box-shadow: 0 0 20px #4effe055;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  .treasure-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 0 30px #4effe0;
+  }
+
+  .treasure-card h3 a {
+    font-size: 1.2em;
+    color: #00ffe5;
+    font-weight: bold;
+    text-decoration: none;
+  }
+
+  .treasure-card h3 a:hover {
+    text-shadow: 0 0 8px #00ffe5;
+  }
+
+  .treasure-card p {
+    font-size: 0.95em;
+    color: #ccc;
+  }
+
+  .treasure-card .source-label {
+    font-size: 0.85em;
+    color: #4effe0;
+  }
+
+  .fade-in {
+    animation: fadeIn 0.7s ease forwards;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .glow-button-right {
+    float: right;
+    margin: 20px;
+    background: linear-gradient(90deg, #ff7ce5, #ff4edb);
+    color: #000;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 0 15px #ff4edb88;
+    transition: all 0.3s ease;
+  }
+
+  .glow-button-right:hover {
+    box-shadow: 0 0 25px #ff4edb;
+    transform: scale(1.05);
+  }
+
+  .glow-button-center {
+    display: block;
+    margin: 20px auto;
+    background: linear-gradient(90deg, #00ffe5, #4effe0);
+    color: #000;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    box-shadow: 0 0 15px #4effe088;
+    transition: all 0.3s ease;
+  }
+
+  .glow-button-center:hover {
+    box-shadow: 0 0 25px #4effe0;
+    transform: scale(1.05);
+  }
+</style>
+
+------------------------------------------------------------------------------------------------------------
+OLD CODE FOR SECTION 1
 <!DOCTYPE html>
 <html lang="en">
 <head>
