@@ -1,4 +1,109 @@
-  <!--Top Section-->
+ --JS Code for Auto Spotify Podcast Feed--
+<script>
+const clientId = 'b81f151c4e4847eab6f1cba4b0cff7fe';
+const clientSecret = 'bab675c68d744a32ac806c2492e63828';
+
+// List of Show IDs for Carousel Section (Top 3)
+const carouselShows = [
+  '5qX1nRTaFsfWdmdj5JWO1G', // Learning Machines 101
+  '0jXj0NuVvdUPEFMUyRYpMK', // AI Innovators
+  '5w8yJIu0Axf0LhFgVKSUA6'  // AZ TechCast
+];
+
+// List of Show IDs for Scroll Section (Rest)
+const scrollShows = [
+  '5oOBPrlO68dNZXen9Kxg0e', '2F2srBvTeYu9Xcg6K910ol', '5eLYl2HXeqP7gLNAfvfoQa',
+  '5M9yZpSyF1jc7uFp2MlhP9', '4TB4pnynaiZ6YHoKmyVN0L', '2MAi0BvDc6GTFvKFPXnkCL',
+  '3H0HDDUecf3bMavlMXNVLD', '5xX6zSQU2Dd3kpr2xW8tHb', '4o8Rj3pEHDQKnHszr5rsJk',
+  '0y2LhLsQBo19WyhxAKZVON', '1vKY2PqhK3P9s50DSRMVzt', '6Zk1iH9T1A6B7BPi0Xe3BI',
+  '6BM2LHI76R3DzZAz6KO9jx', '3bWzqWDWYegzPTe1RRJ9U9', '4d5N1gH5Q7y0QAbYt1AfVi',
+  '6sSMMzIKCrkVUNrG9o5LKJ', '0QnszMw0t6YkS1y2QysKpK'
+];
+
+async function getAccessToken() {
+  const result = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'Authorization': 'Basic ' + btoa(`${clientId}:${clientSecret}`)
+    },
+    body: 'grant_type=client_credentials'
+  });
+
+  const data = await result.json();
+  return data.access_token;
+}
+
+async function fetchLatestEpisode(showId, token) {
+  const res = await fetch(`https://api.spotify.com/v1/shows/${showId}?market=US`, {
+    headers: {
+      'Authorization': 'Bearer ' + token
+    }
+  });
+  return await res.json();
+}
+
+async function loadCarousel() {
+  const token = await getAccessToken();
+  const carouselContainer = document.querySelector('.carousel-inner');
+  carouselContainer.innerHTML = '';
+
+  for (let i = 0; i < carouselShows.length; i++) {
+    const showId = carouselShows[i];
+    const showData = await fetchLatestEpisode(showId, token);
+    const episode = showData.episodes.items[0];
+    const iframeURL = `https://open.spotify.com/embed/episode/${episode.id}`;
+
+    const slide = document.createElement('div');
+    slide.className = `carousel-item ${i === 0 ? 'active' : ''}`;
+    slide.innerHTML = `
+      <div class="d-flex flex-column align-items-center text-center">
+        <iframe style="border-radius:12px" src="${iframeURL}" width="624" height="351" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <h3 class="podcast-title">${showData.name}</h3>
+        <p class="podcast-desc">${showData.description.substring(0, 140)}...</p>
+        <a href="${showData.external_urls.spotify}" target="_blank" class="listen-btn">Listen Now</a>
+      </div>`;
+    carouselContainer.appendChild(slide);
+  }
+}
+
+async function loadScrollCards() {
+  const token = await getAccessToken();
+  const scrollContainer = document.getElementById('podcastContainer');
+  scrollContainer.innerHTML = '';
+
+  for (const showId of scrollShows) {
+    const showData = await fetchLatestEpisode(showId, token);
+    const episode = showData.episodes.items[0];
+    const iframeURL = `https://open.spotify.com/embed/episode/${episode.id}`;
+
+    const card = document.createElement('div');
+    card.className = 'podcast-card';
+    card.innerHTML = `
+      <iframe style="border-radius:12px" src="${iframeURL}" width="100%" height="250" frameborder="0" allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+      <div class="podcast-card-title">${showData.name}</div>`;
+    scrollContainer.appendChild(card);
+  }
+}
+
+loadCarousel();
+loadScrollCards();
+</script>
+
+Where to Paste This?
+Put it just before the closing </body> tag in your HTML:
+
+<!-- Other scripts -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/rss-parser/dist/rss-parser.min.js"></script>
+
+<!-- ⬇️ Paste our new Spotify script here -->
+<!-- ... -->
+
+</body>
+
+----------------------------------------------------------------------------------------------------------------------------------
+<!--Top Section-->
   <section class="section top-section">
     <img src="https://raw.githubusercontent.com/ranju19/Technicalacumen/main/podcast/Podcast-BG.jpeg" alt="Podcast Banner Background">
     <div class="top-text">
