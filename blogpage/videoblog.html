@@ -1,102 +1,27 @@
-<script>
-  const ytFeeds = [
-    {
-      id: 'UCX6b17PVsYBQ0ip5gyeme-Q', // TechLinked
-      name: 'TechLinked'
-    },
-    {
-      id: 'UCPDis9pjXuqyI7RYLJ-TTSA', // Linus Tech Tips
-      name: 'Linus Tech Tips'
-    },
-    {
-      id: 'UCsBjURrPoezykLs9EqgamOA', // Fireship
-      name: 'Fireship'
-    }
-  ];
-
-  async function fetchYouTubeVideos() {
-    const container = document.getElementById('video-feed');
-    container.innerHTML = '';
-
-    for (let feed of ytFeeds) {
-      try {
-        const feedURL = `https://www.youtube.com/feeds/videos.xml?channel_id=${feed.id}`;
-        const apiURL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedURL)}`;
-
-        const response = await fetch(apiURL);
-        const data = await response.json();
-
-        data.items.slice(0, 3).forEach(item => {
-          const videoId = item.link.split('=')[1];
-          const thumbnail = item.thumbnail;
-
-          const card = document.createElement('div');
-          card.className = 'video-card';
-
-          card.innerHTML = `
-            <img src="${thumbnail}" alt="Video thumbnail">
-            <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
-            <p><em>${item.pubDate}</em></p>
-            <p class="source-label">📺 From: ${feed.name}</p>
-          `;
-
-          container.appendChild(card);
-        });
-
-      } catch (err) {
-        console.error(`Error loading YouTube feed for ${feed.name}:`, err);
-      }
-    }
-  }
-
-  fetchYouTubeVideos();
-</script>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Video Blogs | Technicalacumen</title>
+  <meta name="viewport" content="width=device-width, initial-scale=0.1" />
 
   <link rel="stylesheet" href="style.css" />
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/all.min.css"/>
+
+  <title>AI RESOURCE HUB</title>
+
+
+  <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:wght@400;500&family=DM+Serif+Text&display=swap" rel="stylesheet"/>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Philosopher&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/rss-parser/dist/rss-parser.min.js"></script>
 
+
   <style>
-    body {
+    .videoblog-body {
       background-color: #0a0a0a;
       color: #fff;
       font-family: 'Poppins', sans-serif;
-      padding: 60px 20px;
+      padding-bottom: 20px;
     }
 
     h1.section-heading {
@@ -154,69 +79,106 @@
       color: #ccc;
     }
 
+
     .source-label {
       font-size: 0.85em;
       color: #ff7ce5;
       margin-top: 10px;
     }
   </style>
+
 </head>
 
-<body>
+<body class="videoblog-body">
+    <nav class="navbar">
+      <div class="nav-left-group">
+
+        <span id="burger-icon" onclick="toggleSidebar()">☰</span>
+
+        <a href="index.html" class="nav-left">Technicalacumen</a>
+      </div>
+      <div class="nav-right">
+      <div class="search-container">
+        <input type="text" class="search-input" placeholder="Feed Your Curiosity...">
+
+      </div>
+        <a href="index.html">HOME</a>
+        <a href="chatroom.html">CHATROOM</a>
+        <a href="#contact">CONTACT</a>
+        <a href="login.html">LOGIN</a>
+      </div>
+
+    </nav>
+
+
+  <div class="sidebar" id="sidebar">
+    <div class="sidebar-header">
+      <h2>Dashboard</h2>
+    </div>
+    <ul>
+     <li><a href="calender.html">Calender</a></li>
+     <li><a href="blog.html">Blogs</a></li>
+     <li><a href="industrynews.html">Industry News</a></li>
+     <li><a href="podcast.html">Podcast</a></li>
+     <li><a>Activity</a></li>
+     <li><a>Leaderboard</a></li>
+     <li><a href="feedback.html">Feedback</a></li>
+    </ul>
+  </div>
+
   <h1 class="section-heading">🎥 Latest Tech Video Blogs (Auto Feed)</h1>
   <div class="video-grid" id="video-feed">
     <!-- YouTube video cards will load here -->
   </div>
 
   <script>
-    const parser = new RSSParser();
-    const ytFeeds = [
-      {
-        id: 'UCX6b17PVsYBQ0ip5gyeme-Q', // TechLinked
-        name: 'TechLinked'
-      },
-      {
-        id: 'UCPDis9pjXuqyI7RYLJ-TTSA', // Linus Tech Tips
-        name: 'Linus Tech Tips'
-      },
-      {
-        id: 'UCsBjURrPoezykLs9EqgamOA', // Fireship
-        name: 'Fireship'
-      }
-    ];
+  const ytFeeds = [
+    {
+      id: 'UCsBjURrPoezykLs9EqgamOA', // Fireship
+      name: 'Fireship'
+    }
+  ];
 
-    async function fetchYouTubeVideos() {
-      const container = document.getElementById('video-feed');
-      container.innerHTML = '';
+  async function fetchYouTubeVideos() {
+    const container = document.getElementById('video-feed');
+    container.innerHTML = '';
 
-      for (let feed of ytFeeds) {
-        try {
-          const url = `https://www.youtube.com/feeds/videos.xml?channel_id=${feed.id}`;
-          const parsed = await parser.parseURL(url);
+    for (let feed of ytFeeds) {
+      try {
+        const feedURL = `https://www.youtube.com/feeds/videos.xml?channel_id=${feed.id}`;
+        const apiURL = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(feedURL)}`;
 
-          parsed.items.slice(0, 3).forEach(item => {
-            const videoId = item.id.split(':').pop();
-            const thumbnail = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
+        const response = await fetch(apiURL);
+        const data = await response.json();
 
-            const card = document.createElement('div');
-            card.className = 'video-card';
+        data.items.slice(0, 3).forEach(item => {
+          const videoId = item.link.split('=')[1];
+          const thumbnail = item.thumbnail;
 
-            card.innerHTML = `
-              <img src="${thumbnail}" alt="Video thumbnail">
-              <h3><a href="https://www.youtube.com/watch?v=${videoId}" target="_blank">${item.title}</a></h3>
-              <p><em>${item.pubDate}</em></p>
-              <p class="source-label">📺 From: ${feed.name}</p>
-            `;
+          const card = document.createElement('div');
+          card.className = 'video-card';
 
-            container.appendChild(card);
-          });
-        } catch (err) {
-          console.error(`Error loading YouTube feed for ${feed.name}:`, err);
-        }
+          card.innerHTML = `
+            <img src="${thumbnail}" alt="Video thumbnail">
+            <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
+            <p><em>${item.pubDate}</em></p>
+            <p class="source-label">📺 From: ${feed.name}</p>
+          `;
+
+          container.appendChild(card);
+        });
+
+      } catch (err) {
+        console.error(`Error loading YouTube feed for ${feed.name}:`, err);
       }
     }
+  }
 
-    fetchYouTubeVideos();
-  </script>
+  fetchYouTubeVideos();
+</script>
+
+<script src="script.js"></script>
+
 </body>
 </html>
+
