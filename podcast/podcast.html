@@ -1,3 +1,81 @@
+New loadLatestEpisodes() Code (Small Card Layout)
+<script>
+const latestEpisodeShows = [
+  '2MAi0BvDc6GTFvKFPXnkCL', '3H0HDDUecf3bMavlMXNVLD', '5xX6zSQU2Dd3kpr2xW8tHb',
+  '4o8Rj3pEHDQKnHszr5rsJk', '1vKY2PqhK3P9s50DSRMVzt', '0y2LhLsQBo19WyhxAKZVON'
+];
+
+async function loadLatestEpisodes() {
+  const token = await getAccessToken();
+  const feedContainer = document.getElementById('rss-podcast-feed');
+  feedContainer.innerHTML = '';
+  feedContainer.style.display = 'flex';
+  feedContainer.style.overflowX = 'auto';
+  feedContainer.style.gap = '20px';
+  feedContainer.style.padding = '10px';
+
+  for (const showId of latestEpisodeShows) {
+    try {
+      const showData = await fetchLatestEpisode(showId, token);
+      const episode = showData.episodes.items[0];
+      const iframeURL = `https://open.spotify.com/embed/episode/${episode.id}`;
+      const pubDate = new Date(episode.release_date).toDateString();
+
+      const card = document.createElement('div');
+      card.className = 'podcast-card';
+      card.style.flex = '0 0 auto';
+      card.style.width = '270px';
+      card.innerHTML = `
+        <iframe style="border-radius:12px" src="${iframeURL}" width="100%" height="250" frameborder="0"
+        allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <div class="podcast-card-title">${showData.name}</div>
+        <p style="font-size: 0.8rem; color: #ccc;"><em>${pubDate}</em></p>
+      `;
+      feedContainer.appendChild(card);
+    } catch (err) {
+      console.error(`Failed to load episode for ${showId}`, err);
+    }
+  }
+}
+loadLatestEpisodes();
+</script>
+
+------------------------------------------------------------------------------------
+Step 1: Assign Unique Channels
+🔁 Carousel Section:
+
+5qX1nRTaFsfWdmdj5JWO1G – Learning Machines 101
+
+0jXj0NuVvdUPEFMUyRYpMK – AI Innovators
+
+5w8yJIu0Axf0LhFgVKSUA6 – AZ TechCast
+
+➡️ Popular Podcasts Scroll:
+
+5oOBPrlO68dNZXen9Kxg0e – The EdTech Podcast
+
+2F2srBvTeYu9Xcg6K910ol – AI in Education
+
+5eLYl2HXeqP7gLNAfvfoQa – Tech for Learning
+
+5M9yZpSyF1jc7uFp2MlhP9 – Machine Learning Weekly
+
+4TB4pnynaiZ6YHoKmyVN0L – NVIDIA AI Podcast
+
+🧠 Latest Episodes (New Set):
+
+2MAi0BvDc6GTFvKFPXnkCL – Lex Fridman Podcast
+
+3H0HDDUecf3bMavlMXNVLD – Practical AI
+
+5xX6zSQU2Dd3kpr2xW8tHb – Data Skeptic
+
+4o8Rj3pEHDQKnHszr5rsJk – Eye on A.I.
+
+1vKY2PqhK3P9s50DSRMVzt – Stack Overflow
+
+0y2LhLsQBo19WyhxAKZVON – The AI Breakdown
+---------------------------------------------------------------------------------------
 SECTION _ 3
 -- HTML --
 <section class="section rss-podcast-section">
