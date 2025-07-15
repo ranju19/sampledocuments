@@ -1,0 +1,147 @@
+-- HTML --
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contact Us – TechnicalAcumen</title>
+  <link rel="stylesheet" href="contact.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Philosopher&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+  <header class="contact-header">
+    <div class="overlay">
+      <h1>Get in Touch</h1>
+      <p>Meet our team and reach out</p>
+    </div>
+  </header>
+
+  <section class="contact-container">
+    <div class="contact-card">
+      <h2>Ranjani M</h2>
+      <p class="role">Founder & Design Lead</p>
+      <p><i class="fas fa-envelope"></i> ranjani@example.com</p>
+      <p><i class="fas fa-phone"></i> +1 (000) 000-0000</p>
+      <p>
+        <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a> |
+        <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+      </p>
+    </div>
+
+    <div class="contact-card">
+      <h2>Tejas R</h2>
+      <p class="role">DevOps & Infra Head</p>
+      <p><i class="fas fa-envelope"></i> tejas@example.com</p>
+      <p><i class="fas fa-phone"></i> +1 (111) 111-1111</p>
+      <p>
+        <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a> |
+        <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+      </p>
+    </div>
+
+    <div class="contact-card">
+      <h2>Amruthavarshini J</h2>
+      <p class="role">Content & Outreach</p>
+      <p><i class="fas fa-envelope"></i> amrutha@example.com</p>
+      <p><i class="fas fa-phone"></i> +1 (222) 222-2222</p>
+      <p>
+        <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a> |
+        <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
+      </p>
+    </div>
+  </section>
+</body>
+</html>
+
+-- CSS --
+body {
+  margin: 0;
+  font-family: 'Poppins', sans-serif;
+  background-color: #0d0d0d;
+  color: white;
+}
+
+.contact-header {
+  position: relative;
+  background-image: url('A_digital_illustration_in_a_futuristic,_science_fi.png');
+  background-size: cover;
+  background-position: center;
+  height: 350px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+.overlay {
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 2rem;
+  border-radius: 12px;
+}
+
+.contact-header h1 {
+  font-family: 'Philosopher', serif;
+  font-size: 48px;
+  color: #ff4ecd;
+  margin: 0;
+}
+
+.contact-header p {
+  color: #ccc;
+  font-size: 18px;
+}
+
+.contact-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 3rem 1rem;
+  gap: 2rem;
+}
+
+.contact-card {
+  background-color: #1a1a1a;
+  padding: 2rem;
+  border-radius: 16px;
+  width: 300px;
+  box-shadow: 0 0 15px #ff4ecd;
+  transition: transform 0.3s;
+}
+
+.contact-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 0 20px #ff4ecd;
+}
+
+.contact-card h2 {
+  color: #ff4ecd;
+  margin-bottom: 0.5rem;
+}
+
+.contact-card .role {
+  color: #bbb;
+  margin-bottom: 1rem;
+}
+
+.contact-card i {
+  margin-right: 8px;
+  color: #ff4ecd;
+}
+
+.contact-card a {
+  color: #ff4ecd;
+  text-decoration: none;
+}
+
+.contact-card a:hover {
+  text-decoration: underline;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .contact-container {
+    flex-direction: column;
+    align-items: center;
+  }
+}
