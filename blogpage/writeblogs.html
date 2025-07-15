@@ -1,3 +1,147 @@
+<!-- HubSpot-style write-up blog layout -->
+<div id="blog-title" class="tinos-bold-italic" style="font-size: 2.2em; color: white; padding: 0 20px; margin-top: 40px;">
+  Whereas recognition of the inherent dignity
+</div>
+<div id="blog-sections-container"></div>
+
+<script>
+  const parser = new RSSParser();
+  const blogFeeds = [
+    'https://techcrunch.com/feed/',
+    'https://www.theverge.com/rss/index.xml',
+    'https://www.wired.com/feed/rss',
+    'https://hnrss.org/frontpage'
+  ];
+
+  const topics = {
+    "AI News": [],
+    "Tech Trends": [],
+    "Startups": [],
+    "Cybersecurity": []
+  };
+
+  function categorizeBlog(item) {
+    const title = item.title.toLowerCase();
+    if (title.includes("ai") || title.includes("artificial intelligence")) return "AI News";
+    if (title.includes("startup") || title.includes("venture") || title.includes("funding")) return "Startups";
+    if (title.includes("cyber") || title.includes("hacker") || title.includes("security")) return "Cybersecurity";
+    return "Tech Trends";
+  }
+
+  async function fetchBlogsHubspotStyle() {
+    const container = document.getElementById("blog-sections-container");
+
+    for (let url of blogFeeds) {
+      try {
+        const feed = await parser.parseURL(url);
+        const source = feed.title;
+        feed.items.forEach(item => {
+          const category = categorizeBlog(item);
+          topics[category].push({ ...item, source });
+        });
+      } catch (err) {
+        console.error("Error loading", url, err);
+      }
+    }
+
+    for (const [topic, items] of Object.entries(topics)) {
+      const section = document.createElement("div");
+      section.className = "blog-section";
+
+      const header = document.createElement("div");
+      header.className = "section-header";
+      header.innerHTML = `<h2>${topic}</h2><button class="next-btn">→</button>`;
+
+      const row = document.createElement("div");
+      row.className = "blog-row";
+
+      items.slice(0, 3).forEach(item => {
+        const card = document.createElement("div");
+        card.className = "blog-card";
+        card.innerHTML = `
+          <img src="https://placehold.co/300x180?text=Thumbnail" alt="Thumbnail" class="blog-thumb">
+          <h3><a href="${item.link}" target="_blank">${item.title}</a></h3>
+          <p class="source-label">${item.source}</p>
+        `;
+        row.appendChild(card);
+      });
+
+      section.appendChild(header);
+      section.appendChild(row);
+      container.appendChild(section);
+    }
+  }
+
+  fetchBlogsHubspotStyle();
+</script>
+
+<style>
+  .tinos-bold-italic {
+    font-family: "Tinos", serif;
+    font-weight: 700;
+    font-style: italic;
+  }
+  .blog-section {
+    margin: 40px 0;
+    padding: 0 20px;
+  }
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .section-header h2 {
+    font-size: 1.5em;
+    color: white;
+  }
+  .next-btn {
+    background: none;
+    border: none;
+    font-size: 1.5em;
+    color: white;
+    cursor: pointer;
+  }
+  .blog-row {
+    display: flex;
+    gap: 20px;
+    overflow-x: auto;
+  }
+  .blog-card {
+    min-width: 300px;
+    flex: 0 0 auto;
+    background-color: white;
+    padding: 0;
+    border-radius: 10px;
+    overflow: hidden;
+    color: #000;
+  }
+  .blog-thumb {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+  .blog-card h3 {
+    font-size: 1em;
+    margin: 15px;
+    font-weight: 600;
+    color: black;
+  }
+  .blog-card h3 a {
+    color: black;
+    text-decoration: none;
+  }
+  .blog-card h3 a:hover {
+    text-decoration: underline;
+  }
+  .source-label {
+    margin: 0 15px 15px;
+    font-size: 0.85em;
+    color: #333;
+  }
+</style>
+
+----------------------------------------------------------------------------------------------------------------------------------
 <link href="https://fonts.googleapis.com/css2?family=Crete+Round:ital@0;1&family=Smythe&display=swap" rel="stylesheet">
 
 --------------------------------------------
