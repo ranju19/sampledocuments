@@ -1,3 +1,47 @@
+SECTION _ 3
+-- HTML --
+<section class="section rss-podcast-section">
+  <h2 class="glow-text">🧠 Latest Episodes (Auto Updates)</h2>
+  <div class="news-grid" id="rss-podcast-feed"></div>
+</section>
+
+-- JS --
+<script>
+async function loadLatestEpisodes() {
+  const token = await getAccessToken();
+  const feedContainer = document.getElementById('rss-podcast-feed');
+  feedContainer.innerHTML = '';
+
+  const allShows = [...carouselShows, ...scrollShows];
+
+  for (const showId of allShows) {
+    try {
+      const showData = await fetchLatestEpisode(showId, token);
+      const episode = showData.episodes.items[0];
+      const episodeLink = episode.external_urls.spotify;
+      const thumbnail = episode.images?.[0]?.url || showData.images?.[0]?.url || '';
+      const pubDate = new Date(episode.release_date).toDateString();
+
+      const card = document.createElement('div');
+      card.className = 'news-card';
+      card.innerHTML = `
+        <img src="${thumbnail}" alt="Episode Thumbnail" style="width:100%; border-radius:8px;">
+        <h3><a href="${episodeLink}" target="_blank">${episode.name}</a></h3>
+        <p><em>${pubDate}</em></p>
+        <p>${episode.description.substring(0, 100)}...</p>
+        <p style="color: #ff7ce5; font-size: 0.9em;">🎙️ From: ${showData.name}</p>
+      `;
+      feedContainer.appendChild(card);
+    } catch (err) {
+      console.error(`Error loading latest episode for ${showId}:`, err);
+    }
+  }
+}
+
+loadLatestEpisodes();
+</script>
+
+--------------------------------------------------------
 --JS Code for Auto Spotify Podcast Feed--
 <script>
 const clientId = 'b81f151c4e4847eab6f1cba4b0cff7fe';
