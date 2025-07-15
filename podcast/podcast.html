@@ -1,3 +1,70 @@
+1. Modify Your JS (Popular Podcasts Section)
+Replace your old loadScrollCards() with this updated version:
+<script>
+const scrollShows = [
+  // First 5
+  '5oOBPrlO68dNZXen9Kxg0e', // The EdTech Podcast
+  '2F2srBvTeYu9Xcg6K910ol', // AI in Education
+  '5eLYl2HXeqP7gLNAfvfoQa', // Tech for Learning
+  '5M9yZpSyF1jc7uFp2MlhP9', // Machine Learning Weekly
+  '4TB4pnynaiZ6YHoKmyVN0L', // NVIDIA AI Podcast
+
+  // Additional 5
+  '2MAi0BvDc6GTFvKFPXnkCL', // Lex Fridman
+  '3H0HDDUecf3bMavlMXNVLD', // Practical AI
+  '5xX6zSQU2Dd3kpr2xW8tHb', // Data Skeptic
+  '4o8Rj3pEHDQKnHszr5rsJk', // Eye on A.I.
+  '1vKY2PqhK3P9s50DSRMVzt'  // Stack Overflow
+];
+
+let scrollIndex = 0;
+const scrollChunk = 5;
+
+async function loadScrollCardsChunk() {
+  const token = await getAccessToken();
+  const scrollContainer = document.getElementById('podcastContainer');
+
+  const chunk = scrollShows.slice(scrollIndex, scrollIndex + scrollChunk);
+  scrollIndex += scrollChunk;
+
+  for (const showId of chunk) {
+    try {
+      const showData = await fetchLatestEpisode(showId, token);
+      const episode = showData.episodes.items[0];
+      const iframeURL = `https://open.spotify.com/embed/episode/${episode.id}`;
+
+      const card = document.createElement('div');
+      card.className = 'podcast-card';
+      card.innerHTML = `
+        <iframe style="border-radius:12px" src="${iframeURL}" width="100%" height="250" frameborder="0"
+        allowfullscreen allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <div class="podcast-card-title">${showData.name}</div>`;
+      scrollContainer.appendChild(card);
+    } catch (err) {
+      console.error(`Error fetching podcast for ID: ${showId}`, err);
+    }
+  }
+
+  if (scrollIndex >= scrollShows.length) {
+    document.getElementById('scrollReadMoreBtn').style.display = 'none';
+  }
+}
+</script>
+HTML BUTTON
+Add the “Read More” Button (HTML)
+Place this inside your .podcast-slider-wrapper div, after </div> of #podcastContainer:
+<!-- Read More Button for Popular Podcasts -->
+<button id="scrollReadMoreBtn" class="listen-btn" style="margin-top: 10px; position: absolute; bottom: 0; right: 10px;" onclick="loadScrollCardsChunk()">
+  + Read More
+</button>
+3. Call the Initial Loader Once
+Just make sure at the end of your <script> block, you have this:
+
+js
+Copy
+Edit
+loadScrollCardsChunk(); // loads the first 5
+----------------------------------------------------------------------------------------------
 New loadLatestEpisodes() Code (Small Card Layout)
 <script>
 const latestEpisodeShows = [
