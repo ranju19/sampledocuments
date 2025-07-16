@@ -1,4 +1,53 @@
- 2. 🧠 Embed Landbot + Trigger Logic (Updated Script)
+/*chatbubble*/
+  let isChatOpen = false;
+
+    function toggleChat() {
+      const chatBox = document.getElementById("chat-box");
+      isChatOpen = !isChatOpen;
+      chatBox.style.display = isChatOpen ? "flex" : "none";
+    }
+
+    function closeChat() {
+      document.getElementById("chat-box").style.display = "none";
+      isChatOpen = false;
+    }
+
+    function postMessage() {
+      const input = document.querySelector(".chat-input textarea");
+      const content = input.value.trim();
+      if (!content) return;
+
+      const chatContent = document.getElementById("chat-content");
+
+      const userMsg = document.createElement("div");
+      userMsg.className = "chat-bubble user";
+      userMsg.textContent = content;
+      chatContent.appendChild(userMsg);
+
+      setTimeout(() => {
+        const botMsg = document.createElement("div");
+        botMsg.className = "chat-bubble bot";
+        botMsg.textContent = "Thanks for your message!";
+        chatContent.appendChild(botMsg);
+        chatContent.scrollTop = chatContent.scrollHeight;
+      }, 700);
+
+      input.value = "";
+      chatContent.scrollTop = chatContent.scrollHeight;
+    }
+
+
+    // Enter key triggers post
+    document.addEventListener("keydown", function (event) {
+      const textarea = document.querySelector(".chat-input textarea");
+      if (event.key === "Enter" && document.activeElement === textarea && !event.shiftKey) {
+        event.preventDefault();
+        postMessage();
+      }
+    });
+
+-------------------------------------------------------------------------------------------------------
+2. 🧠 Embed Landbot + Trigger Logic (Updated Script)
 Paste this just before </body>:
 <script>
   let myLandbotInstance = null;
