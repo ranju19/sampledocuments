@@ -1,3 +1,10 @@
+const globalUsedLinks = new Set();
+allItems = allItems.filter(item => {
+  if (globalUsedLinks.has(item.link)) return false;
+  globalUsedLinks.add(item.link);
+  return true;
+});
+
 AI & Machine Learning
 	1.	OpenAI Blog
 https://openai.com/blog/rss.xml
