@@ -1,3 +1,17 @@
+function createSlide(item) {
+  const imageUrl = extractImage(item);  // Always trust global image extractor
+
+  return `
+    <div class="carousel-slide">
+      <img src="${imageUrl}" alt="News image" style="width:100%; height: 200px; object-fit: cover; border-radius: 10px;">
+      <h4><a href="${item.link}" target="_blank">${item.title}</a></h4>
+      <p>${item.description.slice(0, 100)}...</p>
+    </div>
+  `;
+}
+
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
