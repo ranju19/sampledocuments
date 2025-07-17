@@ -1,3 +1,9 @@
+    'https://www.zdnet.com/news/rss.xml',
+    'https://www.cnet.com/rss/news/',
+    'https://thenextweb.com/feed',
+    'https://www.techradar.com/rss',
+    'https://www.digitaltrends.com/feed/'
+
 const globalUsedLinks = new Set();
 allItems = allItems.filter(item => {
   if (globalUsedLinks.has(item.link)) return false;
