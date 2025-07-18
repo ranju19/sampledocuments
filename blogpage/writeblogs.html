@@ -1,3 +1,31 @@
+update
+for (let url of blogFeeds) {
+  try {
+    const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`);
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
+    
+    const feed = await response.json();
+
+    if (!feed.items || !feed.feed) continue;
+
+    const source = feed.feed.title || "Unknown Source";
+
+    feed.items.forEach(item => {
+      const category = categorizeBlog(item);
+      const thumbnail = (item.enclosure && item.enclosure.link) || item.thumbnail || "https://placehold.co/300x180?text=No+Image";
+
+      if (!topics[category].some(existing => existing.title === item.title)) {
+        topics[category].push({ ...item, source, thumbnail });
+      }
+    });
+
+  } catch (err) {
+    console.warn(`❌ Skipped feed due to error: ${url}`, err.message);
+  }
+}
+
+
+------------------------------------------------------------------------------------------------------------------------
 <script>
 const blogFeeds = [
   'https://news.mit.edu/topic/artificial-intelligence-rss.xml',
