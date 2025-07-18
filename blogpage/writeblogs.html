@@ -35,12 +35,48 @@ data.items.forEach((item, index) => {
 });
 
 ---------------------------------------------------------------------------------------------------------------------
+    const header = document.createElement("div");
+    header.className = "blog-header-unique";
+    header.innerHTML = `<h2>${topic}</h2><button class="blog-next-btn" onclick="loadMore('${topic}')">→</button>`;
 
-update
-const blogFeeds = [
-  'https://www.analyticsvidhya.com/blog/feed/',                     
-  'https://www.csoonline.com/index.rss',                           
-];
+    const row = document.createElement("div");
+    row.className = "blog-row-unique";
+    row.id = `${topic.replace(/\s+/g, '-')}-row`;
+
+    items.slice(0, 4).forEach((item, index) => {
+      const card = document.createElement("div");
+      card.className = "blog-card-unique";
+      card.setAttribute('data-index', index);
+      card.innerHTML = `
+        <img src="${item.thumbnail}" alt="Thumbnail" class="blog-thumb-unique">
+        <h3><a href="${item.link}" target="_blank">${item.title.slice(0, 90)}...</a></h3>
+        <p class="source-label-unique">${item.source}</p>
+      `;
+      row.appendChild(card);
+    });
+
+    section.appendChild(header);
+    section.appendChild(row);
+    container.appendChild(section);
+  }
+}
+
+function loadMore(topic) {
+  const rowId = `${topic.replace(/\s+/g, '-')}-row`;
+  const row = document.getElementById(rowId);
+  const currentCount = row.children.length;
+  const nextItems = topics[topic].slice(currentCount, currentCount + 3);
+  nextItems.forEach((item, index) => {
+    const card = document.createElement("div");
+    card.className = "blog-card-unique";
+    card.setAttribute('data-index', currentCount + index);
+    card.innerHTML = `
+      <img src="${item.thumbnail}" alt="Thumbnail" class="blog-thumb-unique">
+      <h3><a href="${item.link}" target="_blank">${item.title.slice(0, 90)}...</a></h3>
+      <p class="source-label-unique">${item.source}</p>
+    `;
+    row.appendChild(card);
+  });
 
 
 
