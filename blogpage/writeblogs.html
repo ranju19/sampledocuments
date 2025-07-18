@@ -1,3 +1,66 @@
+changes
+✅ 1. Fix: "Startup Sparks" showing empty
+Update the condition inside the forEach(item => { ... }) block to also allow fallback to Next-Gen Buzz only if no keyword matched, like this:
+
+🔁 Replace this part inside feed.items.forEach:
+js
+Copy
+Edit
+const category = categorizeBlog(item);
+if (!topics[category].some(existing => existing.title === item.title)) {
+  topics[category].push({ ...item, source });
+}
+✅ With this:
+js
+Copy
+Edit
+let category = categorizeBlog(item);
+if (!topics[category].some(existing => existing.title === item.title)) {
+  topics[category].push({ ...item, source });
+} else if (!["Future Frames", "Startup Sparks", "Cyber Chronicles"].some(c => item.title.toLowerCase().includes(c.toLowerCase()))) {
+  topics["Next-Gen Buzz"].push({ ...item, source });
+}
+This ensures "Startup Sparks" has fallback entries if not directly matched.
+
+✅ 2. Fix: Cyber Chronicles starts with 4 items (not 2)
+Locate this line:
+
+js
+Copy
+Edit
+items.slice(0, 4).forEach((item, index) => {
+This is already correct ✅ (It pulls 4 items).
+
+If it's still showing 2, that means only 2 items passed the keyword filter. Once you apply the fix above, it should pull enough content if available.
+
+✅ 3. Add 3 more cards on arrow click
+Already handled in:
+
+js
+Copy
+Edit
+const nextItems = topics[topic].slice(currentCount, currentCount + 3);
+So no change needed here. The arrow is working, just ensure blog categorization is feeding enough entries.
+
+✅ 4. Thumbnail image issue
+If real blog item.enclosure?.url is available, replace the placeholder image:
+
+🔁 Replace both:
+js
+Copy
+Edit
+<img src="https://placehold.co/300x180?text=Thumbnail" alt="Thumbnail" class="blog-thumb-unique">
+✅ With:
+js
+Copy
+Edit
+<img src="${item.enclosure?.url || 'https://placehold.co/300x180?text=Thumbnail'}" alt="Thumbnail" class="blog-thumb-unique">
+Do this inside both forEach functions (initial load and loadMore()).
+
+
+
+
+-------------------------------------------------------------------------------------------------------------------------------
 <!-- Refined Blog Page Layout for Readable Tech Blogs -->
 <div id="blog-title" class="blog-title-unique tinos-bold-italic" style="font-size: 2.2em; color: white; padding: 0 20px; margin-top: 40px;">
   Whereas recognition of the inherent dignity
