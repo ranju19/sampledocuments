@@ -1,114 +1,107 @@
-for (let url of blogFeeds) {
-  try {
-    const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`);
-    const feed = await response.json();
-    const source = feed.feed.title;
-    (feed.items || []).forEach(item => {
-      let category = categorizeBlog(item);
-      if (!topics[category].some(existing => existing.title === item.title)) {
-        topics[category].push({ ...item, source });
-      }
-      else if (
-        category === "Next-Gen Buzz" &&
-        (item.title.toLowerCase().includes("startup") || item.title.toLowerCase().includes("founder") || item.title.toLowerCase().includes("pitch"))
-      ) {
-        topics["Startup Sparks"].push({ ...item, source });
-      } else if (!["Future Frames", "Startup Sparks", "Cyber Chronicles"].some(c => item.title.toLowerCase().includes(c.toLowerCase()))) {
-        topics["Next-Gen Buzz"].push({ ...item, source });
-      }
+<script>
+const blogFeeds = [
+  'https://www.theverge.com/rss/index.xml',
+  'https://techcrunch.com/feed/',
+  'https://venturebeat.com/feed/',
+  'https://feeds.arstechnica.com/arstechnica/index'
+];
+
+const topics = {
+  "Future Frames": [],
+  "Next-Gen Buzz": [],
+  "Startup Sparks": [],
+  "Cyber Chronicles": []
+};
+
+function categorizeBlog(item) {
+  const title = item.title.toLowerCase();
+  if (title.includes("ai") || title.includes("artificial intelligence")) return "Future Frames";
+  if (title.includes("startup") || title.includes("founder") || title.includes("pitch")) return "Startup Sparks";
+  if (title.includes("cyber") || title.includes("security") || title.includes("hacker")) return "Cyber Chronicles";
+  return "Next-Gen Buzz";
+}
+
+async function fetchBlogs() {
+  const container = document.getElementById("blog-sections-container");
+
+  for (let url of blogFeeds) {
+    try {
+      const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+      const data = await response.json();
+
+      const parser = new DOMParser();
+      const xml = parser.parseFromString(data.contents, "text/xml");
+      const channel = xml.querySelector("channel");
+      const source = channel.querySelector("title").textContent;
+
+      const items = xml.querySelectorAll("item");
+      items.forEach(item => {
+        const title = item.querySelector("title")?.textContent ?? "";
+        const link = item.querySelector("link")?.textContent ?? "#";
+        const thumbnail = item.querySelector("media\\:content, enclosure")?.getAttribute("url") || "https://placehold.co/300x180?text=Thumbnail";
+        const category = categorizeBlog({ title });
+
+        if (!topics[category].some(existing => existing.title === title)) {
+          topics[category].push({ title, link, source, thumbnail });
+        }
+      });
+    } catch (err) {
+      console.error("Error loading:", url, err);
+    }
+  }
+
+  for (const [topic, items] of Object.entries(topics)) {
+    if (items.length === 0) continue;
+
+    const section = document.createElement("div");
+    section.className = "blog-section-unique";
+
+    const header = document.createElement("div");
+    header.className = "blog-header-unique";
+    header.innerHTML = `<h2>${topic}</h2><button class="blog-next-btn" onclick="loadMore('${topic}')">→</button>`;
+
+    const row = document.createElement("div");
+    row.className = "blog-row-unique";
+    row.id = `${topic.replace(/\s+/g, '-')}-row`;
+
+    items.slice(0, 4).forEach((item, index) => {
+      const card = document.createElement("div");
+      card.className = "blog-card-unique";
+      card.setAttribute('data-index', index);
+      card.innerHTML = `
+        <img src="${item.thumbnail}" alt="Thumbnail" class="blog-thumb-unique">
+        <h3><a href="${item.link}" target="_blank">${item.title.slice(0, 90)}...</a></h3>
+        <p class="source-label-unique">${item.source}</p>
+      `;
+      row.appendChild(card);
     });
-  } catch (err) {
-    console.error("Error loading", url, err);
+
+    section.appendChild(header);
+    section.appendChild(row);
+    container.appendChild(section);
   }
 }
 
---------------------------------------------------------
-CHANGES
-
-Based on your screenshots and the current canvas code, here's a precise update to **only fix the issues you mentioned**:
-
----
-
-### ✅ **Change 1: Add Blogs to "Startup Sparks" section**
-
-You told me it was appearing empty — that means either:
-
-* No RSS items were categorized as "Startup Sparks"
-* Or they were but got pushed into the fallback `"Next-Gen Buzz"` block.
-
-### 🔧 Fix:
-
-Go to this part in your code:
-
-```js
-if (!topics[category].some(existing => existing.title === item.title)) {
-  topics[category].push({ ...item, source });
+function loadMore(topic) {
+  const rowId = `${topic.replace(/\s+/g, '-')}-row`;
+  const row = document.getElementById(rowId);
+  const currentCount = row.children.length;
+  const nextItems = topics[topic].slice(currentCount, currentCount + 3);
+  nextItems.forEach((item, index) => {
+    const card = document.createElement("div");
+    card.className = "blog-card-unique";
+    card.setAttribute('data-index', currentCount + index);
+    card.innerHTML = `
+      <img src="${item.thumbnail}" alt="Thumbnail" class="blog-thumb-unique">
+      <h3><a href="${item.link}" target="_blank">${item.title.slice(0, 90)}...</a></h3>
+      <p class="source-label-unique">${item.source}</p>
+    `;
+    row.appendChild(card);
+  });
 }
-```
 
-Replace it with this to *force "Startup Sparks"* to always have blog content if any titles contain “startup”, “founder”, etc.
-
-```js
-if (!topics[category].some(existing => existing.title === item.title)) {
-  topics[category].push({ ...item, source });
-}
-else if (
-  category === "Next-Gen Buzz" &&
-  (title.includes("startup") || title.includes("founder") || title.includes("pitch"))
-) {
-  topics["Startup Sparks"].push({ ...item, source });
-}
-```
-
-Just paste that in **inside** your `forEach(item => { ... })` loop in `fetchBlogsHubspotStyle()`.
-
----
-
-### ✅ **Change 2: Fix `parser.parseURL(url)` error**
-
-You can’t use `parser.parseURL(url)` **in browser** — it’s server-side only.
-
-#### 🔧 Fix: Replace with `rss2json API` (client-side workaround)
-
-Find this line:
-
-```js
-const feed = await parser.parseURL(url);
-```
-
-Replace with:
-
-```js
-const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`);
-const feed = await response.json();
-```
-
-This will allow you to fetch blog feeds client-side using `rss2json`.
-
----
-
-### ⚠️ Optional: Add error handling for empty feeds
-
-Just in case `feed.items` is `undefined`, modify:
-
-```js
-feed.items.forEach(item => {
-```
-
-to:
-
-```js
-(feed.items || []).forEach(item => {
-```
-
----
-
-Let me know once you add this — I’ll help you verify if the blogs show up in **Startup Sparks**, and guide you if you want to style it more 👌
-
-
-
-
-
+fetchBlogs();
+</script>
 
 -------------------------------------------------------------------------------------------------------------------------------
 <!-- Refined Blog Page Layout for Readable Tech Blogs -->
