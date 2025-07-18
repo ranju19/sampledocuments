@@ -1,26 +1,26 @@
-    for (let url of blogFeeds) {
-      try {
-        const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`);
-        const feed = await response.json();
-        const source = feed.title;
-        (feed.items || []).forEach(item => {
-          let category = categorizeBlog(item);
-          if (!topics[category].some(existing => existing.title === item.title)) {
-            topics[category].push({ ...item, source });
-          }
-          else if (
-            category === "Next-Gen Buzz" &&
-            (title.includes("startup") || title.includes("founder") || title.includes("pitch"))
-          ) {
-            topics["Startup Sparks"].push({ ...item, source });
-          } else if (!["Future Frames", "Startup Sparks", "Cyber Chronicles"].some(c => item.title.toLowerCase().includes(c.toLowerCase()))) {
-            topics["Next-Gen Buzz"].push({ ...item, source });
-          }
-        });
-      } catch (err) {
-        console.error("Error loading", url, err);
+for (let url of blogFeeds) {
+  try {
+    const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`);
+    const feed = await response.json();
+    const source = feed.feed.title;
+    (feed.items || []).forEach(item => {
+      let category = categorizeBlog(item);
+      if (!topics[category].some(existing => existing.title === item.title)) {
+        topics[category].push({ ...item, source });
       }
-    }
+      else if (
+        category === "Next-Gen Buzz" &&
+        (item.title.toLowerCase().includes("startup") || item.title.toLowerCase().includes("founder") || item.title.toLowerCase().includes("pitch"))
+      ) {
+        topics["Startup Sparks"].push({ ...item, source });
+      } else if (!["Future Frames", "Startup Sparks", "Cyber Chronicles"].some(c => item.title.toLowerCase().includes(c.toLowerCase()))) {
+        topics["Next-Gen Buzz"].push({ ...item, source });
+      }
+    });
+  } catch (err) {
+    console.error("Error loading", url, err);
+  }
+}
 
 --------------------------------------------------------
 CHANGES
