@@ -1,9 +1,20 @@
 <script>
 const blogFeeds = [
-  'https://www.theverge.com/rss/index.xml',
-  'https://techcrunch.com/feed/',
-  'https://venturebeat.com/feed/',
-  'https://feeds.arstechnica.com/arstechnica/index'
+  'https://news.mit.edu/topic/artificial-intelligence-rss.xml',
+  'https://www.aitrends.com/feed/',
+  'https://www.aitimejournal.com/feed/',
+  
+  'https://www.digitaltrends.com/computing/feed/',
+  'https://lifehacker.com/rss',
+  'https://www.makeuseof.com/feed/',
+  
+  'https://www.eu-startups.com/feed/',
+  'https://startupnation.com/feed/',
+  'https://techstartups.com/feed/',
+  
+  'https://feeds.feedburner.com/TheHackersNews',
+  'https://securityweekly.com/feed/',
+  'https://krebsonsecurity.com/feed/'
 ];
 
 const topics = {
@@ -15,38 +26,34 @@ const topics = {
 
 function categorizeBlog(item) {
   const title = item.title.toLowerCase();
-  if (title.includes("ai") || title.includes("artificial intelligence")) return "Future Frames";
-  if (title.includes("startup") || title.includes("founder") || title.includes("pitch")) return "Startup Sparks";
-  if (title.includes("cyber") || title.includes("security") || title.includes("hacker")) return "Cyber Chronicles";
+  if (title.includes("ai") || title.includes("machine learning") || title.includes("deep learning")) return "Future Frames";
+  if (title.includes("startup") || title.includes("pitch") || title.includes("venture") || title.includes("founder")) return "Startup Sparks";
+  if (title.includes("cyber") || title.includes("malware") || title.includes("security") || title.includes("hacker")) return "Cyber Chronicles";
   return "Next-Gen Buzz";
 }
 
-async function fetchBlogs() {
+async function fetchBlogsHubspotStyle() {
   const container = document.getElementById("blog-sections-container");
 
   for (let url of blogFeeds) {
     try {
-      const response = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
-      const data = await response.json();
+      const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`);
+      const feed = await response.json();
 
-      const parser = new DOMParser();
-      const xml = parser.parseFromString(data.contents, "text/xml");
-      const channel = xml.querySelector("channel");
-      const source = channel.querySelector("title").textContent;
+      if (!feed.items || !feed.feed || !feed.feed.title) continue;
+      const source = feed.feed.title;
 
-      const items = xml.querySelectorAll("item");
-      items.forEach(item => {
-        const title = item.querySelector("title")?.textContent ?? "";
-        const link = item.querySelector("link")?.textContent ?? "#";
-        const thumbnail = item.querySelector("media\\:content, enclosure")?.getAttribute("url") || "https://placehold.co/300x180?text=Thumbnail";
-        const category = categorizeBlog({ title });
+      feed.items.forEach(item => {
+        const category = categorizeBlog(item);
+        const thumbnail = (item.enclosure && item.enclosure.link) || item.thumbnail || "https://placehold.co/300x180?text=No+Image";
 
-        if (!topics[category].some(existing => existing.title === title)) {
-          topics[category].push({ title, link, source, thumbnail });
+        if (!topics[category].some(existing => existing.title === item.title)) {
+          topics[category].push({ ...item, source, thumbnail });
         }
       });
+
     } catch (err) {
-      console.error("Error loading:", url, err);
+      console.warn("❌ Failed to load:", url, err);
     }
   }
 
@@ -100,8 +107,9 @@ function loadMore(topic) {
   });
 }
 
-fetchBlogs();
+fetchBlogsHubspotStyle();
 </script>
+
 
 -------------------------------------------------------------------------------------------------------------------------------
 <!-- Refined Blog Page Layout for Readable Tech Blogs -->
