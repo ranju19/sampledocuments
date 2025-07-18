@@ -1,61 +1,59 @@
 changes
-✅ 1. Fix: "Startup Sparks" showing empty
-Update the condition inside the forEach(item => { ... }) block to also allow fallback to Next-Gen Buzz only if no keyword matched, like this:
+✅ 1. Fix: Startup Sparks not loading blogs
+Your categorization missed some relevant keywords. Update the function:
 
-🔁 Replace this part inside feed.items.forEach:
-js
-Copy
-Edit
-const category = categorizeBlog(item);
-if (!topics[category].some(existing => existing.title === item.title)) {
-  topics[category].push({ ...item, source });
+🔄 Replace your categorizeBlog(item) function with:
+function categorizeBlog(item) {
+  const title = item.title.toLowerCase();
+  if (title.includes("ai") || title.includes("artificial intelligence") || title.includes("ml") || title.includes("deep learning"))
+    return "Future Frames";
+  if (title.includes("startup") || title.includes("venture") || title.includes("funding") || title.includes("entrepreneur") || title.includes("pitch"))
+    return "Startup Sparks";
+  if (title.includes("cyber") || title.includes("hacker") || title.includes("security") || title.includes("malware") || title.includes("phishing"))
+    return "Cyber Chronicles";
+  return "Next-Gen Buzz";
 }
-✅ With this:
-js
-Copy
-Edit
-let category = categorizeBlog(item);
-if (!topics[category].some(existing => existing.title === item.title)) {
-  topics[category].push({ ...item, source });
-} else if (!["Future Frames", "Startup Sparks", "Cyber Chronicles"].some(c => item.title.toLowerCase().includes(c.toLowerCase()))) {
-  topics["Next-Gen Buzz"].push({ ...item, source });
-}
-This ensures "Startup Sparks" has fallback entries if not directly matched.
 
-✅ 2. Fix: Cyber Chronicles starts with 4 items (not 2)
-Locate this line:
 
-js
-Copy
-Edit
-items.slice(0, 4).forEach((item, index) => {
-This is already correct ✅ (It pulls 4 items).
+✅ 4. Fix: Arrows misaligned or not working properly
+Currently, arrows appear even if only 2 cards exist. Let’s only show the arrow if there are more than 4 posts:
 
-If it's still showing 2, that means only 2 items passed the keyword filter. Once you apply the fix above, it should pull enough content if available.
+Replace this:
+header.innerHTML = `<h2>${topic}</h2><button class="blog-next-btn" onclick="loadMore('${topic}')">→</button>`;
 
-✅ 3. Add 3 more cards on arrow click
-Already handled in:
+With:
+header.innerHTML = `
+  <h2>${topic}</h2>
+  ${items.length > 4 ? `<button class="blog-next-btn" onclick="loadMore('${topic}')">→</button>` : ""}
+`;
 
-js
-Copy
-Edit
-const nextItems = topics[topic].slice(currentCount, currentCount + 3);
-So no change needed here. The arrow is working, just ensure blog categorization is feeding enough entries.
 
-✅ 4. Thumbnail image issue
-If real blog item.enclosure?.url is available, replace the placeholder image:
+✅ 5. Fix: CORS RSS Feed Error for The Verge, TechCrunch, etc.
+You're getting CORS errors because browser security blocks RSS fetches from client-side.
 
-🔁 Replace both:
-js
-Copy
-Edit
-<img src="https://placehold.co/300x180?text=Thumbnail" alt="Thumbnail" class="blog-thumb-unique">
-✅ With:
-js
-Copy
-Edit
-<img src="${item.enclosure?.url || 'https://placehold.co/300x180?text=Thumbnail'}" alt="Thumbnail" class="blog-thumb-unique">
-Do this inside both forEach functions (initial load and loadMore()).
+🔁 Replace your feed list with working proxy API (rss2json):
+Replace:
+const blogFeeds = [
+  'https://api.rss2json.com/v1/api.json?rss_url=https://www.wired.com/feed/rss',
+  'https://api.rss2json.com/v1/api.json?rss_url=https://www.kdnuggets.com/feed',
+  'https://api.rss2json.com/v1/api.json?rss_url=https://blog.roboflow.com/rss/',
+  'https://api.rss2json.com/v1/api.json?rss_url=https://www.hackread.com/feed/'
+];
+
+
+Make sure to also replace:
+const feed = await parser.parseURL(url);
+
+With:
+const response = await fetch(url);
+const feed = await response.json();
+
+And also change this:
+const source = feed.title;
+
+With:
+const source = feed.feed.title || "Blog";
+
 
 
 
