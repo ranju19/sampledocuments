@@ -1,58 +1,87 @@
-changes
-✅ 1. Fix: Startup Sparks not loading blogs
-Your categorization missed some relevant keywords. Update the function:
+CHANGES
 
-🔄 Replace your categorizeBlog(item) function with:
-function categorizeBlog(item) {
-  const title = item.title.toLowerCase();
-  if (title.includes("ai") || title.includes("artificial intelligence") || title.includes("ml") || title.includes("deep learning"))
-    return "Future Frames";
-  if (title.includes("startup") || title.includes("venture") || title.includes("funding") || title.includes("entrepreneur") || title.includes("pitch"))
-    return "Startup Sparks";
-  if (title.includes("cyber") || title.includes("hacker") || title.includes("security") || title.includes("malware") || title.includes("phishing"))
-    return "Cyber Chronicles";
-  return "Next-Gen Buzz";
+Based on your screenshots and the current canvas code, here's a precise update to **only fix the issues you mentioned**:
+
+---
+
+### ✅ **Change 1: Add Blogs to "Startup Sparks" section**
+
+You told me it was appearing empty — that means either:
+
+* No RSS items were categorized as "Startup Sparks"
+* Or they were but got pushed into the fallback `"Next-Gen Buzz"` block.
+
+### 🔧 Fix:
+
+Go to this part in your code:
+
+```js
+if (!topics[category].some(existing => existing.title === item.title)) {
+  topics[category].push({ ...item, source });
+}
+```
+
+Replace it with this to *force "Startup Sparks"* to always have blog content if any titles contain “startup”, “founder”, etc.
+
+```js
+if (!topics[category].some(existing => existing.title === item.title)) {
+  topics[category].push({ ...item, source });
 }
 
+// If categorization fails, use fallback (but make sure startup blogs stay in their section)
+else if (
+  category === "Next-Gen Buzz" &&
+  (title.includes("startup") || title.includes("founder") || title.includes("pitch"))
+) {
+  topics["Startup Sparks"].push({ ...item, source });
+}
+```
 
-✅ 4. Fix: Arrows misaligned or not working properly
-Currently, arrows appear even if only 2 cards exist. Let’s only show the arrow if there are more than 4 posts:
+Just paste that in **inside** your `forEach(item => { ... })` loop in `fetchBlogsHubspotStyle()`.
 
-Replace this:
-header.innerHTML = `<h2>${topic}</h2><button class="blog-next-btn" onclick="loadMore('${topic}')">→</button>`;
+---
 
-With:
-header.innerHTML = `
-  <h2>${topic}</h2>
-  ${items.length > 4 ? `<button class="blog-next-btn" onclick="loadMore('${topic}')">→</button>` : ""}
-`;
+### ✅ **Change 2: Fix `parser.parseURL(url)` error**
 
+You can’t use `parser.parseURL(url)` **in browser** — it’s server-side only.
 
-✅ 5. Fix: CORS RSS Feed Error for The Verge, TechCrunch, etc.
-You're getting CORS errors because browser security blocks RSS fetches from client-side.
+#### 🔧 Fix: Replace with `rss2json API` (client-side workaround)
 
-🔁 Replace your feed list with working proxy API (rss2json):
-Replace:
-const blogFeeds = [
-  'https://api.rss2json.com/v1/api.json?rss_url=https://www.wired.com/feed/rss',
-  'https://api.rss2json.com/v1/api.json?rss_url=https://www.kdnuggets.com/feed',
-  'https://api.rss2json.com/v1/api.json?rss_url=https://blog.roboflow.com/rss/',
-  'https://api.rss2json.com/v1/api.json?rss_url=https://www.hackread.com/feed/'
-];
+Find this line:
 
-
-Make sure to also replace:
+```js
 const feed = await parser.parseURL(url);
+```
 
-With:
-const response = await fetch(url);
+Replace with:
+
+```js
+const response = await fetch(`https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(url)}`);
 const feed = await response.json();
+```
 
-And also change this:
-const source = feed.title;
+This will allow you to fetch blog feeds client-side using `rss2json`.
 
-With:
-const source = feed.feed.title || "Blog";
+---
+
+### ⚠️ Optional: Add error handling for empty feeds
+
+Just in case `feed.items` is `undefined`, modify:
+
+```js
+feed.items.forEach(item => {
+```
+
+to:
+
+```js
+(feed.items || []).forEach(item => {
+```
+
+---
+
+Let me know once you add this — I’ll help you verify if the blogs show up in **Startup Sparks**, and guide you if you want to style it more 👌
+
 
 
 
