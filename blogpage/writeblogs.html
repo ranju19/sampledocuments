@@ -1,3 +1,41 @@
+image issue 
+data.items.forEach((item, index) => {
+  if (index >= maxItems) return;
+
+  let imageUrl = "https://via.placeholder.com/300x200?text=No+Image"; 
+
+  if (item.enclosure && item.enclosure.link) {
+    imageUrl = item.enclosure.link;
+  } else if (item.enclosure && item.enclosure.url) {
+    imageUrl = item.enclosure.url;
+  } else if (item.thumbnail) {
+    imageUrl = item.thumbnail;
+  } else if (item["media:content"] && item["media:content"]["@url"]) {
+    imageUrl = item["media:content"]["@url"];
+  } else if (item["media:content"] && item["media:content"]["url"]) {
+    imageUrl = item["media:content"]["url"];
+  } else if (item["content"] && item["content"].match(/<img[^>]+src="([^">]+)"/)) {
+    imageUrl = item["content"].match(/<img[^>]+src="([^">]+)"/)[1];
+  }
+
+  const card = document.createElement("div");
+  card.classList.add("blog-card");
+
+  card.innerHTML = `
+    <div class="blog-card-image">
+      <img src="${imageUrl}" alt="Blog Image" />
+    </div>
+    <div class="blog-card-content">
+      <h4 class="blog-title">${item.title}</h4>
+      <p class="blog-author">${item.author || "AI Trends"}</p>
+    </div>
+  `;
+
+  container.appendChild(card);
+});
+
+---------------------------------------------------------------------------------------------------------------------
+
 update
 const blogFeeds = [
   'https://www.analyticsvidhya.com/blog/feed/',                     
