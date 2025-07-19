@@ -1,3 +1,25 @@
+.blog-next-btn {
+  position: absolute;
+  top: 40%;
+  right: 10px;
+  z-index: 10;
+  background-color: rgba(255, 255, 255, 0.8);
+  color: black;
+  border: none;
+  border-radius: 50%;
+  padding: 8px 10px;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: background-color 0.3s ease;
+}
+
+.blog-next-btn:hover {
+  background-color: rgba(255, 255, 255, 1);
+}
+
+
+
+
 function getImageUrl(item) {
   if (item.enclosure && item.enclosure.link) return item.enclosure.link;
   if (item.enclosure && item.enclosure.url) return item.enclosure.url;
