@@ -1,3 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Threaded Chatroom</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      display: flex;
+      height: 100vh;
+      background-color: #1e1f22;
+      color: #fff;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #2b2d31;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sidebar .section {
+      padding: 20px 15px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      color: #a0a0a0;
+      margin-bottom: 10px;
+    }
+
+    .section-item {
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: #ddd;
+    }
+
+    .section-item:hover {
+      background-color: #404249;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background-color: #232428;
+      border-top: 1px solid #444;
+    }
+
+    .profile img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .profile span {
+      font-size: 14px;
+    }
+
+    .main-panel {
+      flex: 1;
+      padding: 20px;
+    }
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div>
+      <div class="section">
+        <div class="section-title">Channels</div>
+        <div class="section-item"># welcome</div>
+        <div class="section-item"># forum-discussion</div>
+        <div class="section-item"># ideas</div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">Members</div>
+        <div class="section-item">User A</div>
+        <div class="section-item">User B</div>
+        <div class="section-item">User C</div>
+      </div>
+    </div>
+
+    <div class="profile">
+      <img src="https://via.placeholder.com/32" alt="User">
+      <span>Username</span>
+    </div>
+  </div>
+
+  <div class="main-panel">
+    <!-- Main panel will be built in next step -->
+    <h2>Welcome to the Forum</h2>
+    <p>Next step: Add top bar (search + post), buttons, and threaded post layout.</p>
+  </div>
+</body>
+</html>
+
+-----------------------------------------------------------------------------------------
 HTML
 
 <!DOCTYPE html>
