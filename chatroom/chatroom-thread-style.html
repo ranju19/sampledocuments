@@ -1,4 +1,219 @@
+NEW CHANGES:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Threaded Chatroom</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Inter', sans-serif;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+      background-color: #1e1f22;
+      color: #fff;
+    }
+
+    .navbar {
+      width: 100%;
+      background-color: #2b2d31;
+      padding: 15px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #444;
+    }
+
+    .navbar .left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .navbar .right {
+      display: flex;
+      gap: 10px;
+    }
+
+    .navbar .icon-button {
+      background-color: #5865f2;
+      color: white;
+      padding: 8px 14px;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .main-wrapper {
+      display: flex;
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .sidebar {
+      width: 250px;
+      background-color: #2b2d31;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .sidebar .section {
+      padding: 20px 15px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      color: #a0a0a0;
+      margin-bottom: 10px;
+    }
+
+    .section-item {
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      color: #ddd;
+    }
+
+    .section-item:hover {
+      background-color: #404249;
+    }
+
+    .profile {
+      display: flex;
+      align-items: center;
+      padding: 15px;
+      background-color: #232428;
+      border-top: 1px solid #444;
+    }
+
+    .profile img {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      margin-right: 10px;
+    }
+
+    .profile span {
+      font-size: 14px;
+    }
+
+    .main-panel {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      padding: 20px;
+      overflow-y: auto;
+    }
+
+    .input-area {
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      width: 100%;
+      padding: 10px;
+      background: #2b2d31;
+      color: #fff;
+      border: 1px solid #5865f2;
+      border-radius: 8px;
+      resize: vertical;
+    }
+
+    .input-area button {
+      margin-top: 8px;
+      padding: 8px 16px;
+      background-color: #5865f2;
+      border: none;
+      border-radius: 5px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .thread-message {
+      margin-bottom: 20px;
+      padding: 10px;
+      background-color: #313338;
+      border-radius: 8px;
+    }
+
+    .thread-message p {
+      margin-bottom: 5px;
+    }
+
+    .reply-button, .delete-button {
+      background: none;
+      border: none;
+      color: #aaa;
+      cursor: pointer;
+      font-size: 0.85em;
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="navbar">
+    <div class="left">
+      <i class="fas fa-comment-alt"></i>
+      <span>Search</span>
+    </div>
+    <div class="right">
+      <button class="icon-button" onclick="scrollToPostBox()">
+        <i class="fas fa-plus"></i>
+        <span>New Post</span>
+      </button>
+    </div>
+  </div>
+
+  <div class="main-wrapper">
+    <div class="sidebar">
+      <div>
+        <div class="section">
+          <div class="section-title">Navigation</div>
+          <div class="section-item">Home</div>
+          <div class="section-item">Access</div>
+        </div>
+      </div>
+      <div class="profile">
+        <img src="https://via.placeholder.com/32" alt="User">
+        <span>ParticipantX</span>
+      </div>
+    </div>
+
+    <div class="main-panel">
+      <div class="input-area" id="postBox">
+        <textarea id="messageInput" placeholder="What's on your mind?"></textarea>
+        <button onclick="postMessage()">Post</button>
+      </div>
+      <div id="chatThread"></div>
+    </div>
+  </div>
+
+  <!-- Firebase Logic -->
+  <script type="module" src="app.js"></script>
+  <script>
+    function scrollToPostBox() {
+      document.getElementById('postBox').scrollIntoView({ behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
+
+-------------------------------------------------------------------------------------------------------------------
+<style>
     * {
       margin: 0;
       padding: 0;
