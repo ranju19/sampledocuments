@@ -1,3 +1,56 @@
+changes
+✅ 1. Update the HTML header.innerHTML in JS:
+Replace your header.innerHTML = line with:
+
+js
+Copy
+Edit
+header.innerHTML = `<h2>${topic}</h2><button class="blog-next-btn" onclick="loadMore('${topic}')">&#10140;</button>`;
+(✔️ Arrow → is Unicode &#10140;)
+
+✅ 2. Update & Replace the .blog-next-btn CSS like this:
+Replace your existing .blog-next-btn CSS block with this:
+
+css
+Copy
+Edit
+.blog-next-btn {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background-color: grey;
+  border: none;
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+  z-index: 1;
+}
+✅ 3. Add this line to .blog-section-unique
+To ensure the button aligns within the section:
+
+css
+Copy
+Edit
+.blog-section-unique {
+  position: relative;
+  margin: 40px 0;
+  padding: 0 20px;
+}
+Make sure position: relative; is added to .blog-section-unique as shown.
+
+
+
+-----------------------------------------------------------------------------------------------------------------------------------------
+OLD
+
 <div id="blog-title" class="blog-title-unique tinos-bold-italic" style="font-size: 2.2em; color: white; padding: 0 20px; margin-top: 40px;">
   Whereas recognition of the inherent dignity
 </div>
