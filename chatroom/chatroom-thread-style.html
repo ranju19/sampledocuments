@@ -23,7 +23,7 @@ NEW CHANGES:
       color: #fff;
     }
 
-    .navbar {
+    .chatroom-navbar {
       width: 100%;
       background-color: #2b2d31;
       padding: 15px 20px;
@@ -33,18 +33,18 @@ NEW CHANGES:
       border-bottom: 1px solid #444;
     }
 
-    .navbar .left {
+    .chatroom-navbar .chatroom-left {
       display: flex;
       align-items: center;
       gap: 12px;
     }
 
-    .navbar .right {
+    .chatroom-navbar .chatroom-right {
       display: flex;
       gap: 10px;
     }
 
-    .navbar .icon-button {
+    .chatroom-navbar .icon-button {
       background-color: #5865f2;
       color: white;
       padding: 8px 14px;
@@ -56,13 +56,13 @@ NEW CHANGES:
       gap: 6px;
     }
 
-    .main-wrapper {
+    .chatroom-main-wrapper {
       display: flex;
       flex: 1;
       overflow: hidden;
     }
 
-    .sidebar {
+    .chatroom-sidebar {
       width: 250px;
       background-color: #2b2d31;
       display: flex;
@@ -70,24 +70,24 @@ NEW CHANGES:
       justify-content: space-between;
     }
 
-    .sidebar .section {
+    .chatroom-sidebar .chatroom-section {
       padding: 20px 15px;
     }
 
-    .section-title {
+    .chatroom-section-title {
       font-size: 14px;
       color: #a0a0a0;
       margin-bottom: 10px;
     }
 
-    .section-item {
+    .chatroom-section-item {
       padding: 8px 12px;
       border-radius: 5px;
       cursor: pointer;
       color: #ddd;
     }
 
-    .section-item:hover {
+    .chatroom-section-item:hover {
       background-color: #404249;
     }
 
@@ -165,12 +165,12 @@ NEW CHANGES:
   </style>
 </head>
 <body>
-  <div class="navbar">
-    <div class="left">
+  <div class="chatroom-navbar">
+    <div class="chatroom-left">
       <i class="fas fa-comment-alt"></i>
       <span>Search</span>
     </div>
-    <div class="right">
+    <div class="chatroom-right">
       <button class="icon-button" onclick="scrollToPostBox()">
         <i class="fas fa-plus"></i>
         <span>New Post</span>
@@ -178,13 +178,13 @@ NEW CHANGES:
     </div>
   </div>
 
-  <div class="main-wrapper">
-    <div class="sidebar">
+  <div class="chatroom-main-wrapper">
+    <div class="chatroom-sidebar">
       <div>
-        <div class="section">
-          <div class="section-title">Navigation</div>
-          <div class="section-item">Home</div>
-          <div class="section-item">Access</div>
+        <div class="chatroom-section">
+          <div class="chatroom-section-title">Navigation</div>
+          <div class="chatroom-section-item">Home</div>
+          <div class="chatroom-section-item">Access</div>
         </div>
       </div>
       <div class="profile">
