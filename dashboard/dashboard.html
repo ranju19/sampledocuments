@@ -1,0 +1,134 @@
+<!-- ✅ Dashboard Icon -->
+<img src="dashboard-icon.png" id="dashboardToggle" alt="Dashboard Icon" style="position: fixed; top: 20px; left: 20px; width: 40px; height: 40px; cursor: pointer; z-index: 9999;">
+
+<!-- ✅ Dashboard Overlay -->
+<div id="dashboardOverlay" style="display: none;">
+  <div id="dashboardPanel">
+    <button id="closeDashboard">×</button>
+    <h2>Dashboard</h2>
+    <div class="dashboard-grid">
+      <a href="blogs.html" class="dashboard-card">
+        <img src="blog-icon.png" alt="Blogs">
+        <span>Blogs</span>
+      </a>
+      <a href="news.html" class="dashboard-card">
+        <img src="news-icon.png" alt="Industry News">
+        <span>Industry News</span>
+      </a>
+      <a href="feedback.html" class="dashboard-card">
+        <img src="feedback-icon.png" alt="Feedback">
+        <span>Feedback</span>
+      </a>
+      <a href="techcast.html" class="dashboard-card">
+        <img src="techcast-icon.png" alt="TechCast">
+        <span>TechCast</span>
+      </a>
+      <a href="leaderboard.html" class="dashboard-card">
+        <img src="leaderboard-icon.png" alt="Leaderboard">
+        <span>Leaderboard</span>
+      </a>
+      <a href="documents.html" class="dashboard-card">
+        <img src="documents-icon.png" alt="Documents">
+        <span>Documents</span>
+      </a>
+    </div>
+  </div>
+</div>
+
+<!-- ✅ CSS -->
+<style>
+  #dashboardOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: transparent;
+    z-index: 9998;
+  }
+
+  #dashboardPanel {
+    background: white;
+    border-radius: 16px;
+    padding: 30px;
+    width: 80%;
+    max-width: 900px;
+    margin: 60px auto;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    position: relative;
+  }
+
+  #dashboardPanel h2 {
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+    color: #333;
+  }
+
+  #closeDashboard {
+    position: absolute;
+    top: 16px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 26px;
+    cursor: pointer;
+    color: #888;
+  }
+
+  .dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 20px;
+  }
+
+  .dashboard-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #f9f9f9;
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    transition: 0.3s;
+  }
+
+  .dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+  }
+
+  .dashboard-card img {
+    width: 48px;
+    height: 48px;
+    margin-bottom: 10px;
+  }
+
+  .dashboard-card span {
+    font-size: 16px;
+    font-weight: 500;
+  }
+</style>
+
+<!-- ✅ JavaScript -->
+<script>
+  const dashboardIcon = document.getElementById('dashboardToggle');
+  const dashboardOverlay = document.getElementById('dashboardOverlay');
+  const closeBtn = document.getElementById('closeDashboard');
+
+  dashboardIcon.addEventListener('click', () => {
+    dashboardOverlay.style.display = 'block';
+  });
+
+  closeBtn.addEventListener('click', () => {
+    dashboardOverlay.style.display = 'none';
+  });
+
+  window.addEventListener('click', (e) => {
+    if (e.target === dashboardOverlay) {
+      dashboardOverlay.style.display = 'none';
+    }
+  });
+</script>
