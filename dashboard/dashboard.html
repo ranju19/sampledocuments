@@ -1,3 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard | TechnicalAcumen</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #ffffff;
+      color: #222;
+    }
+
+    .dashboard-container {
+      max-width: 1200px;
+      margin: 80px auto;
+      padding: 20px;
+    }
+
+    .dashboard-title {
+      text-align: center;
+      font-size: 2em;
+      margin-bottom: 40px;
+      color: #2c2c2c;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      justify-content: center;
+    }
+
+    .dashboard-card {
+      background: #f8f8f8;
+      border-radius: 16px;
+      padding: 25px 20px;
+      text-align: center;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      transition: transform 0.3s ease;
+      text-decoration: none;
+      color: #222;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-5px);
+    }
+
+    .dashboard-card img {
+      width: 60px;
+      height: 60px;
+      margin-bottom: 15px;
+    }
+
+    .dashboard-card span {
+      font-size: 1.1em;
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="dashboard-container">
+    <div class="dashboard-title">Dashboard</div>
+    <div class="dashboard-grid">
+      <a href="blogs.html" class="dashboard-card">
+        <img src="icons/blogs.png" alt="Blogs">
+        <span>Blogs</span>
+      </a>
+      <a href="industry-news.html" class="dashboard-card">
+        <img src="icons/news.png" alt="Industry News">
+        <span>Industry News</span>
+      </a>
+      <a href="feedback.html" class="dashboard-card">
+        <img src="icons/feedback.png" alt="Feedback">
+        <span>Feedback</span>
+      </a>
+      <a href="techcast.html" class="dashboard-card">
+        <img src="icons/techcast.png" alt="TechCast">
+        <span>TechCast</span>
+      </a>
+      <a href="leaderboard.html" class="dashboard-card">
+        <img src="icons/leaderboard.png" alt="Leaderboard">
+        <span>Leaderboard</span>
+      </a>
+      <a href="agenda.html" class="dashboard-card">
+        <img src="icons/calendar.png" alt="Agenda">
+        <span>Agenda</span>
+      </a>
+    </div>
+  </div>
+
+</body>
+</html>
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------
 https://raw.githubusercontent.com/ranju19/Technicalacumen/main/dashboard/background-ai.png
 
 <script>
