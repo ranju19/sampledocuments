@@ -1,3 +1,75 @@
+UPDATED HTML,CSS, JS
+HTML
+<div class="leaderboard-stats-grid">
+  <div class="leaderboard-stat-card">
+    <h3>Tasks Completed</h3>
+    <canvas id="taskChart" height="120"></canvas>
+  </div>
+  <div class="leaderboard-stat-card">
+    <h3>Skill Progress</h3>
+    <canvas id="skillChart" width="120" height="120"></canvas>
+    <p style="margin-top: 10px;">20 / 50 skills mastered</p>
+  </div>
+</div>
+SCRIPT
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+  // Task Chart
+  const ctx1 = document.getElementById('taskChart').getContext('2d');
+  new Chart(ctx1, {
+    type: 'bar',
+    data: {
+      labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+      datasets: [{
+        label: 'Tasks',
+        data: [10, 14, 12, 19, 22, 16],
+        backgroundColor: 'rgba(255, 99, 132, 0.7)',
+        borderRadius: 8,
+        barThickness: 30
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true,
+          ticks: { color: '#000' }
+        },
+        x: {
+          ticks: { color: '#000' }
+        }
+      },
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+
+  // Skill Doughnut Chart
+  const ctx2 = document.getElementById('skillChart').getContext('2d');
+  new Chart(ctx2, {
+    type: 'doughnut',
+    data: {
+      labels: ['Mastered', 'Remaining'],
+      datasets: [{
+        data: [20, 30],
+        backgroundColor: ['#ff6384', '#eee'],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      cutout: '70%',
+      plugins: {
+        legend: { display: false }
+      }
+    }
+  });
+</script>
+leaderboard.css
+.leaderboard-stat-card canvas {
+  display: block;
+  margin: 0 auto;
+}
+___________________________________________________________________________________________________
 UPDATED HTML
 <div class="leaderboard-sidebar">
     <h2>My Courses</h2>
