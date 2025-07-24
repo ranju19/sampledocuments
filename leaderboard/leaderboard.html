@@ -1,3 +1,39 @@
+COURSE CARD PROGRESS CSS
+.leaderboard-course-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-card-left {
+  flex: 1;
+}
+
+.course-card-right {
+  width: 50px;
+  height: 50px;
+}
+
+.progress-ring {
+  transform: rotate(-90deg);
+}
+
+.ring-bg {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 5;
+}
+
+.ring-progress {
+  fill: none;
+  stroke: red;
+  stroke-width: 5;
+  stroke-dasharray: 126;
+  stroke-dashoffset: 19; /* 85% progress (126 - 85% of 126 = 19) */
+  transition: stroke-dashoffset 0.35s;
+}
+
+-------------------------------------------------------------------
 progress track for course cards
   <div class="course-card-right">
     <svg class="progress-ring" width="50" height="50">
