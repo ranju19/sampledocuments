@@ -1,3 +1,48 @@
+UPDATED SCROLL CS
+.cards {
+  display: flex; /* override grid */
+  flex-wrap: nowrap; /* keep in one row */
+  overflow-x: auto; /* horizontal scroll */
+  background-color: #000; /* new background */
+  padding: 40px;
+  gap: 30px;
+  scroll-behavior: smooth;
+}
+
+.cards::-webkit-scrollbar {
+  height: 8px;
+}
+
+.cards::-webkit-scrollbar-thumb {
+  background: #ccc;
+  border-radius: 4px;
+}
+
+.card {
+  flex: 0 0 250px; /* fixed width */
+  background-color: #1a1a1a; /* darker box for black bg */
+  color: white;
+  border-radius: 12px;
+  padding: 30px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(255, 255, 255, 0.15); /* white glow */
+  transition: transform 0.3s, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(255, 255, 255, 0.4); /* stronger white glow */
+}
+
+.card h2 {
+  color: #ffffff;
+}
+
+.card p {
+  color: #ccc;
+}
+
+---------------------------
 current css for cards(homepage)
 
 .cards{
