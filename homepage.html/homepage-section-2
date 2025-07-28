@@ -1,3 +1,31 @@
+<!-- NEW CARDS -->
+
+  <div class="card">
+    <i class="fas fa-podcast icon-large"></i>
+    <h2>Podcasts, Blogs & News</h2>
+    <p>Listen to AI podcasts, read blogs, and stay updated with industry news – all in one place.</p>
+  </div>
+
+  <div class="card">
+    <i class="fas fa-comments icon-large"></i>
+    <h2>Community Chatroom</h2>
+    <p>Join our vibrant AI chatroom to collaborate, share ideas, and ask questions in real-time.</p>
+  </div>
+
+  <div class="card">
+    <i class="fas fa-trophy icon-large"></i>
+    <h2>Leaderboard</h2>
+    <p>Track your learning progress, earn badges, and climb the leaderboard by engaging with content.</p>
+  </div>
+
+  <div class="card">
+    <i class="fas fa-video icon-large"></i>
+    <h2>Video Lessons</h2>
+    <p>Watch real-world tutorials and visual lessons on AI, MLOps, and more, designed for self-paced learning.</p>
+  </div>
+
+</section>
+---------------------------
 UPDATED CSS:
 .training-section {
   background-color: #ffffff;
