@@ -1,0 +1,79 @@
+HTML:
+<section class="training-section">
+  <div class="training-container">
+    <div class="training-image">
+      <img src="your-image-path.png" alt="Training Session">
+    </div>
+    <div class="training-content">
+      <h2>Classroom Training Sessions</h2>
+      <p>
+        Stay ahead with our exclusive internal training sessions designed for real-world skill development. Access recorded videos, technical walk-throughs, and step-by-step demos shared securely via SharePoint.
+      </p>
+      <p>
+        To view past session recordings, click the button below. For upcoming live classroom sessions, visit our <a href="calendar.html">Calendar</a> page and join via Microsoft Teams.
+      </p>
+      <a href="https://sharepoint.com/your-folder-link" class="training-btn" target="_blank">View Recordings</a>
+    </div>
+  </div>
+</section>
+
+  CSS:
+.training-section {
+  background-color: #ffffff;
+  padding: 60px 10%;
+}
+
+.training-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.training-image img {
+  max-width: 100%;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  width: 100%;
+  max-width: 450px;
+}
+
+.training-content {
+  flex: 1;
+  padding-left: 40px;
+  min-width: 300px;
+}
+
+.training-content h2 {
+  font-size: 2rem;
+  color: #1a1a1a;
+  margin-bottom: 15px;
+}
+
+.training-content p {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.training-content a {
+  color: #0078d4;
+  text-decoration: underline;
+}
+
+.training-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #ff6600;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  text-decoration: none;
+  margin-top: 10px;
+  transition: background 0.3s ease;
+}
+
+.training-btn:hover {
+  background-color: #e05500;
+}
