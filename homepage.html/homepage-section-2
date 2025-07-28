@@ -1,3 +1,93 @@
+UPDATED CSS:
+.training-section {
+  background-color: #ffffff;
+  padding: 60px 10%;
+}
+
+.training-container {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.training-content {
+  flex: 1;
+  max-width: 550px;
+  text-align: center; /* center the content inside */
+}
+
+.training-content h2 {
+  font-size: 2rem;
+  color: #1a1a1a;
+  margin-bottom: 20px;
+}
+
+.training-content p {
+  font-size: 1rem;
+  color: #333;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+
+.training-content a {
+  color: #0078d4;
+  text-decoration: underline;
+}
+
+.training-btn {
+  display: inline-block;
+  padding: 12px 24px;
+  background-color: #ff6600;
+  color: white;
+  font-weight: bold;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: background 0.3s ease;
+  margin-top: 10px;
+}
+
+.training-btn:hover {
+  background-color: #e05500;
+}
+
+.training-image img {
+  max-width: 100%;
+  width: 350px;
+  border-radius: 15px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+-------------------
+UPDATED HTML:
+<section class="training-section">
+  <div class="training-container">
+
+    <!-- Left: Centered Text Block -->
+    <div class="training-content">
+      <h2>Classroom Training Sessions</h2>
+      <p>
+        Stay ahead with our exclusive internal training sessions designed for real-world skill development. 
+        Access recorded videos, technical walk-throughs, and step-by-step demos shared securely via SharePoint.
+      </p>
+      <p>
+        To view past session recordings, click the button below. <br>
+        For upcoming live classroom sessions, visit our 
+        <a href="calendar.html">Calendar</a> page and join via Microsoft Teams.
+      </p>
+      <a href="https://sharepoint.com/your-folder-link" class="training-btn" target="_blank">📂 View Recordings</a>
+    </div>
+
+    <!-- Right: Image -->
+    <div class="training-image">
+      <img src="A_digital_graphic_design_showcases_a_wireframe_gra.png" alt="Training Cap">
+    </div>
+
+  </div>
+</section>
+
+----------------------------------------------------------------------
 HTML:
 <section class="training-section">
   <div class="training-container">
