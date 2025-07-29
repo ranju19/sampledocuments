@@ -1,0 +1,63 @@
+STEP 1 — Set region & helper variables
+aws configure set region us-east-1
+
+# Name your app & default channel (you can change these)
+APP_NAME="TA-Chat"
+CHANNEL_NAME="general"
+
+STEP 2 — Create the AppInstance (base “server” for chat)
+Where: CloudShell terminal
+APP_JSON=$(aws chime-sdk-identity create-app-instance \
+  --name "$APP_NAME" \
+  --client-request-token "$(uuidgen)")
+
+APP_ARN=$(echo "$APP_JSON" | jq -r '.AppInstanceArn')
+echo "APP_ARN=$APP_ARN"
+
+STEP 3 — Create your AppInstance User
+Where: CloudShell terminal
+USER_JSON=$(aws chime-sdk-identity create-app-instance-user \
+  --app-instance-arn "$APP_ARN" \
+  --app-instance-user-id "ranju" \
+  --name "Ranju")
+
+USER_ARN=$(echo "$USER_JSON" | jq -r '.AppInstanceUserArn')
+echo "USER_ARN=$USER_ARN"
+
+STEP 4 — (Recommended) Make this user an AppInstance Admin
+Where: CloudShell terminal
+aws chime-sdk-identity create-app-instance-admin \
+  --app-instance-admin-arn "$USER_ARN" \
+  --app-instance-arn "$APP_ARN"
+
+STEP 5 — Create a Channel (your “#general” room)
+CHAN_JSON=$(aws chime-sdk-messaging create-channel \
+  --app-instance-arn "$APP_ARN" \
+  --name "$CHANNEL_NAME" \
+  --mode UNRESTRICTED \
+  --privacy PUBLIC \
+  --client-request-token "$(uuidgen)")
+
+CHAN_ARN=$(echo "$CHAN_JSON" | jq -r '.ChannelArn')
+echo "CHAN_ARN=$CHAN_ARN"
+
+STEP 6 — Add membership for your user to the channel
+aws chime-sdk-messaging create-channel-membership \
+  --channel-arn "$CHAN_ARN" \
+  --member-arn "$USER_ARN" \
+  --type DEFAULT
+
+STEP 7 — Smoke test: send a message, then list messages
+# Send a message
+aws chime-sdk-messaging send-channel-message \
+  --channel-arn "$CHAN_ARN" \
+  --content "Hello from CloudShell 👋" \
+  --type STANDARD \
+  --persistence PERSISTENT \
+  --chime-bearer "$USER_ARN"
+
+# Read back messages
+aws chime-sdk-messaging list-channel-messages \
+  --channel-arn "$CHAN_ARN" \
+  --chime-bearer "$USER_ARN"
+
