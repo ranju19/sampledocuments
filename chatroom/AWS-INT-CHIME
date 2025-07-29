@@ -38,6 +38,19 @@ CHAN_JSON=$(aws chime-sdk-messaging create-channel \
   --privacy PUBLIC \
   --client-request-token "$(uuidgen)")
 
+NEW
+CHAN_ARN=$(aws chime-sdk-messaging create-channel \
+  --app-instance-arn "$APP_ARN" \
+  --name "general" \
+  --mode UNRESTRICTED \
+  --privacy PUBLIC \
+  --client-request-token "$(uuidgen)" \
+  --chime-bearer "$USER_ARN" \
+  --query 'ChannelArn' \
+  --output text)
+echo "$CHAN_ARN"
+
+
 CHAN_ARN=$(echo "$CHAN_JSON" | jq -r '.ChannelArn')
 echo "CHAN_ARN=$CHAN_ARN"
 
