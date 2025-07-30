@@ -1,4 +1,95 @@
 cd /opt/techacumen-chat
+mkdir -p public
+
+cat > public/chat.html <<'HTML'
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>TA Chat Test</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+</head>
+<body style="font-family:system-ui; max-width:720px; margin:24px auto;">
+  <h2>Chime Chat (Test)</h2>
+
+  <div id="message-list" style="height:260px; overflow:auto; border:1px solid #333; padding:.5rem; border-radius:8px;"></div>
+  <div style="display:flex; gap:.5rem; margin-top:.5rem;">
+    <input id="msg-input" placeholder="Type a message…" style="flex:1; padding:.5rem; border-radius:6px; border:1px solid #333;">
+    <button id="send-btn" style="padding:.5rem 1rem;">Send</button>
+  </div>
+
+  <script>
+  const BASE = 'http://localhost:8000';
+  const API_LIST = BASE + '/api/chime/list';
+  const API_SEND = BASE + '/api/chime/send';
+
+  const msgListEl = document.getElementById('message-list');
+  const msgInput  = document.getElementById('msg-input');
+  const sendBtn   = document.getElementById('send-btn');
+
+  let nextToken = null;
+  let polling = null;
+
+  function addMessageToUI(m) {
+    const div = document.createElement('div');
+    const when = m.ts ? new Date(m.ts).toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'}) : '';
+    div.innerHTML = '<div style="opacity:.7;font-size:.8rem">'+(m.user||'user')+' · '+when+'</div>' +
+                    '<div>'+ (m.text||'').replace(/</g,'&lt;') +'</div>';
+    msgListEl.appendChild(div);
+    msgListEl.scrollTop = msgListEl.scrollHeight;
+  }
+
+  async function listMessages(initial=false){
+    try {
+      const url = new URL(API_LIST);
+      if (nextToken && !initial) url.searchParams.set('nextToken', nextToken);
+      const res = await fetch(url);
+      const data = await res.json();
+      nextToken = data.NextToken || null;
+      (data.ChannelMessages || []).forEach(m => {
+        addMessageToUI({
+          text: m.Content,
+          user: (m.Sender?.Arn || '').split('/').pop(),
+          ts: Date.parse(m.CreatedTimestamp)
+        });
+      });
+    } catch(e){ console.error(e); }
+  }
+
+  async function sendChatMessage(text){
+    const res = await fetch(API_SEND, {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json' },
+      body: JSON.stringify({ content: text })
+    });
+    if (!res.ok) console.warn('send failed', await res.text());
+  }
+
+  sendBtn?.addEventListener('click', async () => {
+    const t = (msgInput.value||'').trim();
+    if (!t) return;
+    msgInput.value = '';
+    await sendChatMessage(t);
+  });
+
+  msgInput?.addEventListener('keydown', async (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendBtn.click();
+    }
+  });
+
+  (async function start(){
+    await listMessages(true);
+    polling = setInterval(listMessages, 2500);
+  })();
+  </script>
+</body>
+</html>
+HTML
+
+---------------------------------------------------------------------
+cd /opt/techacumen-chat
 
 cat > server.js <<'EOF'
 'use strict';
