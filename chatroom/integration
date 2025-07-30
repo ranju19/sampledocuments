@@ -1,0 +1,22 @@
+cd /opt/techacumen-chat
+
+cat > .env <<'EOF'
+# Server
+PORT=8080
+ALLOWED_ORIGIN=*
+
+# AWS region for both services
+AWS_REGION=us-east-1
+
+# --- Amazon Lex V2 ---
+LEX_BOT_ID=REPLACE_WITH_YOUR_BOT_ID
+LEX_BOT_ALIAS_ID=REPLACE_WITH_YOUR_ALIAS_ID
+LEX_LOCALE=en_US
+
+# --- Amazon Chime SDK Messaging ---
+# Your AppInstance and a default Channel to post to:
+CHIME_APP_INSTANCE_ARN=REPLACE_WITH_APP_INSTANCE_ARN
+CHIME_CHANNEL_ARN=REPLACE_WITH_CHANNEL_ARN
+# AppInstanceUserArn that will act as sender (must be a member of the channel)
+CHIME_APP_USER_ARN=REPLACE_WITH_APP_INSTANCE_USER_ARN
+EOF
