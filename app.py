@@ -1,3 +1,6 @@
+curl -X POST -H "Content-Type: application/json" -d '{"message":"Hello"}' http://127.0.0.1:8000/api/threads
+
+
 @app.route('/api/threads', methods=['GET', 'POST'])
 def threads_api():
     if request.method == 'GET':
