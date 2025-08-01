@@ -2,8 +2,8 @@ fetch('/api/chime/send', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
   body: JSON.stringify({
-    channelArn: "YOUR_CHANNEL_ARN",
-    senderArn: "YOUR_USER_ARN",
+    channelArn: "arn:aws:chime:us-east-1:161289594039:app-instance/7d160e34-c880-436f-b006-435a9387c439/channel/f20095c6-041f-488a-bfa6-5bd56e4dbdd1",
+    senderArn: "arn:aws:chime:us-east-1:161289594039:app-instance/7d160e34-c880-436f-b006-435a9387c439/user/ta-admin",
     content: msgInput.value
   })
 })
