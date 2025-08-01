@@ -1,3 +1,15 @@
+@app.route('/saml/sls', methods=['GET', 'POST'])
+def saml_sls():
+    req = prepare_flask_request(request)
+    auth = init_saml_auth(req)
+    url = auth.process_slo()
+    errors = auth.get_errors()
+    if errors:
+        return f"SAML SLS error: {errors}", 400
+    # After successful logout, redirect as needed (here, home page)
+    return redirect('/')
+
+--------------------------------------------------------------------
 from flask import Flask, Response
 from onelogin.saml2.metadata import OneLogin_Saml2_Metadata
 from onelogin.saml2.settings import OneLogin_Saml2_Settings
