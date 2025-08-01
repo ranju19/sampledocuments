@@ -1,3 +1,42 @@
+const USER = "You";
+const threadsDiv = document.getElementById('threads');
+const postBtn = document.getElementById('post-btn');
+const msgInput = document.getElementById('msg');
+
+function fetchThreads() {
+  fetch('/api/threads')
+    .then(res => res.json())
+    .then(data => {
+      threadsDiv.innerHTML = '';
+      data.forEach(thread => {
+        threadsDiv.innerHTML += `
+          <div class="msg-bubble" style="margin-bottom: 2em;">
+            <b>${thread.user}:</b> ${thread.text}
+          </div>
+        `;
+      });
+      threadsDiv.scrollTop = threadsDiv.scrollHeight;
+    });
+}
+
+setInterval(fetchThreads, 2000);
+fetchThreads();
+
+postBtn.onclick = function() {
+  if (!msgInput.value.trim()) return;
+  fetch('/api/threads', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: msgInput.value, user: USER })
+  }).then(() => {
+    msgInput.value = '';
+    fetchThreads();
+  });
+};
+
+
+
+
 1B. Add “Post” Button at the Top and Message Input at Bottom
 Inside your <main class="discord-main">, right at the top, add:
 <div style="display: flex; align-items: center; gap: 10px; padding: 10px;">
