@@ -1,3 +1,4 @@
+NEW
 const USER = "You";
 const threadsDiv = document.getElementById('threads');
 const postBtn = document.getElementById('post-btn');
@@ -33,9 +34,33 @@ postBtn.onclick = function() {
     fetchThreads();
   });
 };
+--------------------------------------------------------------------------------------------------------
+OLD
+const USER = "You";
+
+const messagesDiv = document.getElementById('messages');
+const chatForm = document.getElementById('chat-form');
+const msgInput = document.getElementById('msg');
+
+setInterval(fetchMessages, 2000);
+fetchMessages();
+
+function fetchMessages() {
+  fetch('/api/chime/list')
+    .then(res => res.json())
+    .then(data => {
+      messagesDiv.innerHTML = '';
+      (data.ChannelMessages || []).forEach(msg => {
+
+        const isMe = msg.user === USER;
+        messagesDiv.innerHTML += `<div class="msg-bubble${isMe ? ' me' : ''}"><b>${msg.user}:</b> ${msg.text}</div>`;
+      });
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+}
 
 
-
+--------------------------------------------------------------------------------------------------------
 
 1B. Add “Post” Button at the Top and Message Input at Bottom
 Inside your <main class="discord-main">, right at the top, add:
