@@ -1,3 +1,14 @@
+fetch('/api/chime/send', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({
+    channelArn: "YOUR_CHANNEL_ARN",
+    senderArn: "YOUR_USER_ARN",
+    content: msgInput.value
+  })
+})
+
+
 1. Sidebar User Profile (bottom of sidebar)
 Add at the end of your .discord-sidebar:
 <!-- Add this just before closing </aside> -->
