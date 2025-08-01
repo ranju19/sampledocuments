@@ -1,3 +1,24 @@
+@app.route('/metadata/', methods=['GET', 'POST'])
+def metadata_or_acs():
+    if request.method == 'GET':
+        # normal metadata
+        saml_settings = OneLogin_Saml2_Settings(settings=None, custom_base_path="saml")
+        saml_metadata = OneLogin_Saml2_Metadata.builder(
+            saml_settings.get_sp_data(), None, None
+        )
+        return Response(saml_metadata, mimetype='text/xml')
+    else:  # POST
+        # treat as ACS (authentication callback)
+        req = prepare_flask_request(request)
+        auth = init_saml_auth(req)
+        auth.process_response()
+        errors = auth.get_errors()
+        if errors:
+            return f"SAML error: {errors}"
+        session['samlUserdata'] = auth.get_attributes()
+        return redirect(url_for('protected'))
+
+--------------------------------------------------------------------
 @app.route('/saml/sls', methods=['GET', 'POST'])
 def saml_sls():
     req = prepare_flask_request(request)
