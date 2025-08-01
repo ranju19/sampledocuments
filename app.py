@@ -1,3 +1,42 @@
+Settings.json
+{
+  "strict": true,
+  "debug": true,
+  "sp": {
+    "entityId": "http://localhost:5000/metadata/",
+    "assertionConsumerService": {
+      "url": "http://localhost:5000/saml/acs/",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+    },
+    "singleLogoutService": {
+      "url": "http://localhost:5000/saml/sls/",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "x509cert": "",
+    "privateKey": ""
+  },
+  "idp": {
+    "entityId": "https://sts.windows.net/34ddb339-7fd0-4f00-9041-c2e47fbbc9f4/",
+    "singleSignOnService": {
+      "url": "https://login.microsoftonline.com/34ddb339-7fd0-4f00-9041-c2e47fbbc9f4/saml2",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "singleLogoutService": {
+      "url": "https://login.microsoftonline.com/34ddb339-7fd0-4f00-9041-c2e47fbbc9f4/saml2",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "x509cert": "<X509Certificate>MIIC8DCCAdigAwIBAgIQfvqtosf0a4tP39yxfYusoTANBgkqhkiG9w0BAQsFADA0MTIwMAYDVQQDEylNaWNyb3NvZnQgQXp1cmUgRmVkZXJhdGVkIFNTTyBDZXJ0aWZpY2F0ZTAeFw0yNT>
+  }
+}
+
+
+
+
+
+
+
+
+---------------------------------------------------------------------------------------------
 sudo ln -s /etc/nginx/sites-available/flaskapp /etc/nginx/sites-enabled/
 
 sudo rm /etc/nginx/sites-enabled/default
