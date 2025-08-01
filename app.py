@@ -1,3 +1,20 @@
+from flask import Flask, Response
+from onelogin.saml2.metadata import OneLogin_Saml2_Metadata
+from onelogin.saml2.settings import OneLogin_Saml2_Settings
+
+app = Flask(__name__)
+
+@app.route('/metadata')
+def metadata():
+    saml_settings = OneLogin_Saml2_Settings(settings=None, custom_base_path="saml")
+    saml_metadata = OneLogin_Saml2_Metadata.builder(
+        saml_settings.get_sp_data(),
+        saml_settings.get_contact_person(),
+        saml_settings.get_organization()
+    )[0]
+    return Response(saml_metadata, mimetype='text/xml')
+
+------------------------------------------------
 New settings.json
 {
   "strict": true,
