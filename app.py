@@ -1,3 +1,14 @@
+@app.route('/api/threads', methods=['GET'])
+def get_threads():
+    # Sample threads. Replace this with your DB logic if needed.
+    threads = [
+        {"id": 1, "title": "Welcome!", "user": "admin"},
+        {"id": 2, "title": "First Chatroom Thread", "user": "ranju"},
+    ]
+    return jsonify(threads), 200
+
+
+
 1
 Directly BELOW it, add:
 from flask import session, redirect, url_for
