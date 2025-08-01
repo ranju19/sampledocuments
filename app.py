@@ -1,3 +1,8 @@
+sudo ln -s /etc/nginx/sites-available/flaskapp /etc/nginx/sites-enabled/
+
+sudo rm /etc/nginx/sites-enabled/default
+
+
 server {
     listen 80;
     server_name _;
