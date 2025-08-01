@@ -1,3 +1,20 @@
+1B. Add “Post” Button at the Top and Message Input at Bottom
+Inside your <main class="discord-main">, right at the top, add:
+<div style="display: flex; align-items: center; gap: 10px; padding: 10px;">
+  <button id="post-btn" style="background: #8d43ff; color: #fff; border: none; padding: 0.6em 1.5em; border-radius: 6px; font-weight: bold; cursor: pointer;">Post</button>
+</div>
+
+Below your main messages area, add:
+<div style="padding: 10px; background: #40444b;">
+  <input type="text" id="msg" placeholder="Type your thread post..." autocomplete="off" style="width: 90%; padding: 0.6em; border-radius: 6px; border: none; background: #2f3136; color: #fff;">
+</div>
+
+
+
+
+
+
+
 fetch('/api/chime/send', {
   method: 'POST',
   headers: { 'Content-Type': 'application/json' },
