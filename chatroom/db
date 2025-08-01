@@ -1,3 +1,142 @@
+NEW SERVER.JS
+
+'use strict';
+
+require('dotenv').config();
+const express = require('express');
+const cors = require('cors');
+const path = require('path');
+const PORT = process.env.PORT || 8000;
+const ORIGIN = process.env.ALLOWED_ORIGIN || '*';
+const REGION = process.env.AWS_REGION || 'us-east-1';
+
+const app = express();
+
+app.use(cors({
+  origin: ORIGIN === '*' ? true : [ORIGIN],
+  credentials: true
+}));
+app.use(express.json({ limit: '2mb' })); 
+
+app.use(express.static(path.join(__dirname, 'public')));
+
+app.use((req, res, next) => {
+  console.log('REQ', req.method, req.url);
+  next();
+});
+
+app.get('/__routes', (req, res) => {
+  const routes = (app._router && app._router.stack || [])
+    .filter(r => r.route)
+    .map(r => {
+      const methods = Object.keys(r.route.methods).join(',');
+      return `${methods.toUpperCase()} ${r.route.path}`;
+    });
+  res.json({ routes });
+});
+app.get('/__whoami', (req, res) => {
+  const fs = require('fs');
+  const p = path.resolve(__dirname, 'public', 'chat.html');
+  res.json({
+    __dirname,
+    publicDir: path.resolve(__dirname, 'public'),
+    chatPath: p,
+    exists: fs.existsSync(p)
+  });
+});
+
+app.get('/health', (_req, res) => res.json({ ok: true, region: REGION }));
+
+app.get('/chat.html', (req, res) => {
+  res.sendFile(path.resolve(__dirname, 'public', 'chat.html'));
+});
+
+const { LexRuntimeV2Client, RecognizeTextCommand } = require('@aws-sdk/client-lex-runtime-v2');
+const lex = new LexRuntimeV2Client({ region: REGION });
+
+app.post('/api/lex/text', async (req, res) => {
+  try {
+    const { text, sessionId } = req.body || {};
+    if (!text) return res.status(400).json({ error: 'text required' });
+
+    const out = await lex.send(new RecognizeTextCommand({
+      botId: process.env.LEX_BOT_ID,
+      botAliasId: process.env.LEX_BOT_ALIAS_ID,
+      localeId: process.env.LEX_LOCALE || 'en_US',
+      sessionId: sessionId || ('web-' + Math.random().toString(36).slice(2)),
+      text
+    }));
+    const reply = (out.messages || []).map(m => m.content).filter(Boolean).join('\n') || '(no response)';
+    return res.json({ reply, sessionId: out.sessionId });
+  } catch (err) {
+    console.error('LEX_ERROR', err);
+    return res.status(500).json({ error: err.name || 'LexFailed', message: err.message });
+  }
+});
+
+const {
+  ChimeSDKMessagingClient,
+  SendChannelMessageCommand,
+  ListChannelMessagesCommand
+} = require('@aws-sdk/client-chime-sdk-messaging');
+const chimeMsg = new ChimeSDKMessagingClient({ region: REGION });
+
+app.post('/api/chime/send', async (req, res) => {
+  try {
+    const ChannelArn = req.body.channelArn || process.env.CHIME_CHANNEL_ARN;
+    const ChimeBearer = req.body.senderArn || process.env.CHIME_APP_USER_ARN;
+    const Content = req.body.content;
+    if (!Content) return res.status(400).json({ error: 'content required' });
+
+    const out = await chimeMsg.send(new SendChannelMessageCommand({
+      ChannelArn,
+      ChimeBearer,
+      Content,
+      Persistence: 'PERSISTENT',
+      Type: 'STANDARD',
+      ClientRequestToken: cryptoRandom()
+    }));
+
+    return res.json(out);
+  } catch (err) {
+    console.error('CHIME_SEND_ERROR', err);
+    return res.status(403).json({ error: err.name || 'ChimeSendFailed', message: err.message });
+  }
+});
+
+app.get('/api/chime/list', async (req, res) => {
+  try {
+    const ChannelArn = req.query.channelArn || process.env.CHIME_CHANNEL_ARN;
+    const ChimeBearer = req.query.bearer || process.env.CHIME_APP_USER_ARN;
+    const NextToken = req.query.nextToken;
+
+    const out = await chimeMsg.send(new ListChannelMessagesCommand({
+      ChannelArn,
+      ChimeBearer,
+      SortOrder: 'ASCENDING',
+      MaxResults: 50,
+      NextToken
+    }));
+
+    return res.json(out);
+  } catch (err) {
+    console.error('CHIME_LIST_ERROR', err);
+    return res.status(403).json({ error: err.name || 'ChimeListFailed', message: err.message });
+  }
+});
+
+function cryptoRandom() {
+  try { return require('crypto').randomUUID(); }
+  catch { return Math.random().toString(36).slice(2); }
+}
+
+app.listen(PORT, () => {
+  console.log(`Server up on :${PORT} (region ${REGION})`);
+});
+
+----------------------------------------------------------------------------------------------------------------
+OLD SERVER.JS
+
 'use strict';
 
 require('dotenv').config();
