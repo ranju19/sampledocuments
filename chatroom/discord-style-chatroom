@@ -1,3 +1,148 @@
+1. Sidebar User Profile (bottom of sidebar)
+Add at the end of your .discord-sidebar:
+<!-- Add this just before closing </aside> -->
+<div class="sidebar-user">
+  <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=gomma" class="sidebar-avatar" alt="User" />
+  <span class="sidebar-username">Gomma</span>
+</div>
+
+2. Main Area Top Bar (search + post)
+Add at the very top inside .discord-main (above .discord-messages):
+<div class="chat-header">
+  <input type="text" class="chat-search" placeholder="Search conversations..." />
+  <button class="post-btn" onclick="openThreadModal()">Post</button>
+</div>
+
+3. Three Button Bar (My Posts, Suggestions, Favourites)
+Add below .chat-header, above .discord-messages:
+<div class="chat-buttons">
+  <button>My Posts</button>
+  <button>Suggestions</button>
+  <button>Favourites</button>
+</div>
+
+4. Thread-Style Modal (for “Post” button)
+Add below everything in your HTML (but inside <body>) to show when posting a new thread:
+<div id="threadModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeThreadModal()">&times;</span>
+    <h3>Start a new thread</h3>
+    <textarea id="threadMsg" rows="4" style="width: 100%;" placeholder="What do you want to discuss?"></textarea>
+    <br>
+    <button onclick="postThread()" class="post-btn">Post Thread</button>
+  </div>
+</div>
+
+5. JS for Modal
+Add at the end of your <script>:
+function openThreadModal() {
+  document.getElementById('threadModal').style.display = 'block';
+}
+function closeThreadModal() {
+  document.getElementById('threadModal').style.display = 'none';
+}
+function postThread() {
+  const msg = document.getElementById('threadMsg').value.trim();
+  if (!msg) return alert("Please type something for your thread.");
+  // Add your POST logic for threads here
+  closeThreadModal();
+  alert("Thread posted (demo)!"); // Replace with real logic
+  document.getElementById('threadMsg').value = '';
+}
+
+.sidebar-user {
+  margin-top: auto;
+  width: 100%;
+  text-align: center;
+  padding: 20px 0 10px;
+  background: #23272a;
+}
+
+.sidebar-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  margin-bottom: 7px;
+  background: #111;
+  object-fit: cover;
+}
+
+.sidebar-username {
+  color: #fff;
+  font-size: 15px;
+  font-weight: 500;
+}
+.chat-header {
+  display: flex;
+  align-items: center;
+  padding: 15px 18px 0 18px;
+  background: #36393f;
+  gap: 12px;
+}
+.chat-search {
+  flex: 1;
+  padding: 7px 12px;
+  border-radius: 7px;
+  border: none;
+  background: #23272a;
+  color: #fff;
+  font-size: 15px;
+}
+.post-btn {
+  background: #7d4fff;
+  color: #fff;
+  border: none;
+  padding: 7px 24px;
+  border-radius: 7px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.post-btn:hover {
+  background: #5865f2;
+}
+.chat-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  padding: 15px 0 0 0;
+  background: #36393f;
+}
+.chat-buttons button {
+  background: #23272a;
+  color: #fff;
+  border: none;
+  padding: 7px 22px;
+  border-radius: 14px;
+  font-weight: 500;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.chat-buttons button:hover {
+  background: #7d4fff;
+}
+.modal { display:none; position:fixed; z-index:999; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.4);}
+.modal-content { background: #23272a; margin:8% auto; padding:28px 20px; border-radius: 16px; width: 90%; max-width: 370px; color:#fff; position:relative;}
+.close { color: #aaa; position:absolute; top:12px; right:18px; font-size:28px; font-weight:bold; cursor:pointer;}
+.close:hover { color: #fff; }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------
 CSS:
   .discord-chat-container {
   display: flex;
