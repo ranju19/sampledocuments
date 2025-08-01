@@ -1,3 +1,173 @@
+CSS:
+  .discord-chat-container {
+  display: flex;
+  height: 80vh;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 0 24px #23272a66;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+.discord-sidebar {
+  width: 200px;
+  background: #23272a;
+  color: #fff;
+  padding: 1em 0.5em;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.discord-channel {
+  padding: 0.6em 1em;
+  margin-bottom: 0.5em;
+  border-radius: 7px;
+  cursor: pointer;
+  background: #2f3136;
+  font-weight: bold;
+}
+
+.discord-channel.active {
+  background: #5865f2;
+  color: #fff;
+}
+
+.discord-main {
+  flex: 1;
+  background: #36393f;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+.discord-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.2em;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5em;
+}
+
+.msg-bubble {
+  padding: 0.6em 1em;
+  background: #40444b;
+  color: #fff;
+  border-radius: 12px;
+  width: fit-content;
+  max-width: 80%;
+  margin-bottom: 0.3em;
+  word-break: break-word;
+  font-size: 1em;
+}
+
+.msg-bubble.me {
+  background: #5865f2;
+  margin-left: auto;
+  color: #fff;
+}
+
+.discord-input-bar {
+  display: flex;
+  border-top: 1px solid #222;
+  padding: 0.6em;
+  background: #40444b;
+}
+
+
+.discord-input-bar input {
+  flex: 1;
+  padding: 0.6em;
+  border-radius: 6px;
+  border: none;
+  background: #2f3136;
+  color: #fff;
+  margin-right: 0.8em;
+  outline: none;
+}
+
+.discord-input-bar button {
+  padding: 0.6em 1.5em;
+  background: #5865f2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.discord-input-bar button:hover {
+  background: #4752c4;
+}
+
+
+
+HTML:
+<!-- Discord-Style Chatroom START -->
+<div class="discord-chat-container">
+  <aside class="discord-sidebar">
+    <div class="discord-channel active"># general</div>
+    <!-- You can add more channels here -->
+  </aside>
+  <main class="discord-main">
+    <div id="messages" class="discord-messages"></div>
+    <form id="chat-form" class="discord-input-bar" autocomplete="off">
+      <input type="text" id="msg" placeholder="Type a message..." autocomplete="off" />
+      <button type="submit">Send</button>
+    </form>
+  </main>
+</div>
+
+SCRIPT:
+<script>
+const USER = "You";
+
+const messagesDiv = document.getElementById('messages');
+const chatForm = document.getElementById('chat-form');
+const msgInput = document.getElementById('msg');
+
+setInterval(fetchMessages, 2000);
+fetchMessages();
+
+function fetchMessages() {
+  fetch('/api/messages')
+    .then(res => res.json())
+    .then(data => {
+      messagesDiv.innerHTML = '';
+      data.forEach(msg => {
+
+        const isMe = msg.user === USER;
+        messagesDiv.innerHTML += `<div class="msg-bubble${isMe ? ' me' : ''}"><b>${msg.user}:</b> ${msg.text}</div>`;
+      });
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    });
+}
+
+chatForm.onsubmit = function(e) {
+  e.preventDefault();
+  if (!msgInput.value.trim()) return;
+  fetch('/api/send', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ text: msgInput.value, user: USER })
+  }).then(() => {
+    msgInput.value = '';
+    fetchMessages();
+  });
+};
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------
 HTML:
 <!-- Discord-Style Chatroom START -->
 <div class="discord-chat-container">
