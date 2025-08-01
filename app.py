@@ -1,3 +1,33 @@
+New settings.json
+{
+  "strict": true,
+  "debug": true,
+  "sp": {
+    "entityId": "http://10.45.87.29:8000/metadata/",
+    "assertionConsumerService": {
+      "url": "http://10.45.87.29:8000/saml/acs/",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+    },
+    "singleLogoutService": {
+      "url": "http://10.45.87.29:8000/saml/sls/",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "x509cert": "",
+    "privateKey": ""
+  },
+  "idp": {
+    "entityId": "https://sts.windows.net/34ddb339-7fd0-4f00-9041-c2e47fbbc9f4/",
+    "singleSignOnService": {
+      "url": "https://login.microsoftonline.com/34ddb339-7fd0-4f00-9041-c2e47fbbc9f4/saml2",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "singleLogoutService": {
+      "url": "https://login.microsoftonline.com/34ddb339-7fd0-4f00-9041-c2e47fbbc9f4/saml2",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "x509cert": "MIIC8DCCAdigAwIBAgIQfvqtosf0a4tP39yxfYusoTANBgkqhkiG9w0BAQsFADA0MTIwMAYDVQQDEylNaWNyb3NvZnQgQXp1cmUgRmVkZXJhdGVkIFNTTyBDZXJ0aWZpY2F0ZTAeFw0yNTA3MjkxNzU2MTFaFw0yODA3MjkxNzU2MTFaMDQxMjAwBgNVBAMTKU1pY3Jvc29mdCBBenVyZSBGZWRlcmF0ZWQgU1NPIENlcnRpZmljYXRlMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAueiSa6qmEWWbabDFoGj7eA1JulBGbKiRPbHtloSfGSqUvY8kLIehrVmtScD0Bc+/Pf5cWsYaOYQa4X37QvRETGlOOOpJHCmHwgAZRbs/jEMCk5Cxt279I3G27682XVojIstwbwTJjHObpZR79ez2LyFuHWvcXe42fRqKbCDclEW9mNdAM2DymZYSI6tlDpVUmIoiMKk7KB5/RpDoBEXhl2ksYW4GidqULFCri98IxAAlwrdO8n7HVbuqmXj7qPLT1qrbYDum440PrVL/+grSXJBo2rOYikdWgdx/ymfKhvrTXVM8JiW6Zm7Z0eYdadF37Y3KTxwU95fP21hbz2hF1QIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQA1puJa9iV0f57r3ILLcfqIoDY2NtT9R8m/VDyudyBSW3Eb99V9Z67Xy7Z2kX/7GLIA3y0Ykln57CzoWK7Dl49fhcSkSLmedy6pdoHzhEkZ5SLw1PQARQxUKwhJSoaCiwv5sk0A+WzvDsbGWHUB//Ljmjy4cvkayc2tpv0iCm1Aeq1A/hHIxVjtNBH3dMS4q3QjLfk+5bhzJbhuSAWm+ai6PXryiEzavDd8KcNVX9DZZAlgiWGvPMUWTSe5xE7Kl7ALn20MTVVJC9/yKu+sVKcqkXQIuA+nMaNyzbiXXnWomRm1XSy3USzGdOHnzOvOlW62erBd8ArKkfj44AaKQFFs"
+  }
+}
 
 
 
