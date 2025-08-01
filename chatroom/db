@@ -1,3 +1,21 @@
+404 errror
+const chatMessages = []; 
+
+app.get('/api/messages', (req, res) => {
+  res.json(chatMessages);
+});
+
+
+app.post('/api/messages', (req, res) => {
+  const { user, text } = req.body || {};
+  if (!user || !text) return res.status(400).json({ error: 'Missing user or text' });
+  const msg = { user, text, ts: Date.now() };
+  chatMessages.push(msg);
+  res.json({ ok: true });
+});
+
+
+
 NEW SERVER.JS
 
 'use strict';
