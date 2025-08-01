@@ -3,7 +3,7 @@ Add at the end of your .discord-sidebar:
 <!-- Add this just before closing </aside> -->
 <div class="sidebar-user">
   <img src="https://api.dicebear.com/7.x/pixel-art/svg?seed=gomma" class="sidebar-avatar" alt="User" />
-  <span class="sidebar-username">Gomma</span>
+  <span class="sidebar-username">User</span>
 </div>
 
 2. Main Area Top Bar (search + post)
