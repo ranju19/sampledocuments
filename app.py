@@ -1,3 +1,17 @@
+@app.route('/api/threads', methods=['GET', 'POST'])
+def threads_api():
+    if request.method == 'GET':
+        return jsonify(threads)
+    elif request.method == 'POST':
+        data = request.json
+        # Simple validation (adjust as needed)
+        if not data or 'message' not in data:
+            return jsonify({"error": "No message provided"}), 400
+        threads.append({"message": data['message']})
+        return jsonify({"status": "ok"}), 201
+
+
+
 @app.route('/api/threads', methods=['GET'])
 def get_threads():
     # Sample threads. Replace this with your DB logic if needed.
