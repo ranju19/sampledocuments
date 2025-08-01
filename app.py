@@ -1,3 +1,55 @@
+1
+Directly BELOW it, add:
+from flask import session, redirect, url_for
+from onelogin.saml2.auth import OneLogin_Saml2_Auth
+import os
+
+2
+def prepare_flask_request(request):
+    return {
+        'https': 'on' if request.scheme == 'https' else 'off',
+        'http_host': request.host,
+        'server_port': request.environ.get('SERVER_PORT'),
+        'script_name': request.path,
+        'get_data': request.args.copy(),
+        'post_data': request.form.copy()
+    }
+
+def init_saml_auth(req):
+    return OneLogin_Saml2_Auth(req, custom_base_path=os.path.join(os.getcwd(), 'saml'))
+
+3
+@app.route('/saml/login')
+def saml_login():
+    req = prepare_flask_request(request)
+    auth = init_saml_auth(req)
+    return redirect(auth.login())
+
+@app.route('/saml/acs', methods=['POST'])
+def saml_acs():
+    req = prepare_flask_request(request)
+    auth = init_saml_auth(req)
+    auth.process_response()
+    errors = auth.get_errors()
+    if errors:
+        return f"SAML error: {errors}"
+    session['samlUserdata'] = auth.get_attributes()
+    return redirect(url_for('protected'))
+
+@app.route('/protected')
+def protected():
+    if 'samlUserdata' in session:
+        return jsonify({"SSO_user": session['samlUserdata']})
+    return redirect(url_for('saml_login'))
+
+4
+app.secret_key = 'some-super-secret-key'  # use a strong, random value for production!
+
+
+
+
+
+
 from flask import Flask, request, jsonify
 from models import db, User
 from config import Config
