@@ -1,3 +1,197 @@
+app.py
+from flask import Flask, request, jsonify, Response
+from models import db, User
+from config import Config
+
+from flask import session, redirect, url_for
+from onelogin.saml2.auth import OneLogin_Saml2_Auth
+from onelogin.saml2.metadata import OneLogin_Saml2_Metadata
+from onelogin.saml2.settings import OneLogin_Saml2_Settings
+import os
+
+
+
+app = Flask(__name__)
+
+threads = []
+
+app.secret_key = 'gazI4ico4vdtzNgImdAecCci707oTRh1ihci0JDZ-LI'
+app.config['SESSION_COOKIE_SECURE']=True
+app.config['SESSION_COOKIE_SAMESITE']="None"
+app.config['SESSION_COOKIE_HTTPONLY']= True
+app.config.from_object(Config)
+db.init_app(app)
+
+with app.app_context():
+    db.create_all()
+
+@app.route('/metadata/', methods=['GET', 'POST'])
+def metadata_or_acs():
+    if request.method == 'GET':
+        # ... serve metadata XML ...
+        pass
+    else:  # POST
+        #print("=== SAML POST received ===")
+        #print("Form keys:", request.form.keys())
+        #print("SAMLResponse:", request.form.get("SAMLResponse", "NO SAMLRESPONSE"))
+        req = prepare_flask_request(request)
+        auth = init_saml_auth(req)
+        auth.process_response()
+        errors = auth.get_errors()
+        print("SAML errors:", errors)
+        if errors:
+            return f"SAML error: {errors}"
+        session['user'] = auth.get_nameid()
+        session['samlUserdata'] = auth.get_attributes()
+        print("SAML login successful. Session:", dict(session))
+        return redirect(url_for('protected'))
+
+
+def prepare_flask_request(request):
+    return {
+        'https': 'on' if request.scheme == 'https' else 'off',
+        'http_host': request.host,
+        'server_port': request.environ.get('SERVER_PORT'),
+        'script_name': request.path,
+        'get_data': request.args.copy(),
+        'post_data': request.form.copy()
+    }
+
+def init_saml_auth(req):
+    return OneLogin_Saml2_Auth(req, custom_base_path=os.path.join(os.getcwd(), 'saml'))
+
+@app.route('/signup', methods=['POST'])
+def signup():
+    data = request.json
+    if not data.get('username') or not data.get('password') or not data.get('email'):
+        return jsonify({"error": "Missing fields"}), 400
+    if User.query.filter_by(username=data['username']).first():
+        return jsonify({"error": "User exists"}), 400
+    user = User(username=data['username'], password=data['password'], email=data['email'])
+    db.session.add(user)
+    db.session.commit()
+    return jsonify({"message": "Signup successful!"}), 201
+
+@app.route('/login', methods=['POST'])
+def login():
+    data = request.json
+    user = User.query.filter_by(username=data['username'], password=data['password']).first()
+    if user:
+        return jsonify({"message": "Login successful!"}), 200
+    else:
+        return jsonify({"error": "Invalid credentials"}), 401
+
+@app.route('/search', methods=['GET'])
+def search():
+    q = request.args.get('q', '')
+    results = User.query.filter(User.username.ilike(f'%{q}%')).all()
+
+    return jsonify([{"username": u.username, "email": u.email} for u in results])
+
+
+@app.route('/saml/login')
+def saml_login():
+    req = prepare_flask_request(request)
+    auth = init_saml_auth(req)
+    return redirect(auth.login())
+
+@app.route('/saml/sls', methods=['GET', 'POST'])
+def saml_sls():
+    req = prepare_flask_request(request)
+    auth = init_saml_auth(req)
+    url = auth.process_slo()
+    errors = auth.get_errors()
+    if errors:
+        return f"SAML SLS error: {errors}", 400
+
+    return redirect('/')
+
+@app.route('/protected')
+def protected():
+    print('Session:', dict(session))
+    if 'user' not in session:
+        print('Not logged in, redirecting to SAML login')
+        return redirect(url_for('saml_login'))  # Or wherever your SSO login is
+    return "Welcome! You are logged in as: " + session['user']
+
+@app.route('/api/threads', methods=['GET', 'POST'])
+def threads_api():
+    if request.method == 'GET':
+        return jsonify(threads)
+    elif request.method == 'POST':
+        data = request.json
+        # Simple validation (adjust as needed)
+        if not data or 'message' not in data:
+            return jsonify({"error": "No message provided"}), 400
+        threads.append({"message": data['message']})
+        return jsonify({"status": "ok"}), 201
+
+@app.route('/ping',methods=['GET'])
+def ping():
+    return "pong", 200
+
+if __name__ == '__main__':
+    app.run(host="0.0.0.0", port=8000, debug=True)
+--------------
+settings.json
+{
+  "strict": true,
+  "debug": true,
+  "sp": {
+    "entityId": "https://technicalacumen.otsuka-us.com/metadata/",
+    "assertionConsumerService": {
+      "url": "https://technicalacumen.otsuka-us.com/metadata/",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-POST"
+    },
+    "singleLogoutService": {
+      "url": "https://technicalacumen.otsuka-us.com/saml/sls",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "x509cert": "",
+    "privateKey": ""
+  },
+  "idp": {
+    "entityId": "https://sts.windows.net/34ddb339-7fd0-4f00-9041-c2e47fbbc9f4/",
+    "singleSignOnService": {
+      "url": "https://login.microsoftonline.com/34ddb339-7fd0-4f00-9041-c2e47fbbc9f4/saml2",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "singleLogoutService": {
+      "url": "https://login.microsoftonline.com/34ddb339-7fd0-4f00-9041-c2e47fbbc9f4/saml2",
+      "binding": "urn:oasis:names:tc:SAML:2.0:bindings:HTTP-Redirect"
+    },
+    "x509cert": "MIIC8DCCAdigAwIBAgIQfvqtosf0a4tP39yxfYusoTANBgkqhkiG9w0BAQsFADA0MTIwMAYDVQQDEylNaWNyb3NvZnQgQXp1cmUgRmVkZXJhdGVkIFNTTyBDZXJ0aWZpY2F0ZTAeFw0yNTA3MjkxNzU2MTFaFw0>
+  }
+}
+-----------
+nginx
+server {
+        listen 80;
+        server_name technicalacumen.otsuka-us.com;
+        return 301 https://$host$request_uri;
+}
+
+
+server{
+  listen 443;
+  server_name technicalacumen.otsuka-us.com;
+
+  root /var/www/html;
+  index index.html;
+
+  location / {
+    proxy_pass http://127.0.0.1:8000;
+    proxy_set_header Host $host;
+    proxy_set_header X-Real-IP $remote_addr;
+    proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    proxy_set_header X-Forwarded-Proto $scheme;
+  }
+}
+
+
+
+
+--------------------------------------------------------------------------------------------------------------------------------------------------------
 @app.route('/protected')
 def protected():
     print('Session:', dict(session))
