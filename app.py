@@ -1,3 +1,12 @@
+@app.route('/protected')
+def protected():
+    print('Session:', dict(session))
+    if 'user' not in session:
+        print('Not logged in, redirecting to SAML login')
+        return redirect(url_for('saml_login'))  # Or wherever your SSO login is
+    return "Welcome! You are logged in as: " + session['user']
+
+-------------------
 @app.route('/metadata/', methods=['GET', 'POST'])
 def metadata_or_acs():
     if request.method == 'GET':
