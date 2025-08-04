@@ -1,3 +1,60 @@
+A. Update /metadata/ Route to Print and Debug the Session
+Replace your POST handler for /metadata/ with the code below:
+@app.route('/metadata/', methods=['GET', 'POST'])
+def metadata_or_acs():
+    if request.method == 'GET':
+        # Optional: Serve metadata XML if Azure needs to fetch it
+        return "SAML Metadata not implemented", 200
+
+    # POST = ACS
+    req = prepare_flask_request(request)
+    auth = init_saml_auth(req)
+    auth.process_response()
+    errors = auth.get_errors()
+    print("SAML errors:", errors)
+    if errors:
+        return f"SAML error: {errors}"
+    
+    session['user'] = auth.get_nameid()
+    session['samlUserdata'] = auth.get_attributes()
+    print("SAML login successful. Session after setting:", dict(session))
+    # Set a test value to debug session persistence
+    session['test_value'] = 'hello'
+
+    # Immediately return session content to debug
+    return redirect(url_for('protected'))
+
+
+B. Update /protected Route to Print Session and Avoid Infinite Redirect
+@app.route('/protected')
+def protected():
+    print('Session inside /protected:', dict(session))
+    # This debug line will show what session looks like after SAML login
+    if 'user' not in session:
+        print('Not logged in, redirecting to SAML login')
+        return redirect(url_for('saml_login'))
+    return (
+        "Welcome! You are logged in as: " + session['user'] +
+        "<br>Session: " + str(dict(session))
+    )
+
+E. If Session Is Not Set:
+Add this at the TOP of your file, right after Flask import, for debugging cookie issues:
+@app.after_request
+def apply_caching(response):
+    print("Set-Cookie Header:", response.headers.get('Set-Cookie'))
+    return response
+
+
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
 app.py
 from flask import Flask, request, jsonify, Response
 from models import db, User
