@@ -1,3 +1,49 @@
+Future Works for TechnicalAcumen
+1️⃣ Chatroom + Chatbot Integration
+Current: Layout is ready, setup is done, but there are errors stopping it from fully working.
+
+Work to be done:
+
+Fix the errors so messages send and receive without issues.
+
+Make sure both chatroom and chatbot can run together without interfering.
+
+Test sending and receiving messages from both sides.
+
+2️⃣ SSO (Single Sign-On) Login
+Current: Configuration files are already in the server, but the site is not connecting to SSO.
+
+Work to be done:
+
+Check all links, login addresses, and certificates are matching.
+
+Fix any mismatch so SSO login works and takes the user into the site.
+
+3️⃣ Search Bar
+Current: Search bar design is ready but doesn’t work yet.
+
+Work to be done:
+
+Connect the search bar so it can find pages or content on the site.
+
+Show suggestions when the user types.
+
+4️⃣ Feedback Form (Backend)
+Current: Feedback page is there, but messages are not stored anywhere.
+
+Work to be done:
+
+Save feedback submissions into a file or database.
+
+Show a success message after feedback is sent.
+
+5️⃣ Teams Calendar Integration
+Current: Calendar page is ready, but not linked to Teams.
+
+Work to be done:
+
+Connect the calendar to Microsoft Teams so events can be shown or added directly from the site.
+----------------------------------------------------------------
 TechnicalAcumen – Detailed Project File Structure & Handover Notes
 Root Directory: /var/www/html/technicalacumen
 This folder now contains the entire website — frontend pages, backend scripts, stylesheets, images, and configurations.
