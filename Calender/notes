@@ -1,0 +1,84 @@
+TechnicalAcumen – Detailed Project File Structure & Handover Notes
+Root Directory: /var/www/html/technicalacumen
+This folder now contains the entire website — frontend pages, backend scripts, stylesheets, images, and configurations.
+
+1️⃣ Frontend – HTML Pages (User Interface)
+These are the visible pages users see in their browser. If you need to change page content, you edit these files:
+
+index.html – The homepage/landing page of TechnicalAcumen. Contains the hero section, navigation menu, and intro text.
+
+login.html – The user login form. Connects to backend authentication scripts.
+
+learn.html – Page listing AI/ML courses and categorized learning sections.
+
+writeblogs.html – Blog editor page. Lets users write and publish text-based blogs.
+
+videoblog.html – Displays technical videos/blogs fetched from YouTube or other sources.
+
+podcast.html – Podcast listing page with embedded Spotify players.
+
+feedback.html – Page for users to submit feedback via a form.
+
+industrynews.html – Tech news page with RSS feed integration.
+
+chatroom.html – Real-time chatroom/forum-style discussion page.
+
+leaderboard.html – Shows user rankings (possibly from gamified points).
+
+contact.html – Contains contact form and team contact info.
+
+blog.html – Lists published blog articles.
+
+2️⃣ CSS Files (Design & Styling)
+These files control how the website looks (colors, layouts, fonts).
+
+style.css – Main stylesheet applied across the entire site.
+
+calender-style.css – Styles for any calendar/date picker components.
+
+writeblogs-style.css – Styles specifically for the Write Blogs page.
+
+leaderboard-style.css – Styles specifically for the Leaderboard page.
+
+3️⃣ JavaScript Files (Frontend Logic)
+These files handle interactivity and dynamic page updates in the browser.
+
+script.js – Main JavaScript for general page functions (menus, animations, API calls).
+
+calender-script.js – Code to control calendar/date selector.
+
+writeblogs-script.js – Handles blog creation form submission, image uploads, and saving to database.
+
+4️⃣ Backend Files (Server-Side Logic)
+These files run on the server to handle data storage, processing, and API requests.
+
+app.py – Python backend application (likely Flask). May handle blog storage, chatroom messages, or API endpoints.
+
+config.py – Stores backend configurations like DB paths, API keys, and settings.
+
+models.py – Python file defining database tables and structures.
+
+server.js – Node.js backend server script, possibly handling chatroom or API requests.
+
+server1.js – An alternate or backup Node.js server configuration.
+
+5️⃣ Data & Database
+users.db – SQLite database storing user details, blog posts, leaderboard points, etc.
+
+__pycache__/ – Auto-generated Python compiled files (can be ignored).
+
+6️⃣ Config & Dependency Files
+package.json – Node.js project metadata & dependency list.
+
+package-lock.json – Locked dependency versions for Node.js.
+
+venv/ – Python virtual environment containing Python packages.
+
+node_modules/ – Installed Node.js packages.
+
+7️⃣ Static Assets
+images/ – All images used on the website. Now hosted locally instead of GitHub.
+
+NA_Technical_Acumen_Prod.cer – SSL certificate file for HTTPS.
+
+NA_Technical_Acumen_Prod.zip – Backup archive containing SSL certificate and possibly private key.
