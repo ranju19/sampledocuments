@@ -1,3 +1,85 @@
+Detailed Troubleshooting Notes
+1️⃣ RSS Feeds (Blogs, Podcasts, Industry News)
+What Happened:
+
+Some RSS feeds (like The Verge) did not return images, only text.
+
+A few feeds were in XML but didn’t follow a consistent structure, causing parsing errors.
+
+Some feeds timed out or blocked requests from the server because of missing headers.
+
+What We Did to Fix:
+
+For feeds missing images → switched to an alternate RSS source or used a paid API that included images.
+
+For feeds with strict rules → added request headers to pretend like a normal browser request (User-Agent).
+
+For feeds returning broken XML → ran them through an RSS-to-JSON service like rss2json to normalize the data.
+
+Future Prevention:
+
+Always test new feeds in a feed parser before adding them to the site.
+
+Keep backup feeds for each category so if one breaks, you can swap it quickly.
+
+Use a feed service/API that guarantees consistent structure.
+
+2️⃣ Chatroom Integration
+What Happened:
+
+Chatroom worked partially but messages didn’t always send/receive.
+
+Connection errors popped up in the console (WebSocket connection failed or CORS error).
+
+When chatbot and chatroom were both enabled, they sometimes interfered with each other.
+
+What We Did to Fix:
+
+Matched the frontend origin (site URL) with backend CORS settings so the WebSocket would accept connections.
+
+Restarted both backend and Nginx after making changes — some errors were from outdated config.
+
+Gave chatbot and chatroom separate namespaces so their connections wouldn’t mix.
+
+Future Prevention:
+
+Always check the browser console for WebSocket errors when chat stops working.
+
+Make sure both backend and frontend are using the same connection URL.
+
+If you add multiple chat features, keep them in separate connection paths (e.g., /chatroom, /chatbot).
+
+3️⃣ SSO (Single Sign-On)
+What Happened:
+
+SSO login didn’t work at all — no redirect, or redirect loop happened.
+
+The Identity Provider (IdP) and Service Provider (SP) URLs didn’t match exactly.
+
+The certificate in the server didn’t match the one registered with the IdP.
+
+What We Did to Fix:
+
+Checked the ACS URL (where the IdP sends the user after login) and made sure it matched exactly in both the IdP and our server config.
+
+Updated the certificate file (.cer) to the correct one from the IdP.
+
+Verified time sync on the server — a large time difference can break SSO.
+
+Future Prevention:
+
+Keep a record of all SSO URLs and certificates in a secure place.
+
+Whenever SSO fails, first check:
+
+ACS URL matches exactly (including https:// and trailing slash).
+
+Certificate matches the IdP’s signing certificate.
+
+Server time is correct.
+
+If SSO is down and you need quick access, have a “local login” option for temporary use.
+-----------------------------------------------------------------------------
 Future Works – Adding More High-Tech Content Sources
 1️⃣ Blogs
 Add RSS feeds or API links from leading tech companies & research groups:
